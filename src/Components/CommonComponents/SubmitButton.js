@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
-import SaveIcon from "@material-ui/icons/Save";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -9,22 +9,18 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function EditButton({ EditButtonFunc, EditButtonClass, id }) {
+export default function SubmitButton() {
     const classes = useStyles();
 
     return (
-        <div className={EditButtonClass}>
+        <div>
             <Button
                 variant="contained"
-                color="grey"
-                size="small"
+                color="default"
                 className={classes.button}
-                startIcon={<SaveIcon />}
-                onClick={() => {
-                    EditButtonFunc(id);
-                }}
+                startIcon={<CloudUploadIcon />}
             >
-                Edit
+                Add
             </Button>
         </div>
     );

@@ -11,7 +11,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function DeleteButton({ DeleteClass }) {
+export default function DeleteButton({
+    id,
+    keyFirebase,
+    DeleteClass,
+    DeleteTaskThunk,
+}) {
     const classes = useStyles();
 
     return (
@@ -19,9 +24,11 @@ export default function DeleteButton({ DeleteClass }) {
             className={`${classes.root} ${DeleteClass}`}
             onClick={(event) => {
                 event.stopPropagation();
+                DeleteTaskThunk(id, keyFirebase);
             }}
             onFocus={(event) => {
                 event.stopPropagation();
+                DeleteTaskThunk(id, keyFirebase);
             }}
         >
             <IconButton aria-label="delete">

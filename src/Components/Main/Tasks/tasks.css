@@ -1,15 +1,23 @@
 
 .MuiExpansionPanelSummary-content {
     justify-content: space-between !important;
+    display: grid !important;
+    grid-template-columns: 65% 30% 5% !important;
 }
-.priorityTask {
+.priorityTask div, .priorityTask{
     display: flex;
     align-self: center;
     min-width: 100px;
-    margin-right: 30px;
+    justify-content: center;
+}
+.statusTask div, .statusTask{
+    display: flex;
+    align-self: center;
+    min-width: 100px;
+    justify-content: center;
 }
 .MuiTypography-body1 {
-    margin-left: 40px !important;
+    margin-left: 20px !important;
 }
 .clearText {
     text-decoration: none;
@@ -26,6 +34,7 @@
     right: 30px;
     display: flex;
     align-self: center;
+    top: 0 !important;
 }
 .MuiExpansionPanelSummary-expandIcon {
     position: relative !important;
@@ -52,20 +61,19 @@
     margin: 20px auto !important;
     max-width: 1170px;
 }
+.makeStyles-root-298 {
+    margin: 0;
+    top: 2px !important;
+}
 
-
-@media screen and (max-width: 425px) {
-    .priorityTask {
-        position: absolute;
-        bottom: 10px;
-        left: auto;
-        right: 0;
-        margin: 0 auto;
-        width: 70px;
-    }
+@media screen and (max-width: 768px) {
     .MuiExpansionPanelSummary-content {
-        margin-bottom: 20px !important;
+        justify-content: space-between !important;
+        display: grid !important;
+        grid-template-columns: 60% 35% 5% !important;
     }
+}
+@media screen and (max-width: 425px) {
     .editButtonTask {
         position: relative;
         right: -10px;
@@ -89,31 +97,39 @@
         display: block;
     }
     .MuiExpansionPanelSummary-content {
-        justify-content: left !important;
+        justify-content: center !important;
+        display: grid !important;
+        margin-bottom: 40px !important;
+        grid-template-rows: 60% 40% !important;
+        grid-template-columns: none !important;
+        width: 100% !important;
+        flex-grow: 0 !important;
     }
     .MuiTypography-body1 {
         margin: 10px auto !important;
         padding: 10px;
         text-align: center;
     }
+    .deleteButtonTask {
+        top: 10px !important;
+        right: -3px;
+    }
+    .MuiExpansionPanelSummary-expandIcon {
+        position: absolute !important;
+        left: auto;
+        right: 10px;
+        bottom: 0;
+    }
 }
 @media screen and (max-width: 375px) {
-    .priorityTask {
-        position: absolute;
-        display: block;
-        bottom: 10px;
-        left: auto;
-        right: 28%;
-        margin: 0 auto;
-        width: 70px;
-    }
     .MuiExpansionPanelSummary-content {
         margin-bottom: 40px !important;
     }
     .deleteButtonTask {
         position: absolute;
         display: block;
-        bottom: -8px;
+        top: 10px !important;
+        right: -13px !important;
         left: auto;
         right: 20px;
         margin: 0 auto;

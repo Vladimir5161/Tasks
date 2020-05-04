@@ -14,9 +14,21 @@ export const WebApi = {
             return resp.data;
         });
     },
-    pushTasks(tasks) {
-        return instance.post(`tasks.json`, tasks).then((res) => {
-            return res.data;
+    addTask(task) {
+        return instance.post(`tasks.json`, task).then((resp) => {
+            return resp.data;
         });
+    },
+    deleteTask(keyFirebase) {
+        return instance.delete(`tasks/${keyFirebase}.json`).then((resp) => {
+            return resp.data;
+        });
+    },
+    updateTask(task) {
+        return instance
+            .put(`tasks/${task.keyFirebase}.json`, task)
+            .then((resp) => {
+                return resp.data;
+            });
     },
 };
