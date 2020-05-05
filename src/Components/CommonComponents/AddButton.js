@@ -18,9 +18,9 @@ export default function AddButton({ state, editState }) {
     const classes = useStyles();
 
     return (
-        <div className={classes.root} onMouseDown={() => editState()}>
+        <div className={classes.root}>
             <Fab color={state ? "secondary" : "primary"} aria-label="add">
-                <AddIcon />
+                <AddIcon onMouseDown={() => editState()} />
             </Fab>
         </div>
     );

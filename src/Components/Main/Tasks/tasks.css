@@ -3,6 +3,7 @@
     justify-content: space-between !important;
     display: grid !important;
     grid-template-columns: 65% 30% 5% !important;
+    max-width: 1170px;
 }
 .priorityTask div, .priorityTask{
     display: flex;
@@ -31,7 +32,7 @@
     position: absolute;
     z-index: 999;
     left: auto;
-    right: 30px;
+    right: 40px;
     display: flex;
     align-self: center;
     top: 0 !important;
@@ -57,9 +58,12 @@
 .MuiTypography-body1 {
     padding-right: 10px;
 }
-.MuiExpansionPanel-root {
-    margin: 20px auto !important;
+.MuiExpansionPanel-root, .MuiExpansionPanel-root.Mui-expanded {
+    margin: 12px auto !important;
     max-width: 1170px;
+}
+.MuiExpansionPanelSummary-content.Mui-expanded {
+    margin: 12px auto !important;
 }
 .makeStyles-root-298 {
     margin: 0;

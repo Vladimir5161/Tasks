@@ -18,9 +18,9 @@ export default function AddButton({ AddTaskFunc }) {
     const classes = useStyles();
 
     return (
-        <div className={classes.root} onMouseDown={() => AddTaskFunc()}>
+        <div className={classes.root}>
             <Fab color="primary" aria-label="add">
-                <AddIcon />
+                <AddIcon onMouseDown={() => AddTaskFunc()} />
             </Fab>
         </div>
     );

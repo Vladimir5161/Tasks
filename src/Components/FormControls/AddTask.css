@@ -14,7 +14,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
  }
-.MuiExpansionPanelSummary-root.Mui-expanded  {
+.MuiExpansionPanelSummary-root.Mui-expanded, .MuiExpansionPanelSummary-root  {
     box-sizing: border-box;
 }
 .makeStyles-formControl-197, .makeStyles-formControl-223  {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { reduxForm } from "redux-form";
 import { createField, InputForm } from "./Field";
 import Button from "@material-ui/core/Button";
@@ -7,7 +7,6 @@ import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import "./AddTask.css";
 import PrioritySelect from "../CommonComponents/PrioritySelect";
 import { ExpansionPanel, ExpansionPanelSummary } from "@material-ui/core";
-import AddButton from "../CommonComponents/AddButton";
 import StatusSelect from "../CommonComponents/StatusSelect";
 
 const useStyles = makeStyles((theme) => ({
