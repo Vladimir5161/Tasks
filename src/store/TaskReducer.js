@@ -4,6 +4,7 @@ import { reset } from "redux-form";
 const initialState = {
     TasksArray: [],
     BlockedButtonArray: [],
+    DoneIdArray: [],
 };
 
 const TaskReducer = (state = initialState, action) => {
@@ -48,11 +49,24 @@ const TaskReducer = (state = initialState, action) => {
                         : item
                 ),
             };
+        case "SETTODONE":
+            return {
+                ...state,
+                DoneIdArray: [...state.DoneIdArray, action.value],
+            };
+        case "SETTOUNDONE":
+            return {
+                ...state,
+                DoneIdArray: state.DoneIdArray.filter(
+                    (item) => item.id !== action.id
+                ),
+            };
         default:
             return state;
     }
 };
-
+export const SetToDone = (value) => ({ type: "SETTODONE", value });
+export const SetToUnDone = (id) => ({ type: "SETTOUNDONE", id });
 export const getTasks = (tasks) => ({ type: "GETTASKS", tasks });
 export const deleteTask = (id) => ({
     type: "DELETETASK",
@@ -62,12 +76,73 @@ export const addTask = (task) => ({ type: "ADDTASK", task });
 export const blockButton = (id) => ({ type: "BLOCKBUTTON", id });
 export const updateTask = (task) => ({ type: "UPDATETASK", task });
 
-export const GetTasksThunk = () => async (dispatch, getState) => {
+export const SetToDoneThunk = (
+    id,
+    keyFirebase,
+    priority,
+    text,
+    status,
+    data
+) => async (dispatch) => {
+    debugger;
+    const task = {
+        keyFirebase: keyFirebase,
+        id: id,
+        data: data,
+        priority: priority || null,
+        text: text,
+        status: "done",
+    };
+    const value = {
+        id: id,
+        status: status,
+    };
+    try {
+        await dispatch(SetToDone(value));
+        await WebApi.updateTask(task);
+        debugger;
+    } catch {
+        return "error";
+    }
+};
+export const SetToPrevStatusThunk = (
+    id,
+    keyFirebase,
+    priority,
+    text,
+    data
+) => async (dispatch, getState) => {
+    debugger;
+    const oldStatus = getState().tasks.TasksArray;
+    const task = {
+        keyFirebase: keyFirebase,
+        id: id,
+        data: data,
+        priority: priority || null,
+        text: text || "",
+        status: oldStatus.status,
+    };
+    try {
+        await WebApi.updateTask(task);
+        await dispatch(SetToUnDone(id));
+    } catch {
+        return "error";
+    }
+};
+export const GetTasksThunk = () => async (dispatch) => {
     try {
         let responce = await WebApi.getTasks();
         let tasksArray = Object.entries(responce);
         tasksArray.map((i) => (i[1].keyFirebase = i[0]));
         dispatch(getTasks(Object.values(responce)));
+    } catch {
+        return "error";
+    }
+};
+export const GetItemThunk = (keyFirebase) => async (dispatch) => {
+    try {
+        let responce = await WebApi.getTaskItem(keyFirebase);
+        dispatch(updateTask(responce));
     } catch {
         return "error";
     }
@@ -92,7 +167,10 @@ export const AddTaskThunk = (priority, text, status) => async (
     ) {
         return a.id - b.id;
     });
-    const newId = sortedByIdTasksArray.length - 1;
+    const newId =
+        getState().tasks.TasksArray.length === 0
+            ? 1
+            : sortedByIdTasksArray.length + 1;
 
     const task = {
         id: newId,
@@ -102,7 +180,6 @@ export const AddTaskThunk = (priority, text, status) => async (
         status: status || "new",
     };
     try {
-        debugger;
         dispatch(blockButton("addTask"));
         await WebApi.addTask(task);
         await dispatch(addTask(task));
@@ -118,7 +195,7 @@ export const UpdateTaskThunk = (
     status,
     id,
     keyFirebase
-) => async (dispatch, getState) => {
+) => async (dispatch) => {
     const task = {
         keyFirebase: keyFirebase,
         id: id,
@@ -128,7 +205,6 @@ export const UpdateTaskThunk = (
         status: status || "new",
     };
     try {
-        debugger;
         dispatch(blockButton("updateTask"));
         await WebApi.updateTask(task);
         await dispatch(updateTask(task));
@@ -137,6 +213,10 @@ export const UpdateTaskThunk = (
     } catch {
         return "error";
     }
+};
+export const CreateAccount = (email, password) => async (dispatch) => {
+    await WebApi.login(email, password);
+    dispatch(reset("createUserForm"));
 };
 
 export default TaskReducer;

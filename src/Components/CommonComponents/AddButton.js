@@ -19,8 +19,12 @@ export default function AddButton({ state, editState }) {
 
     return (
         <div className={classes.root}>
-            <Fab color={state ? "secondary" : "primary"} aria-label="add">
-                <AddIcon onMouseDown={() => editState()} />
+            <Fab
+                color={state ? "secondary" : "primary"}
+                aria-label="add"
+                onMouseDown={() => editState()}
+            >
+                <AddIcon />
             </Fab>
         </div>
     );

@@ -33,7 +33,25 @@ export const InputForm = ({ inputLabel, ...props }) => {
                 <TextField
                     label={inputLabel}
                     type="text"
-                    variant="outlined"
+                    {...input}
+                    {...restProps}
+                />
+            </div>
+        </div>
+    );
+};
+
+export const InputFormPass = ({ inputLabel, ...props }) => {
+    let { input, meta, ...restProps } = props;
+    const hasError = meta.error && meta.touched;
+    return (
+        <div className="inputBlock">
+            {hasError ? <ErrorValidate {...input} {...restProps} /> : null}
+            <div className="formBlock">
+                <TextField
+                    label={inputLabel}
+                    type="password"
+                    autoComplete="current-password"
                     {...input}
                     {...restProps}
                 />

@@ -15,12 +15,15 @@ const AddTask = ({ AddTaskThunk }) => {
             [name]: event.target.value,
         });
     };
-    const [choseStatus, setStatus] = React.useState("");
+    const [choseStatus, setStatus] = React.useState({
+        status: "",
+    });
     const changeStatus = (event) => {
-        setStatus(event.target.value);
+        const status = event.target.name;
+        setStatus({ status: status });
     };
     const onSubmit = (formData) => {
-        AddTaskThunk(choseState.priority, formData.text, choseStatus);
+        AddTaskThunk(choseState.priority, formData.text, choseStatus.status);
     };
     return (
         <AddTaskForm

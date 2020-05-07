@@ -1,6 +1,7 @@
 
 .MuiExpansionPanelSummary-content {
     justify-content: space-between !important;
+    margin: 15px auto 8px auto !important;
     display: grid !important;
     grid-template-columns: 65% 30% 5% !important;
     max-width: 1170px;
@@ -59,11 +60,11 @@
     padding-right: 10px;
 }
 .MuiExpansionPanel-root, .MuiExpansionPanel-root.Mui-expanded {
-    margin: 12px auto !important;
+    margin: 15px auto 8px auto !important;
     max-width: 1170px;
 }
 .MuiExpansionPanelSummary-content.Mui-expanded {
-    margin: 12px auto !important;
+    margin: 15px auto 8px auto !important;
 }
 .makeStyles-root-298 {
     margin: 0;

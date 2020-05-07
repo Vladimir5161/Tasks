@@ -16,12 +16,6 @@ const useStyles = makeStyles({
 const ActionsInExpansionPanelSummary = React.memo(
     ({ TasksArray, GetTasksThunk, DeleteTaskThunk }) => {
         const classes = useStyles();
-        let [written, changeTextDecoration] = useState([]);
-        const ChangeTextId = (ID) => {
-            if (written.some((id) => id === ID)) {
-                changeTextDecoration(written.filter((id) => id !== ID));
-            } else changeTextDecoration([...written, ID]);
-        };
         let [DeleteClass, changeDeleteClass] = useState("deleteButtonTask");
         let [EditButtonClass, changeEditButton] = useState("editButtonTask");
         let [addTask, changeAddTask] = useState(false);
@@ -57,8 +51,6 @@ const ActionsInExpansionPanelSummary = React.memo(
                                 DeleteClass={DeleteClass}
                                 EditButtonClass={EditButtonClass}
                                 data={data}
-                                ChangeTextId={ChangeTextId}
-                                written={written}
                                 DeleteTaskThunk={DeleteTaskThunk}
                                 editTask={editTask}
                             />

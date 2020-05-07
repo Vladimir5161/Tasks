@@ -9,14 +9,17 @@ import EditButton from "../../CommonComponents/EditButon";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import EditTaskForm from "../../FormControls/EditTaskForm";
 import { connect } from "react-redux";
-import { UpdateTaskThunk } from "../../../store/TaskReducer";
+import {
+    UpdateTaskThunk,
+    SetToPrevStatusThunk,
+    SetToDoneThunk,
+    GetItemThunk,
+} from "../../../store/TaskReducer";
 
 const TaskItem = ({
-    written,
     data,
     id,
     text,
-    ChangeTextId,
     priority,
     status,
     DeleteClass,
@@ -26,6 +29,9 @@ const TaskItem = ({
     editTask,
     EditButtonFunc,
     UpdateTaskThunk,
+    SetToPrevStatusThunk,
+    SetToDoneThunk,
+    GetItemThunk,
 }) => {
     const [choseState, setChoseState] = React.useState({
         priority: priority,
@@ -38,19 +44,31 @@ const TaskItem = ({
             [name]: event.target.value,
         });
     };
-    const [choseStatus, setStatus] = React.useState("");
+    const [choseStatus, setStatus] = React.useState({
+        status: status,
+    });
     const changeStatus = (event) => {
-        setStatus(event.target.value);
+        const status = event.target.value;
+        setStatus({ status: status });
     };
     const onSubmit = (form) => {
         UpdateTaskThunk(
             choseState.priority,
             form.text,
-            choseStatus,
+            choseStatus.status,
             id,
             keyFirebase
-        );
-        EditButtonFunc(id);
+        ).then(EditButtonFunc(id));
+    };
+    const OnDoneButtonClick = async () => {
+        debugger;
+        if (status === "done") {
+            await SetToPrevStatusThunk(id, keyFirebase, priority, text, data);
+            await GetItemThunk(keyFirebase);
+        } else {
+            await SetToDoneThunk(id, keyFirebase, priority, text, status, data);
+            await GetItemThunk(keyFirebase);
+        }
     };
     return (
         <div>
@@ -76,16 +94,18 @@ const TaskItem = ({
                         id="additional-actions1-header"
                     >
                         <div className="dataTasks">{data}</div>
-                        {written.some((item) => item === id) ? (
+                        {status === "done" ? (
                             <FormControlLabel
                                 aria-label="Acknowledge"
                                 control={<Checkbox />}
                                 className="doneText"
-                                onClick={(event) => event.stopPropagation()}
+                                onClick={(event) => {
+                                    event.stopPropagation();
+                                    OnDoneButtonClick();
+                                }}
                                 onFocus={(event) => event.stopPropagation()}
                                 onMouseDown={(event) => {
                                     event.stopPropagation();
-                                    ChangeTextId(id);
                                 }}
                                 label={text}
                             />
@@ -94,11 +114,13 @@ const TaskItem = ({
                                 aria-label="Acknowledge"
                                 control={<Checkbox />}
                                 className="clearText"
-                                onClick={(event) => event.stopPropagation()}
+                                onClick={(event) => {
+                                    event.stopPropagation();
+                                    OnDoneButtonClick();
+                                }}
                                 onFocus={(event) => event.stopPropagation()}
                                 onMouseDown={(event) => {
                                     event.stopPropagation();
-                                    ChangeTextId(id);
                                 }}
                                 label={text}
                             />
@@ -134,4 +156,9 @@ const TaskItem = ({
         </div>
     );
 };
-export default connect(null, { UpdateTaskThunk })(TaskItem);
+export default connect(null, {
+    UpdateTaskThunk,
+    SetToPrevStatusThunk,
+    SetToDoneThunk,
+    GetItemThunk,
+})(TaskItem);

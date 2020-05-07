@@ -3,15 +3,16 @@ import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Tasks from "./Tasks/Tasks";
+import LoginPage from "./Login/LoginPage";
 
 const Main = ({ value }) => {
     return (
         <div>
             <TabPanel value={value} index={0}>
-                <Tasks />
+                <LoginPage />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                All Tasks
+                <Tasks />
             </TabPanel>
             <TabPanel value={value} index={2}>
                 Blas
