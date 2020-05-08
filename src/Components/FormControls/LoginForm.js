@@ -15,12 +15,17 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function Login({ changePage }) {
+function Login({ changePage, ...props }) {
     const classes = useStyles();
 
     return (
-        <form className={classes.root} noValidate autoComplete="off">
-            {createField("login", "login", [], InputForm, {
+        <form
+            className={classes.root}
+            noValidate
+            autoComplete="off"
+            onSubmit={props.handleSubmit}
+        >
+            {createField("email", "email", [], InputForm, {
                 inputLabel: "your login",
             })}
             {createField("password", "password", [], InputFormPass, {

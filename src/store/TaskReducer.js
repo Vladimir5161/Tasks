@@ -1,10 +1,12 @@
 import { WebApi } from "../api/api";
-import { reset } from "redux-form";
+import { reset, reduxForm } from "redux-form";
+import app from "../api/firebase";
 
 const initialState = {
     TasksArray: [],
     BlockedButtonArray: [],
     DoneIdArray: [],
+    isAuth: false,
 };
 
 const TaskReducer = (state = initialState, action) => {
@@ -61,6 +63,9 @@ const TaskReducer = (state = initialState, action) => {
                     (item) => item.id !== action.id
                 ),
             };
+        case "ISAUTH":
+            return { ...state, isAuth: (state.isAuth = action.authStatus) };
+
         default:
             return state;
     }
@@ -75,6 +80,7 @@ export const deleteTask = (id) => ({
 export const addTask = (task) => ({ type: "ADDTASK", task });
 export const blockButton = (id) => ({ type: "BLOCKBUTTON", id });
 export const updateTask = (task) => ({ type: "UPDATETASK", task });
+export const setAuth = (authStatus) => ({ type: "ISAUTH", authStatus });
 
 export const SetToDoneThunk = (
     id,
@@ -215,8 +221,26 @@ export const UpdateTaskThunk = (
     }
 };
 export const CreateAccount = (email, password) => async (dispatch) => {
-    await WebApi.login(email, password);
+    await WebApi.createAcc(email, password);
     dispatch(reset("createUserForm"));
 };
+export const Login = (email, password) => async (dispatch) => {
+    await WebApi.login(email, password);
+    await dispatch(reset("loginForm"));
+};
 
+export const AuthUser = () => async (dispatch) => {
+    app.auth().onAuthStateChanged((user) => {
+        if (user) {
+            dispatch(setAuth(true));
+        } else {
+            dispatch(setAuth(false));
+        }
+    });
+};
+
+export const Logout = () => async (dispatch) => {
+    await WebApi.logout();
+    console.log("user is logged out");
+};
 export default TaskReducer;

@@ -4,8 +4,10 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Tasks from "./Tasks/Tasks";
 import LoginPage from "./Login/LoginPage";
+import { connect } from "react-redux";
+import { Logout } from "../../store/TaskReducer";
 
-const Main = ({ value }) => {
+const Main = ({ value, Logout }) => {
     return (
         <div>
             <TabPanel value={value} index={0}>
@@ -15,7 +17,13 @@ const Main = ({ value }) => {
                 <Tasks />
             </TabPanel>
             <TabPanel value={value} index={2}>
-                Blas
+                <div
+                    onClick={() => {
+                        Logout();
+                    }}
+                >
+                    Log out
+                </div>
             </TabPanel>
         </div>
     );
@@ -47,4 +55,4 @@ TabPanel.propTypes = {
     value: PropTypes.any.isRequired,
 };
 
-export default Main;
+export default connect(null, { Logout })(Main);
