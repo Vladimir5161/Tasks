@@ -109,14 +109,12 @@ export const SetToDoneThunk = (
         priority: priority || null,
         text: text,
         status: "done",
-    };
-    const value = {
-        id: id,
-        status: status,
+        prevStatus: status,
     };
     try {
-        await dispatch(SetToDone(value));
         await WebApi.updateTask(task);
+        let responce = await WebApi.getTaskItem(keyFirebase);
+        dispatch(updateTask(responce));
         debugger;
     } catch {
         return "error";
@@ -127,12 +125,10 @@ export const SetToPrevStatusThunk = (
     keyFirebase,
     priority,
     text,
-    data
+    data,
+    prevStatus
 ) => async (dispatch, getState) => {
     debugger;
-    const oldStatus = getState().tasks.TasksArray.filter(
-        (item) => item.id === id
-    );
 
     const task = {
         keyFirebase: keyFirebase,
@@ -140,11 +136,13 @@ export const SetToPrevStatusThunk = (
         data: data,
         priority: priority || null,
         text: text || "",
-        status: oldStatus.status || "new",
+        status: prevStatus || "new",
+        prevStatus: prevStatus,
     };
     try {
         await WebApi.updateTask(task);
-        await dispatch(SetToUnDone(id));
+        let responce = await WebApi.getTaskItem(keyFirebase);
+        dispatch(updateTask(responce));
     } catch {
         return "error";
     }
@@ -159,14 +157,7 @@ export const GetTasksThunk = () => async (dispatch) => {
         return "error";
     }
 };
-export const GetItemThunk = (keyFirebase) => async (dispatch) => {
-    try {
-        let responce = await WebApi.getTaskItem(keyFirebase);
-        dispatch(updateTask(responce));
-    } catch {
-        return "error";
-    }
-};
+
 export const DeleteTaskThunk = (id, keyFirebase) => async (dispatch) => {
     try {
         dispatch(blockButton(id));
@@ -203,6 +194,7 @@ export const AddTaskThunk = (priority, text, status) => async (
         priority: priority || null,
         text: text,
         status: status || "new",
+        prevStatus: null,
     };
     try {
         dispatch(blockButton("addTask"));
@@ -228,8 +220,10 @@ export const UpdateTaskThunk = (
         priority: priority || null,
         text: text,
         status: status || "new",
+        prevStatus: status || "new",
     };
     try {
+        debugger;
         dispatch(blockButton("updateTask"));
         await WebApi.updateTask(task);
         await dispatch(updateTask(task));

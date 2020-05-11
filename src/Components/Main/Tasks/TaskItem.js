@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
@@ -13,7 +13,6 @@ import {
     UpdateTaskThunk,
     SetToPrevStatusThunk,
     SetToDoneThunk,
-    GetItemThunk,
 } from "../../../store/TaskReducer";
 
 const TaskItem = ({
@@ -31,8 +30,10 @@ const TaskItem = ({
     UpdateTaskThunk,
     SetToPrevStatusThunk,
     SetToDoneThunk,
+    prevStatus,
     GetItemThunk,
 }) => {
+    console.log(keyFirebase);
     const [choseState, setChoseState] = React.useState({
         priority: priority,
         name: "hai",
@@ -60,14 +61,21 @@ const TaskItem = ({
             keyFirebase
         ).then(EditButtonFunc(id));
     };
+
     const OnDoneButtonClick = () => {
         debugger;
         if (status === "done") {
-            SetToPrevStatusThunk(id, keyFirebase, priority, text, data);
-            GetItemThunk(keyFirebase);
+            debugger;
+            SetToPrevStatusThunk(
+                id,
+                keyFirebase,
+                priority,
+                text,
+                data,
+                prevStatus
+            );
         } else {
             SetToDoneThunk(id, keyFirebase, priority, text, status, data);
-            GetItemThunk(keyFirebase);
         }
     };
     return (
@@ -160,5 +168,4 @@ export default connect(null, {
     UpdateTaskThunk,
     SetToPrevStatusThunk,
     SetToDoneThunk,
-    GetItemThunk,
 })(TaskItem);

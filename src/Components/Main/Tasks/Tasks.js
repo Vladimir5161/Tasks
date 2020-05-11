@@ -14,7 +14,7 @@ const useStyles = makeStyles({
 });
 
 const ActionsInExpansionPanelSummary = React.memo(
-    ({ TasksArray, DeleteTaskThunk, isAuth }) => {
+    ({ TasksArray, DeleteTaskThunk, isAuth, DoneIdArray }) => {
         const classes = useStyles();
         let [DeleteClass, changeDeleteClass] = useState("deleteButtonTask");
         let [EditButtonClass, changeEditButton] = useState("editButtonTask");
@@ -42,6 +42,7 @@ const ActionsInExpansionPanelSummary = React.memo(
                                 data,
                                 status,
                                 keyFirebase,
+                                prevStatus,
                             }) => (
                                 <div key={id}>
                                     <TaskItem
@@ -56,6 +57,8 @@ const ActionsInExpansionPanelSummary = React.memo(
                                         data={data}
                                         DeleteTaskThunk={DeleteTaskThunk}
                                         editTask={editTask}
+                                        DoneIdArray={DoneIdArray}
+                                        prevStatus={prevStatus}
                                     />
                                 </div>
                             )
@@ -69,6 +72,7 @@ const ActionsInExpansionPanelSummary = React.memo(
 const mapStateToProps = (state) => ({
     TasksArray: state.tasks.TasksArray,
     isAuth: state.tasks.isAuth,
+    DoneIdArray: state.tasks.DoneIdArray,
 });
 
 export default connect(mapStateToProps, {
