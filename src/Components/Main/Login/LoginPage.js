@@ -3,9 +3,9 @@ import "./login.css";
 import LoginForm from "../../FormControls/LoginForm";
 import CreateUserForm from "../../FormControls/CreateUserForm.js";
 import { connect } from "react-redux";
-import { CreateAccount, Login } from "../../../store/TaskReducer";
+import { CreateAccount, Login, AuthUser } from "../../../store/TaskReducer";
 
-const LoginPage = ({ CreateAccount, Login }) => {
+const LoginPage = ({ CreateAccount, Login, AuthUser, isAuth }) => {
     let [createUser, setCreateUser] = useState(false);
     const changePage = () => {
         createUser ? setCreateUser(false) : setCreateUser(true);
@@ -14,11 +14,15 @@ const LoginPage = ({ CreateAccount, Login }) => {
         CreateAccount(form.email, form.password);
     };
     const onSubmitLogin = (form) => {
-        Login(form.email, form.password);
+        Login(form.email, form.password).then(() => AuthUser());
     };
     return (
         <div className="loginPage">
-            {createUser ? (
+            {createUser && isAuth ? (
+                <CreateUserForm changePage={changePage} onSubmit={onSubmit} />
+            ) : isAuth ? (
+                <CreateUserForm changePage={changePage} onSubmit={onSubmit} />
+            ) : createUser ? (
                 <CreateUserForm changePage={changePage} onSubmit={onSubmit} />
             ) : (
                 <LoginForm changePage={changePage} onSubmit={onSubmitLogin} />
@@ -26,5 +30,9 @@ const LoginPage = ({ CreateAccount, Login }) => {
         </div>
     );
 };
-
-export default connect(null, { CreateAccount, Login })(LoginPage);
+const mapStateToProps = (state) => ({
+    isAuth: state.tasks.isAuth,
+});
+export default connect(mapStateToProps, { CreateAccount, Login, AuthUser })(
+    LoginPage
+);

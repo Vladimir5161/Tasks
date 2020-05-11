@@ -5,6 +5,7 @@ import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import { createField, InputForm, InputFormPass } from "./Field";
 import { reduxForm } from "redux-form";
 import ChangePageButton from "../CommonComponents/ChangePageButton";
+import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -15,9 +16,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function CreateUser({ changePage, ...props }) {
+function CreateUser({ changePage, isAuth, ...props }) {
     const classes = useStyles();
-
+    console.log(isAuth);
     return (
         <form
             className={classes.root}
@@ -31,7 +32,9 @@ function CreateUser({ changePage, ...props }) {
             {createField("password", "password", [], InputFormPass, {
                 inputLabel: "create password",
             })}
-            <ChangePageButton buttonName="Login" changePage={changePage} />
+            {isAuth ? null : (
+                <ChangePageButton buttonName="Login" changePage={changePage} />
+            )}
             <Button
                 type="submit"
                 style={{ margin: "0 auto" }}
@@ -46,5 +49,7 @@ function CreateUser({ changePage, ...props }) {
     );
 }
 const CreateUserForm = reduxForm({ form: "createUserForm" })(CreateUser);
-
-export default CreateUserForm;
+const mapStateToProps = (state) => ({
+    isAuth: state.tasks.isAuth,
+});
+export default connect(mapStateToProps)(CreateUserForm);

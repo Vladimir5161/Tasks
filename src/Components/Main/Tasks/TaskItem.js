@@ -60,14 +60,14 @@ const TaskItem = ({
             keyFirebase
         ).then(EditButtonFunc(id));
     };
-    const OnDoneButtonClick = async () => {
+    const OnDoneButtonClick = () => {
         debugger;
         if (status === "done") {
-            await SetToPrevStatusThunk(id, keyFirebase, priority, text, data);
-            await GetItemThunk(keyFirebase);
+            SetToPrevStatusThunk(id, keyFirebase, priority, text, data);
+            GetItemThunk(keyFirebase);
         } else {
-            await SetToDoneThunk(id, keyFirebase, priority, text, status, data);
-            await GetItemThunk(keyFirebase);
+            SetToDoneThunk(id, keyFirebase, priority, text, status, data);
+            GetItemThunk(keyFirebase);
         }
     };
     return (

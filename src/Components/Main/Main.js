@@ -1,13 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Tasks from "./Tasks/Tasks";
 import LoginPage from "./Login/LoginPage";
 import { connect } from "react-redux";
-import { Logout } from "../../store/TaskReducer";
+import { GetTasksThunk, AuthUser } from "../../store/TaskReducer";
 
-const Main = ({ value, Logout }) => {
+const Main = ({ value, isAuth, GetTasksThunk, AuthUser, TasksArray }) => {
+    useEffect(() => {
+        const uploadTasks = () => {
+            GetTasksThunk();
+            AuthUser();
+        };
+        uploadTasks();
+    }, [TasksArray.length, GetTasksThunk, isAuth, AuthUser]);
     return (
         <div>
             <TabPanel value={value} index={0}>
@@ -15,15 +22,6 @@ const Main = ({ value, Logout }) => {
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <Tasks />
-            </TabPanel>
-            <TabPanel value={value} index={2}>
-                <div
-                    onClick={() => {
-                        Logout();
-                    }}
-                >
-                    Log out
-                </div>
             </TabPanel>
         </div>
     );
@@ -54,5 +52,8 @@ TabPanel.propTypes = {
     index: PropTypes.any.isRequired,
     value: PropTypes.any.isRequired,
 };
-
-export default connect(null, { Logout })(Main);
+const mapStateToProps = (state) => ({
+    TasksArray: state.tasks.TasksArray,
+    isAuth: state.tasks.isAuth,
+});
+export default connect(mapStateToProps, { GetTasksThunk, AuthUser })(Main);

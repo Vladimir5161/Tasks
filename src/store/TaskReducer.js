@@ -7,6 +7,9 @@ const initialState = {
     BlockedButtonArray: [],
     DoneIdArray: [],
     isAuth: false,
+    user: {
+        name: null,
+    },
 };
 
 const TaskReducer = (state = initialState, action) => {
@@ -65,7 +68,14 @@ const TaskReducer = (state = initialState, action) => {
             };
         case "ISAUTH":
             return { ...state, isAuth: (state.isAuth = action.authStatus) };
-
+        case "SETUSERNAME":
+            return {
+                ...state,
+                user:
+                    action.email !== "null"
+                        ? { ...state.user, name: action.email }
+                        : { ...state.user, name: null },
+            };
         default:
             return state;
     }
@@ -81,6 +91,7 @@ export const addTask = (task) => ({ type: "ADDTASK", task });
 export const blockButton = (id) => ({ type: "BLOCKBUTTON", id });
 export const updateTask = (task) => ({ type: "UPDATETASK", task });
 export const setAuth = (authStatus) => ({ type: "ISAUTH", authStatus });
+export const setUserName = (email) => ({ type: "SETUSERNAME", email });
 
 export const SetToDoneThunk = (
     id,
@@ -119,14 +130,17 @@ export const SetToPrevStatusThunk = (
     data
 ) => async (dispatch, getState) => {
     debugger;
-    const oldStatus = getState().tasks.TasksArray;
+    const oldStatus = getState().tasks.TasksArray.filter(
+        (item) => item.id === id
+    );
+
     const task = {
         keyFirebase: keyFirebase,
         id: id,
         data: data,
         priority: priority || null,
         text: text || "",
-        status: oldStatus.status,
+        status: oldStatus.status || "new",
     };
     try {
         await WebApi.updateTask(task);
@@ -167,6 +181,7 @@ export const AddTaskThunk = (priority, text, status) => async (
     dispatch,
     getState
 ) => {
+    debugger;
     const sortedByIdTasksArray = getState().tasks.TasksArray.sort(function (
         a,
         b
@@ -174,9 +189,13 @@ export const AddTaskThunk = (priority, text, status) => async (
         return a.id - b.id;
     });
     const newId =
-        getState().tasks.TasksArray.length === 0
-            ? 1
-            : sortedByIdTasksArray.length + 1;
+        getState().tasks.TasksArray.length !== 0
+            ? getState().tasks.TasksArray.length === 1
+                ? getState().tasks.TasksArray[
+                      getState().tasks.TasksArray.length - 1
+                  ].id + 1
+                : sortedByIdTasksArray[sortedByIdTasksArray.length - 1].id + 1
+            : 1;
 
     const task = {
         id: newId,
@@ -233,8 +252,10 @@ export const AuthUser = () => async (dispatch) => {
     app.auth().onAuthStateChanged((user) => {
         if (user) {
             dispatch(setAuth(true));
+            dispatch(setUserName(user.email));
         } else {
             dispatch(setAuth(false));
+            dispatch(setUserName("null"));
         }
     });
 };

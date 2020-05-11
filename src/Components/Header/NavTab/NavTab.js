@@ -31,11 +31,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const NavTabs = React.memo(({ handleChange, value }) => {
+const NavTabs = React.memo(({ handleChange, value, Logout, isAuth, user }) => {
     const classes = useStyles();
-
+    const label = isAuth ? `Hello ${user.name}` : "Log In";
     return (
-        <div className={classes.root}>
+        <div className={classes.root} style={{ textTranform: "none" }}>
             <AppBar position="static">
                 <Tabs
                     variant="fullWidth"
@@ -43,17 +43,23 @@ const NavTabs = React.memo(({ handleChange, value }) => {
                     onChange={handleChange}
                     aria-label="nav tabs example"
                 >
-                    <LinkTab
-                        label="Today's Tasks"
-                        href="/currentTasks"
-                        {...a11yProps(0)}
-                    />
+                    {isAuth && user.name !== null ? (
+                        <LinkTab label={label} {...a11yProps(0)} />
+                    ) : (
+                        <LinkTab
+                            label={label}
+                            href="/login"
+                            {...a11yProps(0)}
+                        />
+                    )}
                     <LinkTab
                         label="All Tasks"
-                        href="/allTasks"
+                        href="/tasks"
                         {...a11yProps(1)}
                     />
-                    <LinkTab label="Basket" href="/trash" {...a11yProps(2)} />
+                    {isAuth ? (
+                        <LinkTab label="Log Out" onClick={() => Logout()} />
+                    ) : null}
                 </Tabs>
             </AppBar>
         </div>

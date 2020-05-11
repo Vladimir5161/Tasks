@@ -1,12 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import "./tasks.css";
-import {
-    GetTasksThunk,
-    DeleteTaskThunk,
-    AuthUser,
-} from "../../../store/TaskReducer";
+import { DeleteTaskThunk } from "../../../store/TaskReducer";
 import AddTaskButton from "../../CommonComponents/AddTaskButton";
 import AddTask from "./AddTask";
 import TaskItem from "./TaskItem";
@@ -18,7 +14,7 @@ const useStyles = makeStyles({
 });
 
 const ActionsInExpansionPanelSummary = React.memo(
-    ({ TasksArray, GetTasksThunk, DeleteTaskThunk, isAuth, AuthUser }) => {
+    ({ TasksArray, DeleteTaskThunk, isAuth }) => {
         const classes = useStyles();
         let [DeleteClass, changeDeleteClass] = useState("deleteButtonTask");
         let [EditButtonClass, changeEditButton] = useState("editButtonTask");
@@ -32,13 +28,6 @@ const ActionsInExpansionPanelSummary = React.memo(
                 ? changeEditTask(editTask.filter((id) => id !== ID))
                 : changeEditTask([...editTask, ID]);
         };
-        useEffect(() => {
-            const uploadTasks = () => {
-                GetTasksThunk();
-                AuthUser();
-            };
-            uploadTasks();
-        }, [TasksArray.length, GetTasksThunk, isAuth, AuthUser]);
         return (
             <div>
                 {isAuth ? (
@@ -83,7 +72,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-    GetTasksThunk,
     DeleteTaskThunk,
-    AuthUser,
 })(ActionsInExpansionPanelSummary);
