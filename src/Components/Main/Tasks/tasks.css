@@ -3,7 +3,7 @@
     justify-content: space-between !important;
     margin: 15px auto 8px auto !important;
     display: grid !important;
-    grid-template-columns: 65% 30% 5% !important;
+    grid-template-columns: 70% 25% 5% !important;
     max-width: 1170px;
 }
 
@@ -11,7 +11,7 @@
     display: flex;
     align-self: center;
     min-width: 100px;
-    justify-content: center;
+    margin: 0 auto;
 }
 .statusTask div, .statusTask{
     display: flex;

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
@@ -136,7 +136,18 @@ const TaskItem = ({
                         <div className="choseDiv">
                             {priority ? (
                                 <div className="priorityTask">
-                                    priority: {priority}
+                                    priority:{" "}
+                                    <div
+                                        style={
+                                            priority === "high"
+                                                ? { color: "red" }
+                                                : priority === "middle"
+                                                ? { color: "green" }
+                                                : { color: "yellow" }
+                                        }
+                                    >
+                                        {priority}
+                                    </div>
                                 </div>
                             ) : null}
                             {status ? (

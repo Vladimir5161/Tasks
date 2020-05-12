@@ -3,7 +3,7 @@ import "./login.css";
 import LoginForm from "../../FormControls/LoginForm";
 import CreateUserForm from "../../FormControls/CreateUserForm.js";
 import { connect } from "react-redux";
-import { CreateAccount, Login, AuthUser } from "../../../store/TaskReducer";
+import { CreateAccount, Login, AuthUser } from "../../../store/AuthReducer";
 
 const LoginPage = ({ CreateAccount, Login, AuthUser, isAuth }) => {
     let [createUser, setCreateUser] = useState(false);
@@ -31,7 +31,7 @@ const LoginPage = ({ CreateAccount, Login, AuthUser, isAuth }) => {
     );
 };
 const mapStateToProps = (state) => ({
-    isAuth: state.tasks.isAuth,
+    isAuth: state.auth.isAuth,
 });
 export default connect(mapStateToProps, { CreateAccount, Login, AuthUser })(
     LoginPage

@@ -1,7 +1,7 @@
 import React from "react";
 import TabsWrappedLabel from "./NavTab/NavTab";
 import { connect } from "react-redux";
-import { Logout } from "../../store/TaskReducer";
+import { Logout } from "../../store/AuthReducer";
 import "./header.css";
 
 const Header = ({ handleChange, value, Logout, isAuth, user }) => {
@@ -16,7 +16,7 @@ const Header = ({ handleChange, value, Logout, isAuth, user }) => {
     );
 };
 const mapStateToProps = (state) => ({
-    isAuth: state.tasks.isAuth,
-    user: state.tasks.user,
+    isAuth: state.auth.isAuth,
+    user: state.auth.user,
 });
 export default connect(mapStateToProps, { Logout })(Header);

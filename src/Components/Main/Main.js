@@ -5,26 +5,41 @@ import Box from "@material-ui/core/Box";
 import Tasks from "./Tasks/Tasks";
 import LoginPage from "./Login/LoginPage";
 import { connect } from "react-redux";
-import { GetTasksThunk, AuthUser } from "../../store/TaskReducer";
+import { AuthorizationThunk } from "../../store/AuthorizationReducer";
+import Alert from "../CommonComponents/Alert.js";
+import Preloader from "../CommonComponents/Preloader";
+import { AuthUser } from "../../store/AuthReducer";
 
-const Main = ({ value, isAuth, GetTasksThunk, AuthUser, TasksArray }) => {
+const Main = ({
+    value,
+    isAuth,
+    AuthUser,
+    TasksArray,
+    message,
+    Authorized,
+    AuthorizationThunk,
+}) => {
     useEffect(() => {
         const uploadTasks = () => {
-            GetTasksThunk();
+            AuthorizationThunk();
             AuthUser();
         };
         uploadTasks();
-    }, [TasksArray.length, GetTasksThunk, isAuth, AuthUser]);
-    return (
-        <div>
-            <TabPanel value={value} index={0}>
-                <LoginPage />
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-                <Tasks />
-            </TabPanel>
-        </div>
-    );
+    }, [TasksArray.length, AuthorizationThunk, isAuth, AuthUser]);
+    if (Authorized === false) {
+        return <Preloader />;
+    } else
+        return (
+            <div>
+                {message === null ? null : <Alert />}
+                <TabPanel value={value} index={0}>
+                    <LoginPage />
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                    <Tasks />
+                </TabPanel>
+            </div>
+        );
 };
 
 function TabPanel(props) {
@@ -54,6 +69,8 @@ TabPanel.propTypes = {
 };
 const mapStateToProps = (state) => ({
     TasksArray: state.tasks.TasksArray,
-    isAuth: state.tasks.isAuth,
+    isAuth: state.auth.isAuth,
+    message: state.alert.message,
+    Authorized: state.authorized.Authorized,
 });
-export default connect(mapStateToProps, { GetTasksThunk, AuthUser })(Main);
+export default connect(mapStateToProps, { AuthorizationThunk, AuthUser })(Main);

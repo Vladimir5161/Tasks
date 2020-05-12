@@ -1,15 +1,11 @@
 import { WebApi } from "../api/api";
-import { reset, reduxForm } from "redux-form";
-import app from "../api/firebase";
+import { reset } from "redux-form";
+import { SetMessage } from "./AlertReducer";
 
 const initialState = {
     TasksArray: [],
     BlockedButtonArray: [],
     DoneIdArray: [],
-    isAuth: false,
-    user: {
-        name: null,
-    },
 };
 
 const TaskReducer = (state = initialState, action) => {
@@ -66,16 +62,7 @@ const TaskReducer = (state = initialState, action) => {
                     (item) => item.id !== action.id
                 ),
             };
-        case "ISAUTH":
-            return { ...state, isAuth: (state.isAuth = action.authStatus) };
-        case "SETUSERNAME":
-            return {
-                ...state,
-                user:
-                    action.email !== "null"
-                        ? { ...state.user, name: action.email }
-                        : { ...state.user, name: null },
-            };
+
         default:
             return state;
     }
@@ -87,11 +74,9 @@ export const deleteTask = (id) => ({
     type: "DELETETASK",
     id,
 });
+export const updateTask = (task) => ({ type: "UPDATETASK", task });
 export const addTask = (task) => ({ type: "ADDTASK", task });
 export const blockButton = (id) => ({ type: "BLOCKBUTTON", id });
-export const updateTask = (task) => ({ type: "UPDATETASK", task });
-export const setAuth = (authStatus) => ({ type: "ISAUTH", authStatus });
-export const setUserName = (email) => ({ type: "SETUSERNAME", email });
 
 export const SetToDoneThunk = (
     id,
@@ -117,7 +102,7 @@ export const SetToDoneThunk = (
         dispatch(updateTask(responce));
         debugger;
     } catch {
-        return "error";
+        dispatch(SetMessage("something went wrong", "error"));
     }
 };
 export const SetToPrevStatusThunk = (
@@ -144,7 +129,7 @@ export const SetToPrevStatusThunk = (
         let responce = await WebApi.getTaskItem(keyFirebase);
         dispatch(updateTask(responce));
     } catch {
-        return "error";
+        dispatch(SetMessage("something went wrong", "error"));
     }
 };
 export const GetTasksThunk = () => async (dispatch) => {
@@ -154,7 +139,7 @@ export const GetTasksThunk = () => async (dispatch) => {
         tasksArray.map((i) => (i[1].keyFirebase = i[0]));
         dispatch(getTasks(Object.values(responce)));
     } catch {
-        return "error";
+        dispatch(SetMessage("something went wrong", "error"));
     }
 };
 
@@ -165,7 +150,7 @@ export const DeleteTaskThunk = (id, keyFirebase) => async (dispatch) => {
         await dispatch(deleteTask(id));
         dispatch(blockButton(id));
     } catch {
-        return "error";
+        dispatch(SetMessage("something went wrong", "error"));
     }
 };
 export const AddTaskThunk = (priority, text, status) => async (
@@ -203,7 +188,7 @@ export const AddTaskThunk = (priority, text, status) => async (
         dispatch(blockButton("addTask"));
         dispatch(reset("addTask"));
     } catch {
-        return "error";
+        dispatch(SetMessage("something went wrong", "error"));
     }
 };
 export const UpdateTaskThunk = (
@@ -230,32 +215,8 @@ export const UpdateTaskThunk = (
         dispatch(blockButton("updateTask"));
         dispatch(reset("updateTask"));
     } catch {
-        return "error";
+        dispatch(SetMessage("something went wrong", "error"));
     }
 };
-export const CreateAccount = (email, password) => async (dispatch) => {
-    await WebApi.createAcc(email, password);
-    dispatch(reset("createUserForm"));
-};
-export const Login = (email, password) => async (dispatch) => {
-    await WebApi.login(email, password);
-    await dispatch(reset("loginForm"));
-};
 
-export const AuthUser = () => async (dispatch) => {
-    app.auth().onAuthStateChanged((user) => {
-        if (user) {
-            dispatch(setAuth(true));
-            dispatch(setUserName(user.email));
-        } else {
-            dispatch(setAuth(false));
-            dispatch(setUserName("null"));
-        }
-    });
-};
-
-export const Logout = () => async (dispatch) => {
-    await WebApi.logout();
-    console.log("user is logged out");
-};
 export default TaskReducer;

@@ -71,7 +71,7 @@ const ActionsInExpansionPanelSummary = React.memo(
 );
 const mapStateToProps = (state) => ({
     TasksArray: state.tasks.TasksArray,
-    isAuth: state.tasks.isAuth,
+    isAuth: state.auth.isAuth,
     DoneIdArray: state.tasks.DoneIdArray,
 });
 
