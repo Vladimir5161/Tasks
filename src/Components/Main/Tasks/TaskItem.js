@@ -102,37 +102,27 @@ const TaskItem = ({
                         id="additional-actions1-header"
                     >
                         <div className="dataTasks">{data}</div>
-                        {status === "done" ? (
-                            <FormControlLabel
-                                aria-label="Acknowledge"
-                                control={<Checkbox />}
-                                className="doneText"
-                                onClick={(event) => {
-                                    event.stopPropagation();
-                                    OnDoneButtonClick();
-                                }}
-                                onFocus={(event) => event.stopPropagation()}
-                                onMouseDown={(event) => {
-                                    event.stopPropagation();
-                                }}
-                                label={text}
-                            />
-                        ) : (
-                            <FormControlLabel
-                                aria-label="Acknowledge"
-                                control={<Checkbox />}
-                                className="clearText"
-                                onClick={(event) => {
-                                    event.stopPropagation();
-                                    OnDoneButtonClick();
-                                }}
-                                onFocus={(event) => event.stopPropagation()}
-                                onMouseDown={(event) => {
-                                    event.stopPropagation();
-                                }}
-                                label={text}
-                            />
-                        )}
+
+                        <FormControlLabel
+                            aria-label="Acknowledge"
+                            control={
+                                <Checkbox
+                                    checked={status === "done" ? true : false}
+                                />
+                            }
+                            className={
+                                status === "done" ? "doneText" : "clearText"
+                            }
+                            onClick={(event) => {
+                                event.stopPropagation();
+                                OnDoneButtonClick();
+                            }}
+                            onFocus={(event) => event.stopPropagation()}
+                            onMouseDown={(event) => {
+                                event.stopPropagation();
+                            }}
+                            label={text}
+                        />
                         <div className="choseDiv">
                             {priority ? (
                                 <div className="priorityTask">
