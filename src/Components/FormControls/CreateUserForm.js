@@ -6,6 +6,11 @@ import { createField, InputForm, InputFormPass } from "./Field";
 import { reduxForm } from "redux-form";
 import ChangePageButton from "../CommonComponents/ChangePageButton";
 import { connect } from "react-redux";
+import {
+    minLength,
+    required,
+    includesNumbers,
+} from "../../validators/validators";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -18,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
 
 function CreateUser({ changePage, isAuth, ...props }) {
     const classes = useStyles();
-    console.log(isAuth);
     return (
         <form
             className={classes.root}
@@ -26,12 +30,21 @@ function CreateUser({ changePage, isAuth, ...props }) {
             autoComplete="off"
             onSubmit={props.handleSubmit}
         >
-            {createField("email", "email", [], InputForm, {
+            <div style={{ display: "flex", justifyContent: "center" }}>
+                Here You can create an account
+            </div>
+            {createField("email", "email", [required, minLength], InputForm, {
                 inputLabel: "write your email",
             })}
-            {createField("password", "password", [], InputFormPass, {
-                inputLabel: "create password",
-            })}
+            {createField(
+                "password",
+                "password",
+                [required, minLength, includesNumbers],
+                InputFormPass,
+                {
+                    inputLabel: "create password",
+                }
+            )}
             {isAuth ? null : (
                 <ChangePageButton buttonName="Login" changePage={changePage} />
             )}

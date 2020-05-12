@@ -8,6 +8,7 @@ import "./AddTask.css";
 import PrioritySelect from "../CommonComponents/PrioritySelect";
 import { ExpansionPanel, ExpansionPanelSummary } from "@material-ui/core";
 import StatusSelect from "../CommonComponents/StatusSelect";
+import { required, minLength } from "../../validators/validators";
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -32,9 +33,15 @@ const AddTaskReduxFrom = ({
                     id="additional-actions1-header"
                 >
                     <div className="inputTaskDiv">
-                        {createField("texts", "text", [], InputForm, {
-                            inputLabel: "Task text",
-                        })}
+                        {createField(
+                            "texts",
+                            "text",
+                            [required, minLength],
+                            InputForm,
+                            {
+                                inputLabel: "Task text",
+                            }
+                        )}
                     </div>
                     <div className="choseDiv">
                         <PrioritySelect

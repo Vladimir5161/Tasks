@@ -1,11 +1,12 @@
 
-.MuiExpansionPanelSummary-content {
+.MuiExpansionPanelSummary-content.Mui-expanded, .MuiExpansionPanelSummary-content {
     justify-content: space-between !important;
     margin: 15px auto 8px auto !important;
     display: grid !important;
     grid-template-columns: 65% 30% 5% !important;
     max-width: 1170px;
 }
+
 .priorityTask div, .priorityTask{
     display: flex;
     align-self: center;
@@ -53,26 +54,34 @@
 .MuiIconButton-root:hover .MuiSvgIcon-root {
     color: black
 }
+
 .MuiExpansionPanelDetails-root {
-    justify-content: space-between;
+    justify-content: center;
 }
 .MuiTypography-body1 {
     padding-right: 10px;
 }
 .MuiExpansionPanel-root, .MuiExpansionPanel-root.Mui-expanded {
-    margin: 15px auto 8px auto !important;
+    margin: 15px auto 15px auto !important;
     max-width: 1170px;
 }
 .MuiExpansionPanelSummary-content.Mui-expanded {
-    margin: 15px auto 8px auto !important;
+    margin: 15px auto 15px auto !important;
+}
+.MuiFormControlLabel-root {
+    width: 100% !important;
 }
 .makeStyles-root-298 {
     margin: 0;
     top: 2px !important;
 }
 
+.MuiTextField-root {
+    margin: 0 auto !important;
+}
+
 @media screen and (max-width: 768px) {
-    .MuiExpansionPanelSummary-content {
+    .MuiExpansionPanelSummary-content.Mui-expanded, .MuiExpansionPanelSummary-content {
         justify-content: space-between !important;
         display: grid !important;
         grid-template-columns: 60% 35% 5% !important;
@@ -83,6 +92,12 @@
         position: relative;
         right: -10px;
     }
+
+    .MuiExpansionPanelSummary-expandIcon.Mui-expanded {
+        position: absolute !important;
+        bottom: 0 !important;
+        right: 10px;
+    }
     .MuiTypography-body1 {
         padding-right: 0;
     }
@@ -91,7 +106,6 @@
     }
     .dataTasks {
         bottom: 10px;
-        top: auto;
         left: 5px;
     }
     .TaskText {
@@ -101,12 +115,11 @@
         text-decoration: none;
         display: block;
     }
-    .MuiExpansionPanelSummary-content {
+    .MuiExpansionPanelSummary-content.Mui-expanded, .MuiExpansionPanelSummary-content {
         justify-content: center !important;
         display: grid !important;
-        margin-bottom: 40px !important;
         grid-template-rows: 60% 40% !important;
-        grid-template-columns: none !important;
+        grid-template-columns: 100%  !important;
         width: 100% !important;
         flex-grow: 0 !important;
     }
@@ -123,13 +136,10 @@
         position: absolute !important;
         left: auto;
         right: 10px;
-        bottom: 0;
+        bottom:0;
     }
 }
 @media screen and (max-width: 375px) {
-    .MuiExpansionPanelSummary-content {
-        margin-bottom: 40px !important;
-    }
     .deleteButtonTask {
         position: absolute;
         display: block;

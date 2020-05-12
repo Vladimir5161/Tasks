@@ -11,14 +11,15 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function ErrorValidate(props) {
+export default function ErrorValidatePass(props) {
     const classes = useStyles();
-    const { input, meta, ...restProps } = props;
+    const { input, meta, state, ...restProps } = props;
     return (
         <form className={classes.root} noValidate autoComplete="off">
             <div>
                 <TextField
                     error
+                    type={state.checkedB ? "text" : "password"}
                     id="standard-error"
                     label={meta.error}
                     defaultValue="Hello World"

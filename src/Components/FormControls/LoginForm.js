@@ -5,6 +5,7 @@ import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import { createField, InputForm, InputFormPass } from "./Field";
 import { reduxForm } from "redux-form";
 import ChangePageButton from "../CommonComponents/ChangePageButton";
+import { required, minLength } from "../../validators/validators";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -25,12 +26,18 @@ function Login({ changePage, ...props }) {
             autoComplete="off"
             onSubmit={props.handleSubmit}
         >
-            {createField("email", "email", [], InputForm, {
+            {createField("email", "email", [required, minLength], InputForm, {
                 inputLabel: "your login",
             })}
-            {createField("password", "password", [], InputFormPass, {
-                inputLabel: "your password",
-            })}
+            {createField(
+                "password",
+                "password",
+                [required, minLength],
+                InputFormPass,
+                {
+                    inputLabel: "your password",
+                }
+            )}
             <ChangePageButton
                 buttonName="Create Account"
                 changePage={changePage}
