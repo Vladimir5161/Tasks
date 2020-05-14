@@ -1,7 +1,7 @@
 
 .MuiExpansionPanelSummary-content.Mui-expanded, .MuiExpansionPanelSummary-content {
     justify-content: space-between !important;
-    margin: 15px auto 8px auto !important;
+    margin: 15px auto 15px auto !important;
     display: grid !important;
     grid-template-columns: 70% 25% 5% !important;
     max-width: 1170px;
@@ -65,9 +65,6 @@
     margin: 15px auto 15px auto !important;
     max-width: 1170px;
 }
-.MuiExpansionPanelSummary-content.Mui-expanded {
-    margin: 15px auto 15px auto !important;
-}
 .MuiFormControlLabel-root {
     width: 100% !important;
 }
@@ -75,7 +72,6 @@
     margin: 0;
     top: 2px !important;
 }
-
 .MuiTextField-root {
     margin: 0 auto !important;
 }
