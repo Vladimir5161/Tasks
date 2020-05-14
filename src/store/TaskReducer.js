@@ -1,6 +1,6 @@
-import { WebApi } from "../api/api";
 import { reset } from "redux-form";
 import { SetMessage } from "./AlertReducer";
+import app from "../api/firebase";
 
 const initialState = {
     TasksArray: [],
@@ -78,75 +78,94 @@ export const updateTask = (task) => ({ type: "UPDATETASK", task });
 export const addTask = (task) => ({ type: "ADDTASK", task });
 export const blockButton = (id) => ({ type: "BLOCKBUTTON", id });
 
-export const SetToDoneThunk = (
-    id,
-    keyFirebase,
-    priority,
-    text,
-    status,
-    data
-) => async (dispatch) => {
+export const SetToDoneThunk = (keyFirebase) => async (dispatch) => {
     debugger;
-    const task = {
-        keyFirebase: keyFirebase,
-        id: id,
-        data: data,
-        priority: priority || null,
-        text: text,
-        status: "done",
-        prevStatus: status,
-    };
     try {
-        await WebApi.updateTask(task);
-        let responce = await WebApi.getTaskItem(keyFirebase);
-        dispatch(updateTask(responce));
-        debugger;
-    } catch {
-        dispatch(SetMessage("something went wrong", "error"));
+        await app
+            .firestore()
+            .collection("tasks")
+            .doc(keyFirebase)
+            .get()
+            .then((doc) => {
+                app.firestore()
+                    .collection("tasks")
+                    .doc(keyFirebase)
+                    .update({
+                        ...doc.data(),
+                        status: "done",
+                        prevStatus: doc.data().status,
+                    });
+                dispatch(
+                    updateTask({
+                        ...doc.data(),
+                        status: "done",
+                        prevStatus: doc.data().status,
+                    })
+                );
+            });
+    } catch (error) {
+        console.log(error);
+        dispatch(SetMessage(error.message, "error"));
     }
 };
-export const SetToPrevStatusThunk = (
-    id,
-    keyFirebase,
-    priority,
-    text,
-    data,
-    prevStatus
-) => async (dispatch, getState) => {
-    debugger;
 
-    const task = {
-        keyFirebase: keyFirebase,
-        id: id,
-        data: data,
-        priority: priority || null,
-        text: text || "",
-        status: prevStatus || "new",
-        prevStatus: prevStatus,
-    };
+export const SetToPrevStatusThunk = (keyFirebase) => async (dispatch) => {
+    debugger;
     try {
-        await WebApi.updateTask(task);
-        let responce = await WebApi.getTaskItem(keyFirebase);
-        dispatch(updateTask(responce));
-    } catch {
-        dispatch(SetMessage("something went wrong", "error"));
+        await app
+            .firestore()
+            .collection("tasks")
+            .doc(keyFirebase)
+            .get()
+            .then((doc) => {
+                app.firestore()
+                    .collection("tasks")
+                    .doc(keyFirebase)
+                    .update({
+                        ...doc.data(),
+                        status: doc.data().prevStatus,
+                        prevStatus: doc.data().status,
+                    });
+                dispatch(
+                    updateTask({
+                        ...doc.data(),
+                        status: doc.data().prevStatus,
+                        prevStatus: doc.data().status,
+                    })
+                );
+            });
+    } catch (error) {
+        console.log(error);
+        dispatch(SetMessage(error.message, "error"));
     }
 };
 export const GetTasksThunk = () => async (dispatch) => {
     try {
-        let responce = await WebApi.getTasks();
-        let tasksArray = Object.entries(responce);
-        tasksArray.map((i) => (i[1].keyFirebase = i[0]));
-        dispatch(getTasks(Object.values(responce)));
-    } catch {
-        dispatch(SetMessage("something went wrong", "error"));
+        const array = [];
+        await app
+            .firestore()
+            .collection("tasks")
+            .get()
+            .then(function (querySnapshot) {
+                querySnapshot.forEach(function (doc) {
+                    // doc.data() is never undefined for query doc snapshots
+                    const task = {
+                        keyFirebase: doc.id,
+                        ...doc.data(),
+                    };
+                    array.push(task);
+                });
+            });
+        dispatch(getTasks(array));
+    } catch (error) {
+        dispatch(SetMessage(error.message, "error"));
     }
 };
 
 export const DeleteTaskThunk = (id, keyFirebase) => async (dispatch) => {
     try {
         dispatch(blockButton(id));
-        await WebApi.deleteTask(keyFirebase);
+        await app.firestore().collection("tasks").doc(keyFirebase).delete();
         await dispatch(deleteTask(id));
         dispatch(blockButton(id));
     } catch {
@@ -167,10 +186,10 @@ export const AddTaskThunk = (priority, text, status) => async (
     const newId =
         getState().tasks.TasksArray.length !== 0
             ? getState().tasks.TasksArray.length === 1
-                ? getState().tasks.TasksArray[
+                ? +getState().tasks.TasksArray[
                       getState().tasks.TasksArray.length - 1
-                  ].id + 1
-                : sortedByIdTasksArray[sortedByIdTasksArray.length - 1].id + 1
+                  ].id + +1
+                : +sortedByIdTasksArray[sortedByIdTasksArray.length - 1].id + +1
             : 1;
 
     const task = {
@@ -183,7 +202,7 @@ export const AddTaskThunk = (priority, text, status) => async (
     };
     try {
         dispatch(blockButton("addTask"));
-        await WebApi.addTask(task);
+        await app.firestore().collection("tasks").add(task);
         await dispatch(addTask(task));
         dispatch(blockButton("addTask"));
         dispatch(reset("addTask"));
@@ -209,8 +228,9 @@ export const UpdateTaskThunk = (
     };
     try {
         debugger;
+
         dispatch(blockButton("updateTask"));
-        await WebApi.updateTask(task);
+        await app.firestore().collection("tasks").doc(keyFirebase).update(task);
         await dispatch(updateTask(task));
         dispatch(blockButton("updateTask"));
         dispatch(reset("updateTask"));

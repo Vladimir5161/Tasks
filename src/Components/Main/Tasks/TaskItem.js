@@ -30,27 +30,20 @@ const TaskItem = ({
     UpdateTaskThunk,
     SetToPrevStatusThunk,
     SetToDoneThunk,
-    prevStatus,
-    GetItemThunk,
 }) => {
-    console.log(keyFirebase);
     const [choseState, setChoseState] = React.useState({
         priority: priority,
-        name: "hai",
     });
     const handleChange = (event) => {
-        const name = event.target.name;
         setChoseState({
-            ...choseState,
-            [name]: event.target.value,
+            priority: event.target.value,
         });
     };
     const [choseStatus, setStatus] = React.useState({
         status: status,
     });
     const changeStatus = (event) => {
-        const status = event.target.value;
-        setStatus({ status: status });
+        setStatus({ status: event.target.value });
     };
     const onSubmit = (form) => {
         UpdateTaskThunk(
@@ -61,21 +54,11 @@ const TaskItem = ({
             keyFirebase
         ).then(EditButtonFunc(id));
     };
-
     const OnDoneButtonClick = () => {
-        debugger;
         if (status === "done") {
-            debugger;
-            SetToPrevStatusThunk(
-                id,
-                keyFirebase,
-                priority,
-                text,
-                data,
-                prevStatus
-            );
+            SetToPrevStatusThunk(keyFirebase);
         } else {
-            SetToDoneThunk(id, keyFirebase, priority, text, status, data);
+            SetToDoneThunk(keyFirebase);
         }
     };
     return (

@@ -1,5 +1,4 @@
 import { GetTasksThunk } from "./TaskReducer";
-import { AuthUser } from "./AuthReducer";
 
 const initialState = {
     Authorized: false,

@@ -44,7 +44,7 @@ const EditTaskReduxFrom = ({
                         />
                         <StatusSelect
                             choseStatus={choseStatus}
-                            changeStatus={changeStatus}
+                            handleChange={changeStatus}
                         />
                     </div>
                 </ExpansionPanelSummary>

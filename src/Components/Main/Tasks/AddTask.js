@@ -6,21 +6,17 @@ import { connect } from "react-redux";
 const AddTask = ({ AddTaskThunk }) => {
     const [choseState, setChoseState] = React.useState({
         priority: "",
-        name: "hai",
     });
     const handleChange = (event) => {
-        const name = event.target.name;
         setChoseState({
-            ...choseState,
-            [name]: event.target.value,
+            priority: event.target.value,
         });
     };
     const [choseStatus, setStatus] = React.useState({
         status: "",
     });
     const changeStatus = (event) => {
-        const status = event.target.name;
-        setStatus({ status: status });
+        setStatus({ status: event.target.value });
     };
     const onSubmit = (formData) => {
         AddTaskThunk(choseState.priority, formData.text, choseStatus.status);

@@ -21,8 +21,8 @@ const Main = ({
 }) => {
     useEffect(() => {
         const uploadTasks = () => {
-            AuthorizationThunk();
             AuthUser();
+            AuthorizationThunk();
         };
         uploadTasks();
     }, [TasksArray.length, AuthorizationThunk, isAuth, AuthUser]);

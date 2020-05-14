@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -15,23 +14,27 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function StatusSelect({ changeStatus, choseStatus }) {
+export default function StatusSelect({ choseStatus, handleChange }) {
     const classes = useStyles();
 
     return (
         <div style={{ position: "relative" }} className="statusTask">
             <FormControl className={classes.formControl}>
-                <InputLabel id="status-select-label">Status</InputLabel>
+                <InputLabel htmlFor="status-native-simple">Status</InputLabel>
                 <Select
-                    labelId="status-select-label"
-                    id="status-select"
+                    native
                     value={choseStatus.status}
-                    onChange={changeStatus}
+                    onChange={handleChange}
+                    inputProps={{
+                        name: "status",
+                        id: "status-native-simple",
+                    }}
                 >
-                    <MenuItem value={"new"}>new</MenuItem>
-                    <MenuItem value={"in progress"}>in progress</MenuItem>
-                    <MenuItem value={"paused"}>paused</MenuItem>
-                    <MenuItem value={"done"}>done</MenuItem>
+                    <option aria-label="None" value="" />
+                    <option value={"new"}>new</option>
+                    <option value={"paused"}>paused</option>
+                    <option value={"in progress"}>in progress</option>
+                    <option value={"done"}>done</option>
                 </Select>
             </FormControl>
         </div>

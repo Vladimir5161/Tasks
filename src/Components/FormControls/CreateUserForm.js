@@ -63,6 +63,6 @@ function CreateUser({ changePage, isAuth, ...props }) {
 }
 const CreateUserForm = reduxForm({ form: "createUserForm" })(CreateUser);
 const mapStateToProps = (state) => ({
-    isAuth: state.tasks.isAuth,
+    isAuth: state.auth.isAuth,
 });
 export default connect(mapStateToProps)(CreateUserForm);

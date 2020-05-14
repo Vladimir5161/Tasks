@@ -42,7 +42,6 @@ const ActionsInExpansionPanelSummary = React.memo(
                                 data,
                                 status,
                                 keyFirebase,
-                                prevStatus,
                             }) => (
                                 <div key={id}>
                                     <TaskItem
@@ -58,7 +57,6 @@ const ActionsInExpansionPanelSummary = React.memo(
                                         DeleteTaskThunk={DeleteTaskThunk}
                                         editTask={editTask}
                                         DoneIdArray={DoneIdArray}
-                                        prevStatus={prevStatus}
                                     />
                                 </div>
                             )

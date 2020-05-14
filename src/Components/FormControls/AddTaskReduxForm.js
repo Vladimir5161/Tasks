@@ -50,7 +50,7 @@ const AddTaskReduxFrom = ({
                         />
                         <StatusSelect
                             choseStatus={choseStatus}
-                            changeStatus={changeStatus}
+                            handleChange={changeStatus}
                         />
                     </div>
                 </ExpansionPanelSummary>
