@@ -1,19 +1,27 @@
 import { reset } from "redux-form";
 import { SetMessage } from "./AlertReducer";
 import app from "../api/firebase";
+import _ from "lodash";
+const Moment = require("moment");
 
 const initialState = {
     TasksArray: [],
     BlockedButtonArray: [],
     DoneIdArray: [],
+    loading: false,
 };
 
 const TaskReducer = (state = initialState, action) => {
     switch (action.type) {
         case "GETTASKS":
+            const gotedArr = _.sortBy(action.tasks, [
+                function (o) {
+                    return new Moment(o.data).format("YYYY-MM-DD, h:mm:ss");
+                },
+            ]).reverse();
             return {
                 ...state,
-                TasksArray: (state.TasksArray = action.tasks),
+                TasksArray: (state.TasksArray = gotedArr),
             };
         case "DELETETASK":
             return {
@@ -62,11 +70,40 @@ const TaskReducer = (state = initialState, action) => {
                     (item) => item.id !== action.id
                 ),
             };
-
+        case "FILTERARRAY":
+            const newState = { ...state };
+            let array = newState.TasksArray;
+            if (action.value !== "date") {
+                const newTasksArray = _.sortBy(array, [
+                    function (o) {
+                        return o[action.value];
+                    },
+                ]);
+                return {
+                    ...state,
+                    TasksArray: (state.TasksArray = newTasksArray),
+                };
+            } else {
+                const newTasksArray = _.sortBy(array, [
+                    function (o) {
+                        return new Moment(o.data).format("YYYY-MM-DD, h:mm:ss");
+                    },
+                ]).reverse();
+                return {
+                    ...state,
+                    TasksArray: (state.TasksArray = newTasksArray),
+                };
+            }
+        case "LOADING":
+            return {
+                ...state,
+                loading: state.loading ? false : true,
+            };
         default:
             return state;
     }
 };
+export const Loading = () => ({ type: "LOADING" });
 export const SetToDone = (value) => ({ type: "SETTODONE", value });
 export const SetToUnDone = (id) => ({ type: "SETTOUNDONE", id });
 export const getTasks = (tasks) => ({ type: "GETTASKS", tasks });
@@ -77,6 +114,7 @@ export const deleteTask = (id) => ({
 export const updateTask = (task) => ({ type: "UPDATETASK", task });
 export const addTask = (task) => ({ type: "ADDTASK", task });
 export const blockButton = (id) => ({ type: "BLOCKBUTTON", id });
+export const filterArray = (value) => ({ type: "FILTERARRAY", value });
 
 export const SetToDoneThunk = (keyFirebase) => async (dispatch) => {
     debugger;
@@ -158,7 +196,12 @@ export const GetTasksThunk = () => async (dispatch) => {
             });
         dispatch(getTasks(array));
     } catch (error) {
-        dispatch(SetMessage(error.message, "error"));
+        dispatch(
+            SetMessage(
+                "Hi user, you are not logged in, please log in to see tasks or create your account",
+                "warning"
+            )
+        );
     }
 };
 
@@ -191,21 +234,29 @@ export const AddTaskThunk = (priority, text, status) => async (
                   ].id + +1
                 : +sortedByIdTasksArray[sortedByIdTasksArray.length - 1].id + +1
             : 1;
-
+    const newDate = new Date()
+        .toLocaleString()
+        .split(",")[0]
+        .split(".")
+        .reverse()
+        .join("-");
+    const newTime = new Date().toLocaleString().split(",")[1];
     const task = {
         id: newId,
-        data: new Date().toLocaleString(),
+        data: newDate + newTime,
         priority: priority || null,
         text: text,
         status: status || "new",
         prevStatus: null,
     };
     try {
+        dispatch(Loading());
         dispatch(blockButton("addTask"));
         await app.firestore().collection("tasks").add(task);
         await dispatch(addTask(task));
         dispatch(blockButton("addTask"));
         dispatch(reset("addTask"));
+        dispatch(Loading());
     } catch {
         dispatch(SetMessage("something went wrong", "error"));
     }
@@ -215,20 +266,19 @@ export const UpdateTaskThunk = (
     text,
     status,
     id,
-    keyFirebase
+    keyFirebase,
+    date
 ) => async (dispatch) => {
     const task = {
         keyFirebase: keyFirebase,
         id: id,
-        data: new Date().toLocaleString(),
+        data: date,
         priority: priority || null,
         text: text,
         status: status || "new",
         prevStatus: status || "new",
     };
     try {
-        debugger;
-
         dispatch(blockButton("updateTask"));
         await app.firestore().collection("tasks").doc(keyFirebase).update(task);
         await dispatch(updateTask(task));

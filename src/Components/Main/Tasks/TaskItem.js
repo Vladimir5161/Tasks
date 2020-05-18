@@ -51,7 +51,8 @@ const TaskItem = ({
             form.text,
             choseStatus.status,
             id,
-            keyFirebase
+            keyFirebase,
+            data
         ).then(EditButtonFunc(id));
     };
     const OnDoneButtonClick = () => {
@@ -61,6 +62,9 @@ const TaskItem = ({
             SetToDoneThunk(keyFirebase);
         }
     };
+    localStorage.setItem("name", JSON.stringify({ name: "vova" }));
+    let name = localStorage.getItem("name");
+    console.log(JSON.parse(name).name);
     return (
         <div>
             {editTask.some((item) => item === id) ? (

@@ -3,7 +3,7 @@ import { AddTaskThunk } from "../../../store/TaskReducer";
 import AddTaskForm from "../../FormControls/AddTaskReduxForm";
 import { connect } from "react-redux";
 
-const AddTask = ({ AddTaskThunk }) => {
+const AddTask = ({ AddTaskThunk, changeAddTask }) => {
     const [choseState, setChoseState] = React.useState({
         priority: "",
     });
@@ -20,6 +20,7 @@ const AddTask = ({ AddTaskThunk }) => {
     };
     const onSubmit = (formData) => {
         AddTaskThunk(choseState.priority, formData.text, choseStatus.status);
+        changeAddTask(false);
     };
     return (
         <AddTaskForm

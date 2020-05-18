@@ -5,13 +5,13 @@ import Main from "./Components/Main/Main";
 import { connect } from "react-redux";
 
 function App({ isAuth }) {
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = React.useState(isAuth ? 1 : 0);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
     useEffect(() => {
-        handleChange(`event`, 1);
+        setTimeout(() => handleChange(`event`, 1), 2000);
     }, [isAuth]);
     return (
         <div className="App">
@@ -21,6 +21,6 @@ function App({ isAuth }) {
     );
 }
 const mapStateToProps = (state) => ({
-    isAuth: state.tasks.isAuth,
+    isAuth: state.auth.isAuth,
 });
 export default connect(mapStateToProps)(App);
