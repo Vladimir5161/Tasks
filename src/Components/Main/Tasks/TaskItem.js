@@ -113,14 +113,23 @@ const TaskItem = ({
                         <div className="choseDiv">
                             {priority ? (
                                 <div className="priorityTask">
-                                    priority:{" "}
+                                    priority:
                                     <div
                                         style={
                                             priority === "high"
-                                                ? { color: "red" }
+                                                ? {
+                                                      color: "red",
+                                                      textIndent: "5px",
+                                                  }
                                                 : priority === "middle"
-                                                ? { color: "green" }
-                                                : { color: "yellow" }
+                                                ? {
+                                                      color: "green",
+                                                      textIndent: "5px",
+                                                  }
+                                                : {
+                                                      color: "yellow",
+                                                      textIndent: "5px",
+                                                  }
                                         }
                                     >
                                         {priority}
