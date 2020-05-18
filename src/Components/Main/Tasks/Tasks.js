@@ -37,6 +37,7 @@ const ActionsInExpansionPanelSummary = React.memo(
                 ? changeEditTask(editTask.filter((id) => id !== ID))
                 : changeEditTask([...editTask, ID]);
         };
+        console.log(TasksArray);
         if (loading) {
             return <Preloader />;
         }

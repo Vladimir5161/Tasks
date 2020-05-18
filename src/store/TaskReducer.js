@@ -130,14 +130,22 @@ export const SetToDoneThunk = (keyFirebase) => async (dispatch) => {
                     .doc(keyFirebase)
                     .update({
                         ...doc.data(),
+                        keyFirebase: keyFirebase,
                         status: "done",
-                        prevStatus: doc.data().status,
+                        prevStatus:
+                            doc.data().status === "done"
+                                ? "new"
+                                : doc.data().status,
                     });
                 dispatch(
                     updateTask({
                         ...doc.data(),
+                        keyFirebase: keyFirebase,
                         status: "done",
-                        prevStatus: doc.data().status,
+                        prevStatus:
+                            doc.data().status === "done"
+                                ? "new"
+                                : doc.data().status,
                     })
                 );
             });
@@ -161,13 +169,21 @@ export const SetToPrevStatusThunk = (keyFirebase) => async (dispatch) => {
                     .doc(keyFirebase)
                     .update({
                         ...doc.data(),
-                        status: doc.data().prevStatus,
+                        keyFirebase: keyFirebase,
+                        status:
+                            doc.data().prevStatus === doc.data().status
+                                ? "new"
+                                : doc.data().prevStatus,
                         prevStatus: doc.data().status,
                     });
                 dispatch(
                     updateTask({
                         ...doc.data(),
-                        status: doc.data().prevStatus,
+                        keyFirebase: keyFirebase,
+                        status:
+                            doc.data().prevStatus === doc.data().status
+                                ? "new"
+                                : doc.data().prevStatus,
                         prevStatus: doc.data().status,
                     })
                 );

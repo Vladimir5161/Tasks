@@ -43,6 +43,7 @@
     position: relative !important;
     z-index: 20;
 }
+
 .dataTasks {
     position: absolute;
     display: flex;
@@ -145,6 +146,10 @@
         right: 20px;
         margin: 0 auto;
         width: 70px;
+    }
+    .MuiFab-primary {
+        position: relative !important;
+        right: 40%;
     }
     .MuiExpansionPanelSummary-expandIcon {
         position: absolute !important;
