@@ -21,6 +21,7 @@ const EditTaskReduxFrom = ({
     handleChange,
     choseStatus,
     changeStatus,
+    BlockedButtonArray,
     ...props
 }) => {
     const classes = useStyles();
@@ -57,6 +58,9 @@ const EditTaskReduxFrom = ({
                     size="small"
                     className={classes.button}
                     startIcon={<SaveIcon />}
+                    disabled={BlockedButtonArray.some(
+                        (id) => id === "editTask"
+                    )}
                 >
                     Save
                 </Button>

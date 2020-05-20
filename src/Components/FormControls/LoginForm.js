@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function Login({ changePage, ...props }) {
+function Login({ changePage, BlockedButtonArray, ...props }) {
     const classes = useStyles();
 
     return (
@@ -49,6 +49,7 @@ function Login({ changePage, ...props }) {
                 color="primary"
                 className={classes.button}
                 endIcon={<CloudUploadIcon />}
+                disabled={BlockedButtonArray.some((id) => id === "login")}
             >
                 Send
             </Button>

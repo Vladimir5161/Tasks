@@ -23,6 +23,7 @@ const ActionsInExpansionPanelSummary = React.memo(
         DoneIdArray,
         filterArray,
         loading,
+        BlockedButtonArray,
     }) => {
         const classes = useStyles();
         let [DeleteClass, changeDeleteClass] = useState("deleteButtonTask");
@@ -50,7 +51,10 @@ const ActionsInExpansionPanelSummary = React.memo(
                     <div className={classes.root}>
                         <AddTaskButton AddTaskFunc={AddTaskFunc} />
                         {addTask ? (
-                            <AddTask changeAddTask={changeAddTask} />
+                            <AddTask
+                                changeAddTask={changeAddTask}
+                                BlockedButtonArray={BlockedButtonArray}
+                            />
                         ) : null}
                         {TasksArray.map(
                             ({
@@ -75,6 +79,7 @@ const ActionsInExpansionPanelSummary = React.memo(
                                         DeleteTaskThunk={DeleteTaskThunk}
                                         editTask={editTask}
                                         DoneIdArray={DoneIdArray}
+                                        BlockedButtonArray={BlockedButtonArray}
                                     />
                                 </div>
                             )
@@ -90,6 +95,7 @@ const mapStateToProps = (state) => ({
     isAuth: state.auth.isAuth,
     DoneIdArray: state.tasks.DoneIdArray,
     loading: state.tasks.loading,
+    BlockedButtonArray: state.tasks.BlockedButtonArray,
 });
 
 export default connect(mapStateToProps, {

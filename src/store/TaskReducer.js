@@ -117,7 +117,7 @@ export const blockButton = (id) => ({ type: "BLOCKBUTTON", id });
 export const filterArray = (value) => ({ type: "FILTERARRAY", value });
 
 export const SetToDoneThunk = (keyFirebase) => async (dispatch) => {
-    debugger;
+    await dispatch(blockButton(keyFirebase));
     try {
         await app
             .firestore()
@@ -153,10 +153,11 @@ export const SetToDoneThunk = (keyFirebase) => async (dispatch) => {
         console.log(error);
         dispatch(SetMessage(error.message, "error"));
     }
+    dispatch(blockButton(keyFirebase));
 };
 
 export const SetToPrevStatusThunk = (keyFirebase) => async (dispatch) => {
-    debugger;
+    await dispatch(blockButton(keyFirebase));
     try {
         await app
             .firestore()
@@ -192,6 +193,7 @@ export const SetToPrevStatusThunk = (keyFirebase) => async (dispatch) => {
         console.log(error);
         dispatch(SetMessage(error.message, "error"));
     }
+    dispatch(blockButton(keyFirebase));
 };
 export const GetTasksThunk = () => async (dispatch) => {
     try {
@@ -222,14 +224,14 @@ export const GetTasksThunk = () => async (dispatch) => {
 };
 
 export const DeleteTaskThunk = (id, keyFirebase) => async (dispatch) => {
+    await dispatch(blockButton(id));
     try {
-        dispatch(blockButton(id));
         await app.firestore().collection("tasks").doc(keyFirebase).delete();
         await dispatch(deleteTask(id));
-        dispatch(blockButton(id));
     } catch {
         dispatch(SetMessage("something went wrong", "error"));
     }
+    dispatch(blockButton(id));
 };
 export const AddTaskThunk = (priority, text, status) => async (
     dispatch,
@@ -265,17 +267,18 @@ export const AddTaskThunk = (priority, text, status) => async (
         status: status || "new",
         prevStatus: null,
     };
+
+    dispatch(blockButton("addTask"));
     try {
         dispatch(Loading());
-        dispatch(blockButton("addTask"));
         await app.firestore().collection("tasks").add(task);
         await dispatch(addTask(task));
-        dispatch(blockButton("addTask"));
         dispatch(reset("addTask"));
         dispatch(Loading());
     } catch {
         dispatch(SetMessage("something went wrong", "error"));
     }
+    dispatch(blockButton("addTask"));
 };
 export const UpdateTaskThunk = (
     priority,
@@ -294,15 +297,15 @@ export const UpdateTaskThunk = (
         status: status || "new",
         prevStatus: status || "new",
     };
+    await dispatch(blockButton("editTask"));
     try {
-        dispatch(blockButton("updateTask"));
         await app.firestore().collection("tasks").doc(keyFirebase).update(task);
         await dispatch(updateTask(task));
-        dispatch(blockButton("updateTask"));
-        dispatch(reset("updateTask"));
+        dispatch(reset("editTask"));
     } catch {
         dispatch(SetMessage("something went wrong", "error"));
     }
+    dispatch(blockButton("updateTask"));
 };
 
 export default TaskReducer;

@@ -3,7 +3,7 @@ import { AddTaskThunk } from "../../../store/TaskReducer";
 import AddTaskForm from "../../FormControls/AddTaskReduxForm";
 import { connect } from "react-redux";
 
-const AddTask = ({ AddTaskThunk, changeAddTask }) => {
+const AddTask = ({ AddTaskThunk, changeAddTask, BlockedButtonArray }) => {
     const [choseState, setChoseState] = React.useState({
         priority: "",
     });
@@ -29,6 +29,7 @@ const AddTask = ({ AddTaskThunk, changeAddTask }) => {
             choseState={choseState}
             choseStatus={choseStatus}
             changeStatus={changeStatus}
+            BlockedButtonArray={BlockedButtonArray}
         />
     );
 };

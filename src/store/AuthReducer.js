@@ -2,6 +2,7 @@ import { WebApi } from "../api/api";
 import app from "../api/firebase";
 import { reset } from "redux-form";
 import { SetMessage, DefaultMessage } from "./AlertReducer";
+import { blockButton } from "./TaskReducer";
 
 const initialState = {
     isAuth: false,
@@ -31,6 +32,7 @@ export const setAuth = (authStatus) => ({ type: "ISAUTH", authStatus });
 export const setUserName = (email) => ({ type: "SETUSERNAME", email });
 
 export const CreateAccount = (email, password) => async (dispatch) => {
+    await dispatch(blockButton("createUser"));
     try {
         await WebApi.createAcc(email, password).then((data) => {
             return app
@@ -48,8 +50,10 @@ export const CreateAccount = (email, password) => async (dispatch) => {
     } catch (error) {
         dispatch(SetMessage(error.message, "error"));
     }
+    dispatch(blockButton("createUser"));
 };
 export const Login = (email, password) => async (dispatch) => {
+    await dispatch(blockButton("login"));
     try {
         let responce = await WebApi.login(email, password);
         await dispatch(reset("loginForm"));
@@ -62,6 +66,7 @@ export const Login = (email, password) => async (dispatch) => {
         dispatch(SetMessage(error.message, "error"));
         dispatch(reset("loginForm"));
     }
+    dispatch(blockButton("login"));
 };
 
 export const AuthUser = () => async (dispatch) => {
@@ -77,12 +82,14 @@ export const AuthUser = () => async (dispatch) => {
 };
 
 export const Logout = () => async (dispatch) => {
+    await dispatch(blockButton("login"));
     try {
         await WebApi.logout();
         dispatch(SetMessage("you are logged out", "success"));
     } catch (error) {
         dispatch(SetMessage(error.message, "error"));
     }
+    dispatch(blockButton("login"));
 };
 
 export default AuthReducer;

@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function CreateUser({ changePage, isAuth, ...props }) {
+function CreateUser({ changePage, isAuth, BlockedButtonArray, ...props }) {
     const classes = useStyles();
     return (
         <form
@@ -55,6 +55,7 @@ function CreateUser({ changePage, isAuth, ...props }) {
                 color="primary"
                 className={classes.button}
                 endIcon={<CloudUploadIcon />}
+                disabled={BlockedButtonArray.some((id) => id === "createUser")}
             >
                 Send
             </Button>

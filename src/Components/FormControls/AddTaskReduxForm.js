@@ -21,6 +21,7 @@ const AddTaskReduxFrom = ({
     handleChange,
     choseStatus,
     changeStatus,
+    BlockedButtonArray,
     ...props
 }) => {
     const classes = useStyles();
@@ -62,6 +63,7 @@ const AddTaskReduxFrom = ({
                     color="default"
                     className={classes.button}
                     startIcon={<CloudUploadIcon />}
+                    disabled={BlockedButtonArray.some((id) => id === "addTask")}
                 >
                     Add
                 </Button>

@@ -30,6 +30,7 @@ const TaskItem = ({
     UpdateTaskThunk,
     SetToPrevStatusThunk,
     SetToDoneThunk,
+    BlockedButtonArray,
 }) => {
     const [choseState, setChoseState] = React.useState({
         priority: priority,
@@ -79,6 +80,7 @@ const TaskItem = ({
                     changeStatus={changeStatus}
                     handleChange={handleChange}
                     onSubmit={onSubmit}
+                    BlockedButtonArray={BlockedButtonArray}
                 />
             ) : (
                 <ExpansionPanel>
@@ -147,6 +149,7 @@ const TaskItem = ({
                             DeleteTaskThunk={DeleteTaskThunk}
                             id={id}
                             keyFirebase={keyFirebase}
+                            BlockedButtonArray={BlockedButtonArray}
                         />
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
@@ -154,6 +157,7 @@ const TaskItem = ({
                             EditButtonClass={EditButtonClass}
                             EditButtonFunc={EditButtonFunc}
                             id={id}
+                            BlockedButtonArray={BlockedButtonArray}
                         />
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
