@@ -44,11 +44,11 @@ const ActionsInExpansionPanelSummary = React.memo(
         }
         return (
             <div>
-                <div>
-                    <Filter filterArray={filterArray} />
-                </div>
                 {isAuth ? (
                     <div className={classes.root}>
+                        <div>
+                            <Filter filterArray={filterArray} />
+                        </div>
                         <AddTaskButton AddTaskFunc={AddTaskFunc} />
                         {addTask ? (
                             <AddTask

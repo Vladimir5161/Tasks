@@ -17,7 +17,7 @@ const LoginPage = ({
         createUser ? setCreateUser(false) : setCreateUser(true);
     };
     const onSubmit = (form) => {
-        CreateAccount(form.email, form.password);
+        CreateAccount(form.email, form.password, form.userName);
     };
     const onSubmitLogin = (form) => {
         Login(form.email, form.password).then(() => AuthUser());

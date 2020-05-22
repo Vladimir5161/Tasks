@@ -11,7 +11,7 @@ function App({ isAuth }) {
         setValue(newValue);
     };
     useEffect(() => {
-        setTimeout(() => handleChange(`event`, 1), 2000);
+        setTimeout(() => handleChange(`event`, 1), 0);
     }, [isAuth]);
     return (
         <div className="App">

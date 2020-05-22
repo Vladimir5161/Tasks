@@ -45,6 +45,9 @@ function CreateUser({ changePage, isAuth, BlockedButtonArray, ...props }) {
                     inputLabel: "create password",
                 }
             )}
+            {createField("your Name", "userName", [required], InputForm, {
+                inputLabel: "create name",
+            })}
             {isAuth ? null : (
                 <ChangePageButton buttonName="Login" changePage={changePage} />
             )}

@@ -31,7 +31,9 @@ const AuthReducer = (state = initialState, action) => {
 export const setAuth = (authStatus) => ({ type: "ISAUTH", authStatus });
 export const setUserName = (email) => ({ type: "SETUSERNAME", email });
 
-export const CreateAccount = (email, password) => async (dispatch) => {
+export const CreateAccount = (email, password, userName) => async (
+    dispatch
+) => {
     await dispatch(blockButton("createUser"));
     try {
         await WebApi.createAcc(email, password).then((data) => {
@@ -39,7 +41,7 @@ export const CreateAccount = (email, password) => async (dispatch) => {
                 .firestore()
                 .collection("users")
                 .doc(data.user.uid)
-                .set({ userId: data.user.uid })
+                .set({ userId: data.user.uid, userName: userName })
                 .then(
                     dispatch(
                         SetMessage("your acccount has been created", "success")
@@ -59,7 +61,32 @@ export const Login = (email, password) => async (dispatch) => {
         await dispatch(reset("loginForm"));
 
         if (responce.user !== undefined) {
-            dispatch(SetMessage("you are logged in", "success"));
+            app.auth().onAuthStateChanged(async (user) => {
+                if (user) {
+                    await app
+                        .firestore()
+                        .collection("users")
+                        .doc(user.uid)
+                        .get()
+                        .then((querySnapshot) => {
+                            dispatch(setAuth(true));
+                            dispatch(
+                                setUserName(querySnapshot.data().userName)
+                            );
+                            dispatch(
+                                SetMessage(
+                                    `Hello ${
+                                        querySnapshot.data().userName
+                                    } you are logged in`,
+                                    "success"
+                                )
+                            );
+                        });
+                } else {
+                    dispatch(setAuth(false));
+                    dispatch(setUserName("null"));
+                }
+            });
         }
     } catch (error) {
         debugger;
@@ -70,10 +97,17 @@ export const Login = (email, password) => async (dispatch) => {
 };
 
 export const AuthUser = () => async (dispatch) => {
-    app.auth().onAuthStateChanged((user) => {
+    app.auth().onAuthStateChanged(async (user) => {
         if (user) {
-            dispatch(setAuth(true));
-            dispatch(setUserName(user.email));
+            await app
+                .firestore()
+                .collection("users")
+                .doc(user.uid)
+                .get()
+                .then((querySnapshot) => {
+                    dispatch(setAuth(true));
+                    dispatch(setUserName(querySnapshot.data().userName));
+                });
         } else {
             dispatch(setAuth(false));
             dispatch(setUserName("null"));
