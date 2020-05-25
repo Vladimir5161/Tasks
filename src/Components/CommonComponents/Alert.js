@@ -46,6 +46,7 @@ function AlertModal({ message, type, DefaultMessage }) {
                         right: "0",
                         top: "35%",
                         zIndex: "100",
+                        maxWidth: "700px"
                     }}
                 >
                     <Alert
