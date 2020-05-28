@@ -64,6 +64,8 @@ const ActionsInExpansionPanelSummary = React.memo(
                                 data,
                                 status,
                                 keyFirebase,
+                                settedDate,
+                                settedTime,
                             }) => (
                                 <div key={id}>
                                     <TaskItem
@@ -80,6 +82,8 @@ const ActionsInExpansionPanelSummary = React.memo(
                                         editTask={editTask}
                                         DoneIdArray={DoneIdArray}
                                         BlockedButtonArray={BlockedButtonArray}
+                                        settedDate={settedDate}
+                                        settedTime={settedTime}
                                     />
                                 </div>
                             )

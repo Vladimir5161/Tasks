@@ -16,58 +16,66 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const EditTaskReduxFrom = ({
-    choseState,
-    handleChange,
-    choseStatus,
-    changeStatus,
-    BlockedButtonArray,
-    ...props
-}) => {
-    const classes = useStyles();
-    return (
-        <form onSubmit={props.handleSubmit} style={{ width: "100%" }}>
-            <ExpansionPanel>
-                <ExpansionPanelSummary
-                    aria-label="Expand"
-                    aria-controls="additional-actions1-content"
-                    id="additional-actions1-header"
-                >
-                    <div className="inputTaskDiv">
-                        {createField("texts", "text", [required], InputForm, {
-                            inputLabel: "Task text",
-                        })}
-                    </div>
-                    <div className="choseDiv">
-                        <PrioritySelect
-                            choseState={choseState}
-                            handleChange={handleChange}
-                        />
-                        <StatusSelect
-                            choseStatus={choseStatus}
-                            handleChange={changeStatus}
-                        />
-                    </div>
-                </ExpansionPanelSummary>
-            </ExpansionPanel>
-            <div>
-                <Button
-                    variant="contained"
-                    type="submit"
-                    color="primary"
-                    size="small"
-                    className={classes.button}
-                    startIcon={<SaveIcon />}
-                    disabled={BlockedButtonArray.some(
-                        (id) => id === "editTask"
-                    )}
-                >
-                    Save
-                </Button>
-            </div>
-        </form>
-    );
-};
+const EditTaskReduxFrom = React.memo(
+    ({
+        choseState,
+        handleChange,
+        choseStatus,
+        changeStatus,
+        BlockedButtonArray,
+        ...props
+    }) => {
+        const classes = useStyles();
+        return (
+            <form onSubmit={props.handleSubmit} style={{ width: "100%" }}>
+                <ExpansionPanel>
+                    <ExpansionPanelSummary
+                        aria-label="Expand"
+                        aria-controls="additional-actions1-content"
+                        id="additional-actions1-header"
+                    >
+                        <div className="inputTaskDiv">
+                            {createField(
+                                "texts",
+                                "text",
+                                [required],
+                                InputForm,
+                                {
+                                    inputLabel: "Task text",
+                                }
+                            )}
+                        </div>
+                        <div className="choseDiv">
+                            <PrioritySelect
+                                choseState={choseState}
+                                handleChange={handleChange}
+                            />
+                            <StatusSelect
+                                choseStatus={choseStatus}
+                                handleChange={changeStatus}
+                            />
+                        </div>
+                    </ExpansionPanelSummary>
+                </ExpansionPanel>
+                <div>
+                    <Button
+                        variant="contained"
+                        type="submit"
+                        color="primary"
+                        size="small"
+                        className={classes.button}
+                        startIcon={<SaveIcon />}
+                        disabled={BlockedButtonArray.some(
+                            (id) => id === "editTask"
+                        )}
+                    >
+                        Save
+                    </Button>
+                </div>
+            </form>
+        );
+    }
+);
 
 const EditTaskForm = reduxForm({ form: "editTask" })(EditTaskReduxFrom);
 export default EditTaskForm;

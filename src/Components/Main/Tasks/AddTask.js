@@ -2,6 +2,8 @@ import React from "react";
 import { AddTaskThunk } from "../../../store/TaskReducer";
 import AddTaskForm from "../../FormControls/AddTaskReduxForm";
 import { connect } from "react-redux";
+import { CalendarReact } from "../../CommonComponents/Calendar";
+import Clock from "../../CommonComponents/Clock";
 
 const AddTask = ({ AddTaskThunk, changeAddTask, BlockedButtonArray }) => {
     const [choseState, setChoseState] = React.useState({
@@ -18,19 +20,54 @@ const AddTask = ({ AddTaskThunk, changeAddTask, BlockedButtonArray }) => {
     const changeStatus = (event) => {
         setStatus({ status: event.target.value });
     };
+    let [date, setDate] = React.useState(new Date());
+    const onChange = (date) => setDate(date);
+
+    const [selectedTime, setSelectedTime] = React.useState(new Date());
+    const handleTimeChange = (date) => {
+        setSelectedTime(date);
+    };
+    const settedDate = date
+        .toLocaleString()
+        .split(",")[0]
+        .split(".")
+        .reverse()
+        .join("-");
+    const settedTime = selectedTime
+        .toLocaleString()
+        .split(",")[1]
+        .split(":")
+        .reverse()
+        .splice(1, 2)
+        .reverse()
+        .join(":");
+
     const onSubmit = (formData) => {
-        AddTaskThunk(choseState.priority, formData.text, choseStatus.status);
+        AddTaskThunk(
+            choseState.priority,
+            formData.text,
+            choseStatus.status,
+            settedTime,
+            settedDate
+        );
         changeAddTask(false);
     };
     return (
-        <AddTaskForm
-            onSubmit={onSubmit}
-            handleChange={handleChange}
-            choseState={choseState}
-            choseStatus={choseStatus}
-            changeStatus={changeStatus}
-            BlockedButtonArray={BlockedButtonArray}
-        />
+        <div>
+            <CalendarReact date={date} onChange={onChange} />
+            <Clock
+                handleTimeChange={handleTimeChange}
+                selectedTime={selectedTime}
+            />
+            <AddTaskForm
+                onSubmit={onSubmit}
+                handleChange={handleChange}
+                choseState={choseState}
+                choseStatus={choseStatus}
+                changeStatus={changeStatus}
+                BlockedButtonArray={BlockedButtonArray}
+            />
+        </div>
     );
 };
 

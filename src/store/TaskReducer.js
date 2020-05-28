@@ -54,6 +54,8 @@ const TaskReducer = (state = initialState, action) => {
                               status: action.task.status,
                               data: action.task.data,
                               keyFirebase: action.task.keyFirebase,
+                              settedDate: action.task.settedDate,
+                              settedTime: action.task.settedTime,
                           }
                         : item
                 ),
@@ -233,10 +235,13 @@ export const DeleteTaskThunk = (id, keyFirebase) => async (dispatch) => {
     }
     dispatch(blockButton(id));
 };
-export const AddTaskThunk = (priority, text, status) => async (
-    dispatch,
-    getState
-) => {
+export const AddTaskThunk = (
+    priority,
+    text,
+    status,
+    settedTime,
+    settedDate
+) => async (dispatch, getState) => {
     debugger;
     const sortedByIdTasksArray = getState().tasks.TasksArray.sort(function (
         a,
@@ -258,7 +263,14 @@ export const AddTaskThunk = (priority, text, status) => async (
         .split(".")
         .reverse()
         .join("-");
-    const newTime = new Date().toLocaleString().split(",")[1];
+    const newTime = new Date()
+        .toLocaleString()
+        .split(",")[1]
+        .split(":")
+        .reverse()
+        .splice(1, 2)
+        .reverse()
+        .join(":");
     const task = {
         id: newId,
         data: newDate + newTime,
@@ -266,6 +278,8 @@ export const AddTaskThunk = (priority, text, status) => async (
         text: text,
         status: status || "new",
         prevStatus: null,
+        settedTime: settedTime,
+        settedDate: settedDate,
     };
 
     dispatch(blockButton("addTask"));
@@ -286,7 +300,9 @@ export const UpdateTaskThunk = (
     status,
     id,
     keyFirebase,
-    date
+    date,
+    newSettedDate,
+    newSettedTime
 ) => async (dispatch) => {
     const task = {
         keyFirebase: keyFirebase,
@@ -296,7 +312,10 @@ export const UpdateTaskThunk = (
         text: text,
         status: status || "new",
         prevStatus: status || "new",
+        settedDate: newSettedDate,
+        settedTime: newSettedTime,
     };
+    debugger;
     await dispatch(blockButton("editTask"));
     try {
         await app.firestore().collection("tasks").doc(keyFirebase).update(task);

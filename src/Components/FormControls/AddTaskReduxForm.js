@@ -22,6 +22,8 @@ const AddTaskReduxFrom = ({
     choseStatus,
     changeStatus,
     BlockedButtonArray,
+    settedTime,
+    settedDate,
     ...props
 }) => {
     const classes = useStyles();
