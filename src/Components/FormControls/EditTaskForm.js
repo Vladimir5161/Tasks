@@ -23,6 +23,7 @@ const EditTaskReduxFrom = React.memo(
         choseStatus,
         changeStatus,
         BlockedButtonArray,
+        setDeadline,
         ...props
     }) => {
         const classes = useStyles();
@@ -44,7 +45,26 @@ const EditTaskReduxFrom = React.memo(
                                     inputLabel: "Task text",
                                 }
                             )}
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                style={{
+                                    maxWidth: "77px",
+                                    maxHeight: "30px",
+                                    position: "absolute",
+                                    rigth: "30px",
+                                    fontSize: "6px",
+                                    top: "0",
+                                    right: "30%",
+                                }}
+                                size="small"
+                                className={classes.button}
+                                onClick={() => setDeadline()}
+                            >
+                                Set Deadline
+                            </Button>
                         </div>
+
                         <div className="choseDiv">
                             <PrioritySelect
                                 choseState={choseState}

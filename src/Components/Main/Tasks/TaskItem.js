@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
@@ -62,7 +62,6 @@ const TaskItem = React.memo(
         const handleTimeChange = (time) => {
             setSelectedTime({ [id]: time });
         };
-        console.log(date[id]);
         const newSettedDate = date[id]
             .toLocaleString()
             .split(",")[0]
@@ -100,25 +99,67 @@ const TaskItem = React.memo(
         // localStorage.setItem("name", JSON.stringify({ name: "vova" }));
         // let name = localStorage.getItem("name");
         // console.log(JSON.parse(name).name);
-        const newData = settedDate + settedTime;
-        const sum = () => {
-            console.log("bla");
-            if (data > newData) {
-                return true;
-            } else {
-                return false;
-            }
+        let [urgent, setUrgent] = React.useState({ [id]: false });
+        let [deadline, changeDeadline] = React.useState({ [id]: false });
+        const setDeadline = () => {
+            deadline[id]
+                ? changeDeadline({ [id]: false })
+                : changeDeadline({ [id]: true });
         };
-        sum();
+        useEffect(() => {
+            const isUrgent = (data, settedDate, settedTime) => {
+                debugger;
+                if (settedDate === undefined || settedTime === undefined) {
+                    return null;
+                } else {
+                    const resultDate =
+                        new Date(data).getTime() -
+                        new Date(settedDate + settedTime).getTime();
+                    const resultDateToNumber = Math.abs(
+                        resultDate / (1000 * 3600)
+                    );
+                    if (resultDateToNumber > 0) {
+                        const resultDateToNumberSplitted = resultDateToNumber
+                            .toString()
+                            .split(".")[1]
+                            .split("");
+                        const endNumbersToHours =
+                            (resultDateToNumberSplitted[0] +
+                                resultDateToNumberSplitted[1]) /
+                            60;
+                        const finalDiffTime =
+                            +resultDateToNumber.toString().split(".")[0] +
+                            +endNumbersToHours;
+                        console.log(finalDiffTime);
+                        if (finalDiffTime < 24) {
+                            setUrgent({ [id]: true });
+                        } else {
+                            setUrgent({ [id]: false });
+                        }
+                    } else return null;
+                }
+            };
+            const callUrgentFunc = () => {
+                isUrgent(data, settedDate, settedTime);
+            };
+            callUrgentFunc();
+        }, [id, data, settedDate, settedTime]);
         return (
             <div>
                 {editTask.some((item) => item === id) ? (
                     <div>
-                        <CalendarReact date={date[id]} onChange={onChange} />
-                        <Clock
-                            handleTimeChange={handleTimeChange}
-                            selectedTime={selectedTime[id]}
-                        />
+                        {deadline[id] ? (
+                            <>
+                                <CalendarReact
+                                    date={date[id]}
+                                    onChange={onChange}
+                                />
+                                <Clock
+                                    handleTimeChange={handleTimeChange}
+                                    selectedTime={selectedTime[id]}
+                                />
+                            </>
+                        ) : null}
                         <EditTaskForm
                             initialValues={{
                                 text: text,
@@ -131,11 +172,18 @@ const TaskItem = React.memo(
                             handleChange={handleChange}
                             onSubmit={onSubmit}
                             BlockedButtonArray={BlockedButtonArray}
+                            setDeadline={setDeadline}
                         />
                     </div>
                 ) : (
                     <div>
-                        <ExpansionPanel>
+                        <ExpansionPanel
+                            style={
+                                urgent[id]
+                                    ? { boxShadow: "0 0 10px 3px red" }
+                                    : null
+                            }
+                        >
                             <ExpansionPanelSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 aria-label="Expand"
@@ -143,6 +191,20 @@ const TaskItem = React.memo(
                                 id="additional-actions1-header"
                             >
                                 <div className="dataTasks">{data}</div>
+                                {urgent[id] ? (
+                                    <div
+                                        style={{
+                                            position: "absolute",
+                                            display: "inline",
+                                            margin: "0 auto",
+                                            left: "0",
+                                            right: "0",
+                                        }}
+                                        className="dataTasks"
+                                    >
+                                        Urgent Task!
+                                    </div>
+                                ) : null}
                                 <div
                                     className="dataTasks"
                                     style={{

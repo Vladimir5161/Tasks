@@ -324,7 +324,7 @@ export const UpdateTaskThunk = (
     } catch {
         dispatch(SetMessage("something went wrong", "error"));
     }
-    dispatch(blockButton("updateTask"));
+    dispatch(blockButton("editTask"));
 };
 
 export default TaskReducer;

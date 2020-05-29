@@ -7,9 +7,12 @@ import {
     KeyboardTimePicker,
 } from "@material-ui/pickers";
 
-export default function Clock({ selectedTime, handleTimeChange }) {
+export default function Clock({ selectedTime, handleTimeChange, error }) {
     // The first commit of Material-UI
 
+    // const rime = React.createRef();
+    // console.log(rime);
+    // rime.current.setAttribute("disabled", true);
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <Grid
@@ -19,12 +22,17 @@ export default function Clock({ selectedTime, handleTimeChange }) {
             >
                 <KeyboardTimePicker
                     margin="normal"
+                    userSelect="none"
                     id="time-picker"
+                    // ref={rime}
                     label="Time picker"
                     value={selectedTime}
                     onChange={handleTimeChange}
                     KeyboardButtonProps={{
                         "aria-label": "change time",
+                    }}
+                    InputLabelProps={{
+                        shrink: true,
                     }}
                 />
             </Grid>
