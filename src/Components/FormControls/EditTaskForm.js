@@ -45,26 +45,7 @@ const EditTaskReduxFrom = React.memo(
                                     inputLabel: "Task text",
                                 }
                             )}
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                style={{
-                                    maxWidth: "77px",
-                                    maxHeight: "30px",
-                                    position: "absolute",
-                                    rigth: "30px",
-                                    fontSize: "6px",
-                                    top: "0",
-                                    right: "30%",
-                                }}
-                                size="small"
-                                className={classes.button}
-                                onClick={() => setDeadline()}
-                            >
-                                Set Deadline
-                            </Button>
                         </div>
-
                         <div className="choseDiv">
                             <PrioritySelect
                                 choseState={choseState}
@@ -74,6 +55,29 @@ const EditTaskReduxFrom = React.memo(
                                 choseStatus={choseStatus}
                                 handleChange={changeStatus}
                             />
+                            <Button
+                                style={{
+                                    position: "absolute",
+                                    right: "-65px",
+                                    left: "auto",
+                                    top: "50%",
+                                    transform: "translateY(-50%)",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    minWidth: "20px",
+                                }}
+                                startIcon={
+                                    <img
+                                        alt=""
+                                        src="/calendar.png"
+                                        style={{
+                                            width: "30px",
+                                            height: "30px",
+                                        }}
+                                    />
+                                }
+                                onClick={() => setDeadline()}
+                            ></Button>
                         </div>
                     </ExpansionPanelSummary>
                 </ExpansionPanel>

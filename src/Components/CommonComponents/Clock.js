@@ -2,17 +2,10 @@ import "date-fns";
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import DateFnsUtils from "@date-io/date-fns";
-import {
-    MuiPickersUtilsProvider,
-    KeyboardTimePicker,
-} from "@material-ui/pickers";
+import { MuiPickersUtilsProvider, TimePicker } from "@material-ui/pickers";
 
-export default function Clock({ selectedTime, handleTimeChange, error }) {
-    // The first commit of Material-UI
-
-    // const rime = React.createRef();
-    // console.log(rime);
-    // rime.current.setAttribute("disabled", true);
+console.log(document.getElementById("time-picker"));
+export default function Clock({ selectedTime, handleTimeChange }) {
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <Grid
@@ -20,12 +13,11 @@ export default function Clock({ selectedTime, handleTimeChange, error }) {
                 justify="space-around"
                 style={{ maxWidth: "300px", margin: "5px auto 0 auto" }}
             >
-                <KeyboardTimePicker
+                <TimePicker
                     margin="normal"
                     userSelect="none"
                     id="time-picker"
-                    // ref={rime}
-                    label="Time picker"
+                    label="Deadline time"
                     value={selectedTime}
                     onChange={handleTimeChange}
                     KeyboardButtonProps={{

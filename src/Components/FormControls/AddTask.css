@@ -6,13 +6,13 @@
     padding: 10px !important;
     box-sizing: border-box;
 }
-
 .inputTaskDiv {
     width: 100%;
 }
 .choseDiv {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    position: relative;
  }
 .MuiExpansionPanelSummary-root.Mui-expanded, .MuiExpansionPanelSummary-root  {
     box-sizing: border-box;
@@ -20,7 +20,10 @@
 .makeStyles-formControl-197, .makeStyles-formControl-223  {
     min-width: 80px !important;
 }
-
+.MuiIconButton-edgeEnd {
+    margin-right: -12px;
+    margin-top: 10px !important;
+}
 @media screen and (max-width: 768px) {
     .addTaskDiv {
         display: grid;

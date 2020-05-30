@@ -278,8 +278,8 @@ export const AddTaskThunk = (
         text: text,
         status: status || "new",
         prevStatus: null,
-        settedTime: settedTime,
-        settedDate: settedDate,
+        settedTime: settedTime || null,
+        settedDate: settedDate || null,
     };
 
     dispatch(blockButton("addTask"));

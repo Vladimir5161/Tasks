@@ -1,7 +1,7 @@
 
 .MuiExpansionPanelSummary-content.Mui-expanded, .MuiExpansionPanelSummary-content {
     justify-content: space-between !important;
-    margin: 15px auto 15px auto !important;
+    margin: 25px auto 15px auto !important;
     display: grid !important;
     grid-template-columns: 70% 25% 5% !important;
     max-width: 1170px;
@@ -21,6 +21,7 @@
 }
 .MuiTypography-body1 {
     margin-left: 20px !important;
+    word-break: break-word!important;
 }
 .clearText {
     text-decoration: none;
@@ -37,7 +38,7 @@
     right: 40px;
     display: flex;
     align-self: center;
-    top: 0 !important;
+    top: 15px !important;
 }
 .MuiExpansionPanelSummary-expandIcon {
     position: relative !important;
@@ -127,7 +128,8 @@
     }
     .deleteButtonTask {
         top: 10px !important;
-        right: -3px;
+        right: -10px !important;
+        margin-top: 20px !important;
     }
     .MuiExpansionPanelSummary-expandIcon {
         position: absolute !important;

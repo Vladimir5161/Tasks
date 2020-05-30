@@ -42,13 +42,43 @@ const AddTask = ({ AddTaskThunk, changeAddTask, BlockedButtonArray }) => {
               .join(":");
 
     const onSubmit = (formData) => {
-        AddTaskThunk(
-            choseState.priority,
-            formData.text,
-            choseStatus.status,
-            settedTime,
-            settedDate
-        );
+        const newDate = new Date()
+            .toLocaleString()
+            .split(",")[0]
+            .split(".")
+            .reverse()
+            .join("-");
+        const newTime = new Date()
+            .toLocaleString()
+            .split(",")[1]
+            .split(":")
+            .reverse()
+            .splice(1, 2)
+            .reverse()
+            .join(":");
+        const resultDate =
+            new Date(newDate + newTime) > new Date(settedDate + settedTime)
+                ? true
+                : false;
+
+        if (resultDate) {
+            debugger;
+            AddTaskThunk(
+                choseState.priority,
+                formData.text,
+                choseStatus.status,
+                null,
+                null
+            );
+        } else {
+            AddTaskThunk(
+                choseState.priority,
+                formData.text,
+                choseStatus.status,
+                settedTime,
+                settedDate
+            );
+        }
         changeAddTask(false);
     };
     return (

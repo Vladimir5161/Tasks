@@ -16,7 +16,6 @@ import {
     SetToPrevStatusThunk,
     SetToDoneThunk,
 } from "../../../store/TaskReducer";
-const Moment = require("moment");
 
 const TaskItem = React.memo(
     ({
@@ -38,6 +37,7 @@ const TaskItem = React.memo(
         settedDate,
         settedTime,
     }) => {
+        console.log(settedDate);
         const [choseState, setChoseState] = React.useState({
             priority: priority,
         });
@@ -76,17 +76,50 @@ const TaskItem = React.memo(
             .splice(1, 2)
             .reverse()
             .join(":");
+        // ----------------------
         const onSubmit = (form) => {
-            UpdateTaskThunk(
-                choseState.priority,
-                form.text,
-                choseStatus.status,
-                id,
-                keyFirebase,
-                data,
-                newSettedDate,
-                newSettedTime
-            ).then(EditButtonFunc(id));
+            const newDate = new Date()
+                .toLocaleString()
+                .split(",")[0]
+                .split(".")
+                .reverse()
+                .join("-");
+            const newTime = new Date()
+                .toLocaleString()
+                .split(",")[1]
+                .split(":")
+                .reverse()
+                .splice(1, 2)
+                .reverse()
+                .join(":");
+            const resultDate =
+                new Date(newDate + newTime) >
+                new Date(newSettedDate + newSettedTime)
+                    ? true
+                    : false;
+            if (resultDate) {
+                UpdateTaskThunk(
+                    choseState.priority,
+                    form.text,
+                    choseStatus.status,
+                    id,
+                    keyFirebase,
+                    data,
+                    settedDate,
+                    settedTime
+                ).then(EditButtonFunc(id));
+            } else {
+                UpdateTaskThunk(
+                    choseState.priority,
+                    form.text,
+                    choseStatus.status,
+                    id,
+                    keyFirebase,
+                    data,
+                    newSettedDate,
+                    newSettedTime
+                ).then(EditButtonFunc(id));
+            }
         };
 
         const OnDoneButtonClick = () => {
@@ -106,18 +139,33 @@ const TaskItem = React.memo(
                 ? changeDeadline({ [id]: false })
                 : changeDeadline({ [id]: true });
         };
+        // -------------------------
         useEffect(() => {
-            const isUrgent = (data, settedDate, settedTime) => {
-                debugger;
+            const isUrgent = (settedDate, settedTime) => {
                 if (settedDate === undefined || settedTime === undefined) {
                     return null;
                 } else {
+                    const newDate = new Date()
+                        .toLocaleString()
+                        .split(",")[0]
+                        .split(".")
+                        .reverse()
+                        .join("-");
+                    const newTime = new Date()
+                        .toLocaleString()
+                        .split(",")[1]
+                        .split(":")
+                        .reverse()
+                        .splice(1, 2)
+                        .reverse()
+                        .join(":");
                     const resultDate =
-                        new Date(data).getTime() -
+                        new Date(newDate + newTime).getTime() -
                         new Date(settedDate + settedTime).getTime();
                     const resultDateToNumber = Math.abs(
                         resultDate / (1000 * 3600)
                     );
+                    debugger;
                     if (resultDateToNumber > 0) {
                         const resultDateToNumberSplitted = resultDateToNumber
                             .toString()
@@ -130,8 +178,8 @@ const TaskItem = React.memo(
                         const finalDiffTime =
                             +resultDateToNumber.toString().split(".")[0] +
                             +endNumbersToHours;
-                        console.log(finalDiffTime);
                         if (finalDiffTime < 24) {
+                            debugger;
                             setUrgent({ [id]: true });
                         } else {
                             setUrgent({ [id]: false });
@@ -140,10 +188,10 @@ const TaskItem = React.memo(
                 }
             };
             const callUrgentFunc = () => {
-                isUrgent(data, settedDate, settedTime);
+                isUrgent(settedDate, settedTime);
             };
             callUrgentFunc();
-        }, [id, data, settedDate, settedTime]);
+        }, [id, settedDate, settedTime]);
         return (
             <div>
                 {editTask.some((item) => item === id) ? (
@@ -200,7 +248,7 @@ const TaskItem = React.memo(
                                             left: "0",
                                             right: "0",
                                         }}
-                                        className="dataTasks"
+                                        className="dataTasks urgentTask"
                                     >
                                         Urgent Task!
                                     </div>
