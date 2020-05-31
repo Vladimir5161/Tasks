@@ -165,7 +165,6 @@ const TaskItem = React.memo(
                     const resultDateToNumber = Math.abs(
                         resultDate / (1000 * 3600)
                     );
-                    debugger;
                     if (resultDateToNumber > 0) {
                         const resultDateToNumberSplitted = resultDateToNumber
                             .toString()
@@ -179,7 +178,6 @@ const TaskItem = React.memo(
                             +resultDateToNumber.toString().split(".")[0] +
                             +endNumbersToHours;
                         if (finalDiffTime < 24) {
-                            debugger;
                             setUrgent({ [id]: true });
                         } else {
                             setUrgent({ [id]: false });
@@ -253,15 +251,7 @@ const TaskItem = React.memo(
                                         Urgent Task!
                                     </div>
                                 ) : null}
-                                <div
-                                    className="dataTasks"
-                                    style={{
-                                        display: "block",
-                                        right: "25px",
-                                        left: "auto",
-                                        textAlign: "right",
-                                    }}
-                                >
+                                <div className="dataTasks deadlineTasks">
                                     Deadline:
                                     <div
                                         style={{

@@ -28,7 +28,7 @@ export default function FilterSelect({ value, handleChange }) {
         >
             <FormControl
                 className={classes.formControl}
-                style={{ position: "absolute", right: "0", top: "20px" }}
+                style={{ position: "absolute", right: "-40px", top: "20px" }}
             >
                 <InputLabel
                     htmlFor="filter-native-simple"

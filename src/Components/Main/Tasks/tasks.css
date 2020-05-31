@@ -3,21 +3,26 @@
     justify-content: space-between !important;
     margin: 25px auto 15px auto !important;
     display: grid !important;
-    grid-template-columns: 70% 25% 5% !important;
+    grid-template-columns: 65% 30% 5% !important;
     max-width: 1170px;
 }
 
-.priorityTask div, .priorityTask{
+.priorityTask, .statusTask {
     display: flex;
     align-self: center;
-    min-width: 100px;
     margin: 0 auto;
+    justify-content: center !important;
 }
-.statusTask div, .statusTask{
+.statusTask div, .priorityTask div {
     display: flex;
     align-self: center;
-    min-width: 100px;
     justify-content: center;
+}
+.deadlineTasks {
+    display: block !important;
+    right: 25px !important;
+    left: auto !important;
+    text-align: right !important;
 }
 .MuiTypography-body1 {
     margin-left: 20px !important;
@@ -82,7 +87,7 @@
     .MuiExpansionPanelSummary-content.Mui-expanded, .MuiExpansionPanelSummary-content {
         justify-content: space-between !important;
         display: grid !important;
-        grid-template-columns: 60% 35% 5% !important;
+        grid-template-columns: 55% 40% 5% !important;
     }
 }
 @media screen and (max-width: 425px) {
@@ -159,4 +164,25 @@
         right: 10px;
         bottom: 0;
     }
+    .deadlineTasks {
+        text-align: center !important;
+        right: -10px !important;
+        top: 0 !important;
+        left: auto !important;
+    }
+    .MuiExpansionPanelSummary-content.Mui-expanded, .MuiExpansionPanelSummary-content {
+        margin: 45px auto 15px auto !important;
+
+    }
+    .statusTask , .priorityTask  {
+        display: block !important;
+    }
+    .statusTask div, .priorityTask div {
+        display: block !important;
+        align-self: center;
+        min-width: 80px !important;
+        justify-content: center;
+        width: 100px !important;
+    }
+
 }

@@ -242,7 +242,6 @@ export const AddTaskThunk = (
     settedTime,
     settedDate
 ) => async (dispatch, getState) => {
-    debugger;
     const sortedByIdTasksArray = getState().tasks.TasksArray.sort(function (
         a,
         b
@@ -315,7 +314,6 @@ export const UpdateTaskThunk = (
         settedDate: newSettedDate,
         settedTime: newSettedTime,
     };
-    debugger;
     await dispatch(blockButton("editTask"));
     try {
         await app.firestore().collection("tasks").doc(keyFirebase).update(task);
