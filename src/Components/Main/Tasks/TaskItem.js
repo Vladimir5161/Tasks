@@ -172,9 +172,10 @@ const TaskItem = React.memo(
                     return setUrgent({ [id]: false });
                 } else if (status === "done") {
                     setUrgent({ [id]: false });
+                    setMissed({ [id]: false });
                 } else {
                     if (
-                        new Date(newDate + newTime).getTime() >
+                        new Date(newDate + newTime).getTime() >=
                         new Date(settedDate + settedTime).getTime()
                     ) {
                         setMissed({ [id]: true });
