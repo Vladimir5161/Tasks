@@ -53,29 +53,29 @@ const TaskItem = React.memo(
             setStatus({ status: event.target.value });
         };
 
-        let [date, setDate] = React.useState({ [id]: new Date() });
+        let [date, setDate] = React.useState({ [id]: null });
         const onChange = (date) => setDate({ [id]: date });
 
         const [selectedTime, setSelectedTime] = React.useState({
-            [id]: new Date(),
+            [id]: null,
         });
         const handleTimeChange = (time) => {
             setSelectedTime({ [id]: time });
         };
-        const newSettedDate = date[id]
-            .toLocaleString()
-            .split(",")[0]
-            .split(".")
-            .reverse()
-            .join("-");
-        const newSettedTime = selectedTime[id]
-            .toLocaleString()
-            .split(",")[1]
-            .split(":")
-            .reverse()
-            .splice(1, 2)
-            .reverse()
-            .join(":");
+        const newSettedDate = date[id] !== null ?
+            date[id].toLocaleString()
+                .split(",")[0]
+                .split(".")
+                .reverse()
+                .join("-") : null
+        const newSettedTime = selectedTime[id] !== null ?
+            selectedTime[id].toLocaleString()
+                .split(",")[1]
+                .split(":")
+                .reverse()
+                .splice(1, 2)
+                .reverse()
+                .join(":") : null
         // ----------------------
         const onSubmit = (form) => {
             const newDate = new Date()
@@ -94,7 +94,7 @@ const TaskItem = React.memo(
                 .join(":");
             const resultDate =
                 new Date(newDate + newTime) >
-                new Date(newSettedDate + newSettedTime)
+                    new Date(newSettedDate + newSettedTime)
                     ? true
                     : false;
             if (resultDate) {
@@ -142,8 +142,8 @@ const TaskItem = React.memo(
         // -------------------------
         useEffect(() => {
             const isUrgent = (settedDate, settedTime) => {
-                if (settedDate === undefined || settedTime === undefined) {
-                    return null;
+                if (settedDate === undefined || settedDate === null || settedTime === undefined || settedTime === null) {
+                    return setUrgent({ [id]: false });
                 } else {
                     const newDate = new Date()
                         .toLocaleString()
@@ -165,22 +165,35 @@ const TaskItem = React.memo(
                     const resultDateToNumber = Math.abs(
                         resultDate / (1000 * 3600)
                     );
+
+                    function isInteger(num) {
+                        return (num ^ 0) === num;
+                    }
+
                     if (resultDateToNumber > 0) {
-                        const resultDateToNumberSplitted = resultDateToNumber
-                            .toString()
-                            .split(".")[1]
-                            .split("");
-                        const endNumbersToHours =
-                            (resultDateToNumberSplitted[0] +
-                                resultDateToNumberSplitted[1]) /
-                            60;
-                        const finalDiffTime =
-                            +resultDateToNumber.toString().split(".")[0] +
-                            +endNumbersToHours;
-                        if (finalDiffTime < 24) {
-                            setUrgent({ [id]: true });
+                        if (isInteger(resultDateToNumber)) {
+                            if (resultDateToNumber < 24) {
+                                setUrgent({ [id]: true });
+                            } else {
+                                setUrgent({ [id]: false });
+                            }
                         } else {
-                            setUrgent({ [id]: false });
+                            const resultDateToNumberSplitted = resultDateToNumber
+                                .toString()
+                                .split(".")[1]
+                                .split("");
+                            const endNumbersToHours =
+                                (resultDateToNumberSplitted[0] +
+                                    resultDateToNumberSplitted[1]) /
+                                60;
+                            const finalDiffTime =
+                                +resultDateToNumber.toString().split(".")[0] +
+                                +endNumbersToHours;
+                            if (finalDiffTime < 24) {
+                                setUrgent({ [id]: true });
+                            } else {
+                                setUrgent({ [id]: false });
+                            }
                         }
                     } else return null;
                 }
@@ -222,122 +235,122 @@ const TaskItem = React.memo(
                         />
                     </div>
                 ) : (
-                    <div>
-                        <ExpansionPanel
-                            style={
-                                urgent[id]
-                                    ? { boxShadow: "0 0 10px 3px red" }
-                                    : null
-                            }
-                        >
-                            <ExpansionPanelSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-label="Expand"
-                                aria-controls="additional-actions1-content"
-                                id="additional-actions1-header"
+                        <div>
+                            <ExpansionPanel
+                                style={
+                                    urgent[id]
+                                        ? { boxShadow: "0 0 10px 3px red" }
+                                        : null
+                                }
                             >
-                                <div className="dataTasks">{data}</div>
-                                {urgent[id] ? (
+                                <ExpansionPanelSummary
+                                    expandIcon={<ExpandMoreIcon />}
+                                    aria-label="Expand"
+                                    aria-controls="additional-actions1-content"
+                                    id="additional-actions1-header"
+                                >
+                                    <div className="dataTasks">{data}</div>
+                                    {urgent[id] ? (
+                                        <div
+                                            style={{
+                                                position: "absolute",
+                                                display: "inline",
+                                                margin: "0 auto",
+                                                left: "0",
+                                                right: "0",
+                                            }}
+                                            className="dataTasks urgentTask"
+                                        >
+                                            Urgent Task!
+                                        </div>
+                                    ) : null}
+                                    {settedDate ? <div className="dataTasks deadlineTasks">
+                                        Deadline:
                                     <div
-                                        style={{
-                                            position: "absolute",
-                                            display: "inline",
-                                            margin: "0 auto",
-                                            left: "0",
-                                            right: "0",
-                                        }}
-                                        className="dataTasks urgentTask"
-                                    >
-                                        Urgent Task!
-                                    </div>
-                                ) : null}
-                                <div className="dataTasks deadlineTasks">
-                                    Deadline:
-                                    <div
-                                        style={{
-                                            display: "inline",
-                                            marginLeft: "5px",
-                                        }}
-                                    >
-                                        {!settedDate ? null : settedDate}{" "}
-                                        {!settedTime ? null : settedTime}
-                                    </div>
-                                </div>
-                                <FormControlLabel
-                                    aria-label="Acknowledge"
-                                    control={
-                                        <Checkbox
-                                            checked={
-                                                status === "done" ? true : false
-                                            }
-                                        />
-                                    }
-                                    className={
-                                        status === "done"
-                                            ? "doneText"
-                                            : "clearText"
-                                    }
-                                    onClick={(event) => {
-                                        event.stopPropagation();
-                                        OnDoneButtonClick();
-                                    }}
-                                    onFocus={(event) => event.stopPropagation()}
-                                    onMouseDown={(event) => {
-                                        event.stopPropagation();
-                                    }}
-                                    label={text}
-                                />
-                                <div className="choseDiv">
-                                    {priority ? (
-                                        <div className="priorityTask">
-                                            priority:
-                                            <div
-                                                style={
-                                                    priority === "high"
-                                                        ? {
-                                                              color: "red",
-                                                              textIndent: "5px",
-                                                          }
-                                                        : priority === "middle"
-                                                        ? {
-                                                              color: "green",
-                                                              textIndent: "5px",
-                                                          }
-                                                        : {
-                                                              color: "yellow",
-                                                              textIndent: "5px",
-                                                          }
+                                            style={{
+                                                display: "inline",
+                                                marginLeft: "5px",
+                                            }}
+                                        >
+                                            {!settedDate ? null : settedDate}{" "}
+                                            {!settedTime ? null : settedTime}
+                                        </div>
+                                    </div> : null}
+                                    <FormControlLabel
+                                        aria-label="Acknowledge"
+                                        control={
+                                            <Checkbox
+                                                checked={
+                                                    status === "done" ? true : false
                                                 }
-                                            >
-                                                {priority}
+                                            />
+                                        }
+                                        className={
+                                            status === "done"
+                                                ? "doneText"
+                                                : "clearText"
+                                        }
+                                        onClick={(event) => {
+                                            event.stopPropagation();
+                                            OnDoneButtonClick();
+                                        }}
+                                        onFocus={(event) => event.stopPropagation()}
+                                        onMouseDown={(event) => {
+                                            event.stopPropagation();
+                                        }}
+                                        label={text}
+                                    />
+                                    <div className="choseDiv">
+                                        {priority ? (
+                                            <div className="priorityTask">
+                                                priority:
+                                                <div
+                                                    style={
+                                                        priority === "high"
+                                                            ? {
+                                                                color: "red",
+                                                                textIndent: "5px",
+                                                            }
+                                                            : priority === "middle"
+                                                                ? {
+                                                                    color: "green",
+                                                                    textIndent: "5px",
+                                                                }
+                                                                : {
+                                                                    color: "yellow",
+                                                                    textIndent: "5px",
+                                                                }
+                                                    }
+                                                >
+                                                    {priority}
+                                                </div>
                                             </div>
-                                        </div>
-                                    ) : null}
-                                    {status ? (
-                                        <div className="statusTask">
-                                            status: {status}
-                                        </div>
-                                    ) : null}
-                                </div>
-                                <DeleteButton
-                                    DeleteClass={DeleteClass}
-                                    DeleteTaskThunk={DeleteTaskThunk}
-                                    id={id}
-                                    keyFirebase={keyFirebase}
-                                    BlockedButtonArray={BlockedButtonArray}
-                                />
-                            </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
-                                <EditButton
-                                    EditButtonClass={EditButtonClass}
-                                    EditButtonFunc={EditButtonFunc}
-                                    id={id}
-                                    BlockedButtonArray={BlockedButtonArray}
-                                />
-                            </ExpansionPanelDetails>
-                        </ExpansionPanel>
-                    </div>
-                )}
+                                        ) : null}
+                                        {status ? (
+                                            <div className="statusTask">
+                                                status: {status}
+                                            </div>
+                                        ) : null}
+                                    </div>
+                                    <DeleteButton
+                                        DeleteClass={DeleteClass}
+                                        DeleteTaskThunk={DeleteTaskThunk}
+                                        id={id}
+                                        keyFirebase={keyFirebase}
+                                        BlockedButtonArray={BlockedButtonArray}
+                                    />
+                                </ExpansionPanelSummary>
+                                <ExpansionPanelDetails>
+                                    <EditButton
+                                        EditButtonClass={EditButtonClass}
+                                        EditButtonFunc={EditButtonFunc}
+                                        id={id}
+                                        BlockedButtonArray={BlockedButtonArray}
+                                    />
+                                </ExpansionPanelDetails>
+                            </ExpansionPanel>
+                        </div>
+                    )}
             </div>
         );
     }

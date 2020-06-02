@@ -18,7 +18,7 @@ export default function Clock({ selectedTime, handleTimeChange }) {
                     userSelect="none"
                     id="time-picker"
                     label="Deadline time"
-                    value={selectedTime}
+                    value={selectedTime === null ? new Date() : selectedTime}
                     onChange={handleTimeChange}
                     KeyboardButtonProps={{
                         "aria-label": "change time",

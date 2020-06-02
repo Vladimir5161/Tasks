@@ -48,15 +48,15 @@ const TaskReducer = (state = initialState, action) => {
                 TasksArray: state.TasksArray.map((item) =>
                     item.id === action.task.id
                         ? {
-                              id: item.id,
-                              priority: action.task.priority,
-                              text: action.task.text,
-                              status: action.task.status,
-                              data: action.task.data,
-                              keyFirebase: action.task.keyFirebase,
-                              settedDate: action.task.settedDate,
-                              settedTime: action.task.settedTime,
-                          }
+                            id: item.id,
+                            priority: action.task.priority,
+                            text: action.task.text,
+                            status: action.task.status,
+                            data: action.task.data,
+                            keyFirebase: action.task.keyFirebase,
+                            settedDate: action.task.settedDate,
+                            settedTime: action.task.settedTime,
+                        }
                         : item
                 ),
             };
@@ -75,12 +75,26 @@ const TaskReducer = (state = initialState, action) => {
         case "FILTERARRAY":
             const newState = { ...state };
             let array = newState.TasksArray;
-            if (action.value !== "date") {
+            debugger
+            if (action.value === "priority" || action.value === "status") {
                 const newTasksArray = _.sortBy(array, [
                     function (o) {
                         return o[action.value];
                     },
                 ]);
+                return {
+                    ...state,
+                    TasksArray: (state.TasksArray = newTasksArray),
+                };
+            } else if (action.value === "deadline") {
+                debugger
+                const newTasksArray = _.sortBy(array, [
+                    function (o) {
+                        const dataForSort = o.settedDate + o.settedTime
+                        debugger
+                        return new Moment(dataForSort).format("YYYY-MM-DD, h:mm");
+                    },
+                ])
                 return {
                     ...state,
                     TasksArray: (state.TasksArray = newTasksArray),
@@ -252,8 +266,8 @@ export const AddTaskThunk = (
         getState().tasks.TasksArray.length !== 0
             ? getState().tasks.TasksArray.length === 1
                 ? +getState().tasks.TasksArray[
-                      getState().tasks.TasksArray.length - 1
-                  ].id + +1
+                    getState().tasks.TasksArray.length - 1
+                ].id + +1
                 : +sortedByIdTasksArray[sortedByIdTasksArray.length - 1].id + +1
             : 1;
     const newDate = new Date()

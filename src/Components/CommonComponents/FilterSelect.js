@@ -49,6 +49,7 @@ export default function FilterSelect({ value, handleChange }) {
                     <option value={"date"}>date</option>
                     <option value={"status"}>status</option>
                     <option value={"priority"}>priority</option>
+                    <option value={"deadline"}>deadline</option>
                 </Select>
             </FormControl>
         </div>

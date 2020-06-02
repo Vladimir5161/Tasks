@@ -20,26 +20,26 @@ const AddTask = ({ AddTaskThunk, changeAddTask, BlockedButtonArray }) => {
     const changeStatus = (event) => {
         setStatus({ status: event.target.value });
     };
-    let [date, setDate] = React.useState(new Date());
+    let [date, setDate] = React.useState(null);
     const onChange = (date) => setDate(date);
 
-    const [selectedTime, setSelectedTime] = React.useState(new Date());
+    const [selectedTime, setSelectedTime] = React.useState(null);
     const handleTimeChange = (date) => {
         setSelectedTime(date);
     };
-    const settedDate = !date
+    const settedDate = date === null
         ? null
         : date.toLocaleString().split(",")[0].split(".").reverse().join("-");
-    const settedTime = !selectedTime
+    const settedTime = selectedTime === null
         ? null
         : selectedTime
-              .toLocaleString()
-              .split(",")[1]
-              .split(":")
-              .reverse()
-              .splice(1, 2)
-              .reverse()
-              .join(":");
+            .toLocaleString()
+            .split(",")[1]
+            .split(":")
+            .reverse()
+            .splice(1, 2)
+            .reverse()
+            .join(":");
 
     const onSubmit = (formData) => {
         const newDate = new Date()
