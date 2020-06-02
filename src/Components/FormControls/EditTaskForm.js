@@ -57,16 +57,7 @@ const EditTaskReduxFrom = React.memo(
                             />
                         </div>
                         <Button
-                            style={{
-                                position: "absolute",
-                                right: "0",
-                                left: "auto",
-                                top: "50%",
-                                transform: "translateY(-50%)",
-                                display: "flex",
-                                justifyContent: "center",
-                                minWidth: "20px",
-                            }}
+                            className="setDeadlineIcon"
                             startIcon={
                                 <img
                                     alt=""

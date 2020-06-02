@@ -37,7 +37,6 @@ const TaskItem = React.memo(
         settedDate,
         settedTime,
     }) => {
-        console.log(settedDate);
         const [choseState, setChoseState] = React.useState({
             priority: priority,
         });
@@ -59,23 +58,33 @@ const TaskItem = React.memo(
         const [selectedTime, setSelectedTime] = React.useState({
             [id]: null,
         });
+
+        const [missed, setMissed] = React.useState({
+            [id]: false,
+        });
         const handleTimeChange = (time) => {
             setSelectedTime({ [id]: time });
         };
-        const newSettedDate = date[id] !== null ?
-            date[id].toLocaleString()
-                .split(",")[0]
-                .split(".")
-                .reverse()
-                .join("-") : null
-        const newSettedTime = selectedTime[id] !== null ?
-            selectedTime[id].toLocaleString()
-                .split(",")[1]
-                .split(":")
-                .reverse()
-                .splice(1, 2)
-                .reverse()
-                .join(":") : null
+        const newSettedDate =
+            date[id] !== null
+                ? date[id]
+                      .toLocaleString()
+                      .split(",")[0]
+                      .split(".")
+                      .reverse()
+                      .join("-")
+                : settedDate;
+        const newSettedTime =
+            selectedTime[id] !== null
+                ? selectedTime[id]
+                      .toLocaleString()
+                      .split(",")[1]
+                      .split(":")
+                      .reverse()
+                      .splice(1, 2)
+                      .reverse()
+                      .join(":")
+                : settedTime;
         // ----------------------
         const onSubmit = (form) => {
             const newDate = new Date()
@@ -92,12 +101,10 @@ const TaskItem = React.memo(
                 .splice(1, 2)
                 .reverse()
                 .join(":");
-            const resultDate =
+            if (
                 new Date(newDate + newTime) >
-                    new Date(newSettedDate + newSettedTime)
-                    ? true
-                    : false;
-            if (resultDate) {
+                new Date(newSettedDate + newSettedTime)
+            ) {
                 UpdateTaskThunk(
                     choseState.priority,
                     form.text,
@@ -141,68 +148,83 @@ const TaskItem = React.memo(
         };
         // -------------------------
         useEffect(() => {
+            const newDate = new Date()
+                .toLocaleString()
+                .split(",")[0]
+                .split(".")
+                .reverse()
+                .join("-");
+            const newTime = new Date()
+                .toLocaleString()
+                .split(",")[1]
+                .split(":")
+                .reverse()
+                .splice(1, 2)
+                .reverse()
+                .join(":");
             const isUrgent = (settedDate, settedTime) => {
-                if (settedDate === undefined || settedDate === null || settedTime === undefined || settedTime === null) {
+                if (
+                    settedDate === undefined ||
+                    settedDate === null ||
+                    settedTime === undefined ||
+                    settedTime === null
+                ) {
                     return setUrgent({ [id]: false });
+                } else if (status === "done") {
+                    setUrgent({ [id]: false });
                 } else {
-                    const newDate = new Date()
-                        .toLocaleString()
-                        .split(",")[0]
-                        .split(".")
-                        .reverse()
-                        .join("-");
-                    const newTime = new Date()
-                        .toLocaleString()
-                        .split(",")[1]
-                        .split(":")
-                        .reverse()
-                        .splice(1, 2)
-                        .reverse()
-                        .join(":");
-                    const resultDate =
-                        new Date(newDate + newTime).getTime() -
-                        new Date(settedDate + settedTime).getTime();
-                    const resultDateToNumber = Math.abs(
-                        resultDate / (1000 * 3600)
-                    );
+                    if (
+                        new Date(newDate + newTime).getTime() >
+                        new Date(settedDate + settedTime).getTime()
+                    ) {
+                        setMissed({ [id]: true });
+                    } else {
+                        const resultDate =
+                            new Date(newDate + newTime).getTime() -
+                            new Date(settedDate + settedTime).getTime();
+                        const resultDateToNumber = Math.abs(
+                            resultDate / (1000 * 3600)
+                        );
 
-                    function isInteger(num) {
-                        return (num ^ 0) === num;
-                    }
-
-                    if (resultDateToNumber > 0) {
-                        if (isInteger(resultDateToNumber)) {
-                            if (resultDateToNumber < 24) {
-                                setUrgent({ [id]: true });
-                            } else {
-                                setUrgent({ [id]: false });
-                            }
-                        } else {
-                            const resultDateToNumberSplitted = resultDateToNumber
-                                .toString()
-                                .split(".")[1]
-                                .split("");
-                            const endNumbersToHours =
-                                (resultDateToNumberSplitted[0] +
-                                    resultDateToNumberSplitted[1]) /
-                                60;
-                            const finalDiffTime =
-                                +resultDateToNumber.toString().split(".")[0] +
-                                +endNumbersToHours;
-                            if (finalDiffTime < 24) {
-                                setUrgent({ [id]: true });
-                            } else {
-                                setUrgent({ [id]: false });
-                            }
+                        function isInteger(num) {
+                            return (num ^ 0) === num;
                         }
-                    } else return null;
+                        setMissed({ [id]: false });
+                        if (resultDateToNumber > 0) {
+                            if (isInteger(resultDateToNumber)) {
+                                if (resultDateToNumber < 24) {
+                                    setUrgent({ [id]: true });
+                                } else {
+                                    setUrgent({ [id]: false });
+                                }
+                            } else {
+                                const resultDateToNumberSplitted = resultDateToNumber
+                                    .toString()
+                                    .split(".")[1]
+                                    .split("");
+                                const endNumbersToHours =
+                                    (resultDateToNumberSplitted[0] +
+                                        resultDateToNumberSplitted[1]) /
+                                    60;
+                                const finalDiffTime =
+                                    +resultDateToNumber
+                                        .toString()
+                                        .split(".")[0] + +endNumbersToHours;
+                                if (finalDiffTime < 24) {
+                                    setUrgent({ [id]: true });
+                                } else {
+                                    setUrgent({ [id]: false });
+                                }
+                            }
+                        } else return null;
+                    }
                 }
             };
             const callUrgentFunc = () => {
                 isUrgent(settedDate, settedTime);
             };
             callUrgentFunc();
-        }, [id, settedDate, settedTime]);
+        }, [id, settedDate, settedTime, status, newSettedDate, newSettedTime]);
         return (
             <div>
                 {editTask.some((item) => item === id) ? (
@@ -235,38 +257,54 @@ const TaskItem = React.memo(
                         />
                     </div>
                 ) : (
-                        <div>
-                            <ExpansionPanel
-                                style={
-                                    urgent[id]
-                                        ? { boxShadow: "0 0 10px 3px red" }
-                                        : null
-                                }
+                    <div>
+                        <ExpansionPanel
+                            style={
+                                missed[id]
+                                    ? { boxShadow: "0 0 10px 3px blue" }
+                                    : urgent[id]
+                                    ? { boxShadow: "0 0 10px 3px red" }
+                                    : null
+                            }
+                        >
+                            <ExpansionPanelSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-label="Expand"
+                                aria-controls="additional-actions1-content"
+                                id="additional-actions1-header"
                             >
-                                <ExpansionPanelSummary
-                                    expandIcon={<ExpandMoreIcon />}
-                                    aria-label="Expand"
-                                    aria-controls="additional-actions1-content"
-                                    id="additional-actions1-header"
-                                >
-                                    <div className="dataTasks">{data}</div>
-                                    {urgent[id] ? (
-                                        <div
-                                            style={{
-                                                position: "absolute",
-                                                display: "inline",
-                                                margin: "0 auto",
-                                                left: "0",
-                                                right: "0",
-                                            }}
-                                            className="dataTasks urgentTask"
-                                        >
-                                            Urgent Task!
-                                        </div>
-                                    ) : null}
-                                    {settedDate ? <div className="dataTasks deadlineTasks">
-                                        Deadline:
+                                <div className="dataTasks">{data}</div>
+                                {missed[id] ? (
                                     <div
+                                        style={{
+                                            position: "absolute",
+                                            display: "inline",
+                                            margin: "0 auto",
+                                            left: "0",
+                                            right: "0",
+                                        }}
+                                        className="dataTasks urgentTask"
+                                    >
+                                        Missed Task!
+                                    </div>
+                                ) : urgent[id] ? (
+                                    <div
+                                        style={{
+                                            position: "absolute",
+                                            display: "inline",
+                                            margin: "0 auto",
+                                            left: "0",
+                                            right: "0",
+                                        }}
+                                        className="dataTasks urgentTask"
+                                    >
+                                        Urgent Task!
+                                    </div>
+                                ) : null}
+                                {settedDate ? (
+                                    <div className="dataTasks deadlineTasks">
+                                        Deadline:
+                                        <div
                                             style={{
                                                 display: "inline",
                                                 marginLeft: "5px",
@@ -275,82 +313,83 @@ const TaskItem = React.memo(
                                             {!settedDate ? null : settedDate}{" "}
                                             {!settedTime ? null : settedTime}
                                         </div>
-                                    </div> : null}
-                                    <FormControlLabel
-                                        aria-label="Acknowledge"
-                                        control={
-                                            <Checkbox
-                                                checked={
-                                                    status === "done" ? true : false
-                                                }
-                                            />
-                                        }
-                                        className={
-                                            status === "done"
-                                                ? "doneText"
-                                                : "clearText"
-                                        }
-                                        onClick={(event) => {
-                                            event.stopPropagation();
-                                            OnDoneButtonClick();
-                                        }}
-                                        onFocus={(event) => event.stopPropagation()}
-                                        onMouseDown={(event) => {
-                                            event.stopPropagation();
-                                        }}
-                                        label={text}
-                                    />
-                                    <div className="choseDiv">
-                                        {priority ? (
-                                            <div className="priorityTask">
-                                                priority:
-                                                <div
-                                                    style={
-                                                        priority === "high"
-                                                            ? {
-                                                                color: "red",
-                                                                textIndent: "5px",
-                                                            }
-                                                            : priority === "middle"
-                                                                ? {
-                                                                    color: "green",
-                                                                    textIndent: "5px",
-                                                                }
-                                                                : {
-                                                                    color: "yellow",
-                                                                    textIndent: "5px",
-                                                                }
-                                                    }
-                                                >
-                                                    {priority}
-                                                </div>
-                                            </div>
-                                        ) : null}
-                                        {status ? (
-                                            <div className="statusTask">
-                                                status: {status}
-                                            </div>
-                                        ) : null}
                                     </div>
-                                    <DeleteButton
-                                        DeleteClass={DeleteClass}
-                                        DeleteTaskThunk={DeleteTaskThunk}
-                                        id={id}
-                                        keyFirebase={keyFirebase}
-                                        BlockedButtonArray={BlockedButtonArray}
-                                    />
-                                </ExpansionPanelSummary>
-                                <ExpansionPanelDetails>
-                                    <EditButton
-                                        EditButtonClass={EditButtonClass}
-                                        EditButtonFunc={EditButtonFunc}
-                                        id={id}
-                                        BlockedButtonArray={BlockedButtonArray}
-                                    />
-                                </ExpansionPanelDetails>
-                            </ExpansionPanel>
-                        </div>
-                    )}
+                                ) : null}
+                                <FormControlLabel
+                                    aria-label="Acknowledge"
+                                    control={
+                                        <Checkbox
+                                            checked={
+                                                status === "done" ? true : false
+                                            }
+                                        />
+                                    }
+                                    className={
+                                        status === "done"
+                                            ? "doneText"
+                                            : "clearText"
+                                    }
+                                    onClick={(event) => {
+                                        event.stopPropagation();
+                                        OnDoneButtonClick();
+                                    }}
+                                    onFocus={(event) => event.stopPropagation()}
+                                    onMouseDown={(event) => {
+                                        event.stopPropagation();
+                                    }}
+                                    label={text}
+                                />
+                                <div className="choseDiv">
+                                    {priority ? (
+                                        <div className="priorityTask">
+                                            priority:
+                                            <div
+                                                style={
+                                                    priority === "high"
+                                                        ? {
+                                                              color: "red",
+                                                              textIndent: "5px",
+                                                          }
+                                                        : priority === "middle"
+                                                        ? {
+                                                              color: "green",
+                                                              textIndent: "5px",
+                                                          }
+                                                        : {
+                                                              color: "yellow",
+                                                              textIndent: "5px",
+                                                          }
+                                                }
+                                            >
+                                                {priority}
+                                            </div>
+                                        </div>
+                                    ) : null}
+                                    {status ? (
+                                        <div className="statusTask">
+                                            status: {status}
+                                        </div>
+                                    ) : null}
+                                </div>
+                                <DeleteButton
+                                    DeleteClass={DeleteClass}
+                                    DeleteTaskThunk={DeleteTaskThunk}
+                                    id={id}
+                                    keyFirebase={keyFirebase}
+                                    BlockedButtonArray={BlockedButtonArray}
+                                />
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+                                <EditButton
+                                    EditButtonClass={EditButtonClass}
+                                    EditButtonFunc={EditButtonFunc}
+                                    id={id}
+                                    BlockedButtonArray={BlockedButtonArray}
+                                />
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
+                    </div>
+                )}
             </div>
         );
     }

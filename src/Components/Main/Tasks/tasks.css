@@ -12,11 +12,13 @@
     align-self: center;
     margin: 0 auto;
     justify-content: center !important;
+
 }
 .statusTask div, .priorityTask div {
     display: flex;
     align-self: center;
     justify-content: center;
+    max-width: 100px !important;
 }
 .deadlineTasks {
     display: block !important;
@@ -26,7 +28,6 @@
 }
 .MuiTypography-body1 {
     margin-left: 20px !important;
-    word-break: break-word!important;
 }
 .clearText {
     text-decoration: none;
@@ -95,7 +96,20 @@
         position: relative;
         right: -10px;
     }
-
+    .dataTasks {
+        font-size: 10px !important;
+    }
+    .urgentTask {
+        top: 20px;
+        position: relative; 
+        font-size: 16px !important;
+      }
+      .deadlineTasks {
+        text-align: center !important;
+        right: 5px !important;
+        top: 0 !important;
+        left: auto !important;
+    }
     .MuiExpansionPanelSummary-expandIcon.Mui-expanded {
         position: absolute !important;
         bottom: 0 !important;
@@ -164,22 +178,10 @@
         right: 10px;
         bottom: 0;
     }
-    .deadlineTasks {
-        text-align: center !important;
-        right: -10px !important;
-        top: 0 !important;
-        left: auto !important;
-    }
-    .MuiExpansionPanelSummary-content.Mui-expanded, .MuiExpansionPanelSummary-content {
-        margin: 45px auto 15px auto !important;
-
-    }
     .statusTask , .priorityTask  {
         display: block !important;
     }
     .statusTask div, .priorityTask div {
-        display: block !important;
-        align-self: center;
         min-width: 80px !important;
         justify-content: center;
         width: 100px !important;

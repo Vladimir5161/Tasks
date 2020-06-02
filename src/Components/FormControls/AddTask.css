@@ -24,6 +24,16 @@
     margin-right: -12px;
     margin-top: 10px !important;
 }
+.setDeadlineIcon {
+    position: absolute !important;
+    right: 0 !important;
+    left: auto !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    display: flex !important;
+    justify-content: center !important;
+    min-width: 20px !important;
+}
 @media screen and (max-width: 768px) {
     .addTaskDiv {
         display: grid;
@@ -34,5 +44,27 @@
     .addTaskDiv:nth-child(2), .addTaskDiv:nth-child(3) {
         display: flex;
         flex-direction: row;
+    }
+}
+@media screen and (max-width: 425px) {
+    .addTaskDiv {
+        display: grid;
+        grid-template-columns: none;
+        grid-template-rows: 1fr 1fr;
+        width: 100%;
+    }
+    .addTaskDiv:nth-child(2), .addTaskDiv:nth-child(3) {
+        display: flex;
+        flex-direction: row;
+    }
+    .setDeadlineIcon {
+        position: absolute;
+        right: 0% !important;
+        left: auto;
+        top: 15% !important;
+        transform: translateY(-50%);
+        display: flex;
+        justify-content: center;
+        min-width: 20px;
     }
 }
