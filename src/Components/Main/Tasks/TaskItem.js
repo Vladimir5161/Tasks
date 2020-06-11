@@ -10,7 +10,6 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import EditTaskForm from "../../FormControls/EditTaskForm";
 import { CalendarReact } from "../../CommonComponents/Calendar";
 import Clock from "../../CommonComponents/Clock";
-const Moment = require("moment");
 
 const TaskItem = React.memo(
     ({
@@ -28,10 +27,8 @@ const TaskItem = React.memo(
         settedDate,
         settedTime,
         deadline,
-        date,
         onChange,
         handleTimeChange,
-        selectedTime,
         choseState,
         changeStatus,
         handleChange,
@@ -87,6 +84,8 @@ const TaskItem = React.memo(
                                     ? { boxShadow: "0 0 10px 3px blue" }
                                     : urgent[id]
                                     ? { boxShadow: "0 0 10px 3px red" }
+                                    : status === "done"
+                                    ? { boxShadow: "0 0 10px 3px green" }
                                     : null
                             }
                         >

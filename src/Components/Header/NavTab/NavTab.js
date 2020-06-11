@@ -37,7 +37,11 @@ const NavTabs = React.memo(({ handleChange, value, Logout, isAuth, user }) => {
     return (
         <div
             className={classes.root}
-            style={{ textTranform: "none", position: "relative", zIndex: "40" }}
+            style={{
+                textTranform: "none",
+                position: "relative",
+                zIndex: "40",
+            }}
         >
             <AppBar position="static">
                 <Tabs

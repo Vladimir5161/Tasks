@@ -4,7 +4,6 @@ import Grid from "@material-ui/core/Grid";
 import DateFnsUtils from "@date-io/date-fns";
 import { MuiPickersUtilsProvider, TimePicker } from "@material-ui/pickers";
 
-console.log(document.getElementById("time-picker"));
 export default function Clock({ selectedTime, handleTimeChange }) {
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
