@@ -5,9 +5,9 @@ import "./tasks.css";
 import { DeleteTaskThunk, filterArray } from "../../../store/TaskReducer";
 import AddTaskButton from "../../CommonComponents/AddTaskButton";
 import AddTask from "./AddTask";
-import TaskItem from "./TaskItem";
 import Filter from "./Filter";
 import Preloader from "../../CommonComponents/Preloader";
+import TaskItemContainer from "./TaskItemContainer";
 
 const useStyles = makeStyles({
     root: {
@@ -38,59 +38,67 @@ const ActionsInExpansionPanelSummary = React.memo(
                 ? changeEditTask(editTask.filter((id) => id !== ID))
                 : changeEditTask([...editTask, ID]);
         };
-        console.log(TasksArray);
+        let [addTaskPanel, setAddTaskPanel] = useState("addTaskPanel");
         if (loading) {
             return <Preloader />;
         }
         return (
-            <div>
+            <>
                 {isAuth ? (
                     <div className={classes.root}>
-                        <div>
+                        <AddTaskButton
+                            AddTaskFunc={AddTaskFunc}
+                            setAddTaskPanel={setAddTaskPanel}
+                            addTaskPanel={addTaskPanel}
+                        />
+                        <div style={{ position: "relative", top: "-100px" }}>
                             <Filter filterArray={filterArray} />
                         </div>
-                        <AddTaskButton AddTaskFunc={AddTaskFunc} />
-                        {addTask ? (
-                            <AddTask
-                                changeAddTask={changeAddTask}
-                                BlockedButtonArray={BlockedButtonArray}
-                            />
-                        ) : null}
-                        {TasksArray.map(
-                            ({
-                                id,
-                                text,
-                                priority,
-                                data,
-                                status,
-                                keyFirebase,
-                                settedTime,
-                                settedDate,
-                            }) => (
-                                <div key={id}>
-                                    <TaskItem
-                                        EditButtonFunc={EditButtonFunc}
-                                        id={id}
-                                        text={text}
-                                        priority={priority}
-                                        status={status}
-                                        keyFirebase={keyFirebase}
-                                        DeleteClass={DeleteClass}
-                                        EditButtonClass={EditButtonClass}
-                                        data={data}
-                                        DeleteTaskThunk={DeleteTaskThunk}
-                                        editTask={editTask}
-                                        DoneIdArray={DoneIdArray}
-                                        BlockedButtonArray={BlockedButtonArray}
-                                        settedTime={settedTime}
-                                        settedDate={settedDate}
-                                    />
-                                </div>
-                            )
-                        )}
+                        <div className={addTaskPanel}>
+                            {addTask ? (
+                                <AddTask
+                                    changeAddTask={changeAddTask}
+                                    BlockedButtonArray={BlockedButtonArray}
+                                />
+                            ) : null}
+                            {TasksArray.map(
+                                ({
+                                    id,
+                                    text,
+                                    priority,
+                                    data,
+                                    status,
+                                    keyFirebase,
+                                    settedTime,
+                                    settedDate,
+                                }) => (
+                                    <div key={id}>
+                                        <TaskItemContainer
+                                            EditButtonFunc={EditButtonFunc}
+                                            id={id}
+                                            text={text}
+                                            priority={priority}
+                                            status={status}
+                                            keyFirebase={keyFirebase}
+                                            DeleteClass={DeleteClass}
+                                            EditButtonClass={EditButtonClass}
+                                            data={data}
+                                            DeleteTaskThunk={DeleteTaskThunk}
+                                            editTask={editTask}
+                                            DoneIdArray={DoneIdArray}
+                                            BlockedButtonArray={
+                                                BlockedButtonArray
+                                            }
+                                            settedTime={settedTime}
+                                            settedDate={settedDate}
+                                        />
+                                    </div>
+                                )
+                            )}
+                        </div>
                     </div>
                 ) : null}
-            </div>
+            </>
         );
     }
 );

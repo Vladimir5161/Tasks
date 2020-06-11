@@ -35,7 +35,10 @@ const NavTabs = React.memo(({ handleChange, value, Logout, isAuth, user }) => {
     const classes = useStyles();
     const label = isAuth ? `Hello ${user.name}` : "Log In";
     return (
-        <div className={classes.root} style={{ textTranform: "none" }}>
+        <div
+            className={classes.root}
+            style={{ textTranform: "none", position: "relative", zIndex: "20" }}
+        >
             <AppBar position="static">
                 <Tabs
                     variant="fullWidth"

@@ -1,7 +1,7 @@
 .inputTaskDiv {
     width: 100%;
 }
-.MuiTextField-root{
+.MuiTextField-root {
     width: 100% !important;
     padding: 10px !important;
     box-sizing: border-box;
@@ -13,11 +13,13 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     position: relative;
- }
-.MuiExpansionPanelSummary-root.Mui-expanded, .MuiExpansionPanelSummary-root  {
+}
+.MuiExpansionPanelSummary-root.Mui-expanded,
+.MuiExpansionPanelSummary-root {
     box-sizing: border-box;
 }
-.makeStyles-formControl-197, .makeStyles-formControl-223  {
+.makeStyles-formControl-197,
+.makeStyles-formControl-223 {
     min-width: 80px !important;
 }
 .MuiIconButton-edgeEnd {
@@ -34,6 +36,23 @@
     justify-content: center !important;
     min-width: 20px !important;
 }
+.addTaskPanelAnimation {
+    animation: addTaskTransition 2s;
+    position: relative;
+    z-index: 1;
+}
+@keyframes addTaskTransition {
+    0% {
+        position: relative;
+        top: -200px;
+        opacity: 0;
+    }
+    100% {
+        position: relative;
+        top: 0;
+        opacity: 1;
+    }
+}
 @media screen and (max-width: 768px) {
     .addTaskDiv {
         display: grid;
@@ -41,7 +60,8 @@
         grid-template-rows: 1fr 1fr;
         width: 100%;
     }
-    .addTaskDiv:nth-child(2), .addTaskDiv:nth-child(3) {
+    .addTaskDiv:nth-child(2),
+    .addTaskDiv:nth-child(3) {
         display: flex;
         flex-direction: row;
     }
@@ -53,7 +73,8 @@
         grid-template-rows: 1fr 1fr;
         width: 100%;
     }
-    .addTaskDiv:nth-child(2), .addTaskDiv:nth-child(3) {
+    .addTaskDiv:nth-child(2),
+    .addTaskDiv:nth-child(3) {
         display: flex;
         flex-direction: row;
     }

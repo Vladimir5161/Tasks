@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
@@ -10,12 +10,6 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import EditTaskForm from "../../FormControls/EditTaskForm";
 import { CalendarReact } from "../../CommonComponents/Calendar";
 import Clock from "../../CommonComponents/Clock";
-import { connect } from "react-redux";
-import {
-    UpdateTaskThunk,
-    SetToPrevStatusThunk,
-    SetToDoneThunk,
-} from "../../../store/TaskReducer";
 
 const TaskItem = React.memo(
     ({
@@ -25,207 +19,30 @@ const TaskItem = React.memo(
         priority,
         status,
         DeleteClass,
-        DeleteTaskThunk,
         keyFirebase,
         EditButtonClass,
         editTask,
         EditButtonFunc,
-        UpdateTaskThunk,
-        SetToPrevStatusThunk,
-        SetToDoneThunk,
         BlockedButtonArray,
         settedDate,
         settedTime,
+        deadline,
+        date,
+        onChange,
+        handleTimeChange,
+        selectedTime,
+        choseState,
+        changeStatus,
+        handleChange,
+        setDeadline,
+        onSubmit,
+        choseStatus,
+        missed,
+        taskPanel,
+        urgent,
+        OnDoneButtonClick,
+        DeleteTask,
     }) => {
-        const [choseState, setChoseState] = React.useState({
-            priority: priority,
-        });
-        const handleChange = (event) => {
-            setChoseState({
-                priority: event.target.value,
-            });
-        };
-        const [choseStatus, setStatus] = React.useState({
-            status: status,
-        });
-        const changeStatus = (event) => {
-            setStatus({ status: event.target.value });
-        };
-
-        let [date, setDate] = React.useState({ [id]: null });
-        const onChange = (date) => setDate({ [id]: date });
-
-        const [selectedTime, setSelectedTime] = React.useState({
-            [id]: null,
-        });
-
-        const [missed, setMissed] = React.useState({
-            [id]: false,
-        });
-        const handleTimeChange = (time) => {
-            setSelectedTime({ [id]: time });
-        };
-        const newSettedDate =
-            date[id] !== null
-                ? date[id]
-                      .toLocaleString()
-                      .split(",")[0]
-                      .split(".")
-                      .reverse()
-                      .join("-")
-                : settedDate;
-        const newSettedTime =
-            selectedTime[id] !== null
-                ? selectedTime[id]
-                      .toLocaleString()
-                      .split(",")[1]
-                      .split(":")
-                      .reverse()
-                      .splice(1, 2)
-                      .reverse()
-                      .join(":")
-                : settedTime;
-        // ----------------------
-        const onSubmit = (form) => {
-            const newDate = new Date()
-                .toLocaleString()
-                .split(",")[0]
-                .split(".")
-                .reverse()
-                .join("-");
-            const newTime = new Date()
-                .toLocaleString()
-                .split(",")[1]
-                .split(":")
-                .reverse()
-                .splice(1, 2)
-                .reverse()
-                .join(":");
-            if (
-                new Date(newDate + newTime) >
-                new Date(newSettedDate + newSettedTime)
-            ) {
-                UpdateTaskThunk(
-                    choseState.priority,
-                    form.text,
-                    choseStatus.status,
-                    id,
-                    keyFirebase,
-                    data,
-                    settedDate,
-                    settedTime
-                ).then(EditButtonFunc(id));
-            } else {
-                UpdateTaskThunk(
-                    choseState.priority,
-                    form.text,
-                    choseStatus.status,
-                    id,
-                    keyFirebase,
-                    data,
-                    newSettedDate,
-                    newSettedTime
-                ).then(EditButtonFunc(id));
-            }
-        };
-
-        const OnDoneButtonClick = () => {
-            if (status === "done") {
-                SetToPrevStatusThunk(keyFirebase);
-            } else {
-                SetToDoneThunk(keyFirebase);
-            }
-        };
-        // localStorage.setItem("name", JSON.stringify({ name: "vova" }));
-        // let name = localStorage.getItem("name");
-        // console.log(JSON.parse(name).name);
-        let [urgent, setUrgent] = React.useState({ [id]: false });
-        let [deadline, changeDeadline] = React.useState({ [id]: false });
-        const setDeadline = () => {
-            deadline[id]
-                ? changeDeadline({ [id]: false })
-                : changeDeadline({ [id]: true });
-        };
-        // -------------------------
-        useEffect(() => {
-            const newDate = new Date()
-                .toLocaleString()
-                .split(",")[0]
-                .split(".")
-                .reverse()
-                .join("-");
-            const newTime = new Date()
-                .toLocaleString()
-                .split(",")[1]
-                .split(":")
-                .reverse()
-                .splice(1, 2)
-                .reverse()
-                .join(":");
-            const isUrgent = (settedDate, settedTime) => {
-                if (
-                    settedDate === undefined ||
-                    settedDate === null ||
-                    settedTime === undefined ||
-                    settedTime === null
-                ) {
-                    return setUrgent({ [id]: false });
-                } else if (status === "done") {
-                    setUrgent({ [id]: false });
-                    setMissed({ [id]: false });
-                } else {
-                    if (
-                        new Date(newDate + newTime).getTime() >=
-                        new Date(settedDate + settedTime).getTime()
-                    ) {
-                        setMissed({ [id]: true });
-                    } else {
-                        const resultDate =
-                            new Date(newDate + newTime).getTime() -
-                            new Date(settedDate + settedTime).getTime();
-                        const resultDateToNumber = Math.abs(
-                            resultDate / (1000 * 3600)
-                        );
-
-                        function isInteger(num) {
-                            return (num ^ 0) === num;
-                        }
-                        setMissed({ [id]: false });
-                        if (resultDateToNumber > 0) {
-                            if (isInteger(resultDateToNumber)) {
-                                if (resultDateToNumber < 24) {
-                                    setUrgent({ [id]: true });
-                                } else {
-                                    setUrgent({ [id]: false });
-                                }
-                            } else {
-                                const resultDateToNumberSplitted = resultDateToNumber
-                                    .toString()
-                                    .split(".")[1]
-                                    .split("");
-                                const endNumbersToHours =
-                                    (resultDateToNumberSplitted[0] +
-                                        resultDateToNumberSplitted[1]) /
-                                    60;
-                                const finalDiffTime =
-                                    +resultDateToNumber
-                                        .toString()
-                                        .split(".")[0] + +endNumbersToHours;
-                                if (finalDiffTime < 24) {
-                                    setUrgent({ [id]: true });
-                                } else {
-                                    setUrgent({ [id]: false });
-                                }
-                            }
-                        } else return null;
-                    }
-                }
-            };
-            const callUrgentFunc = () => {
-                isUrgent(settedDate, settedTime);
-            };
-            callUrgentFunc();
-        }, [id, settedDate, settedTime, status, newSettedDate, newSettedTime]);
         return (
             <div>
                 {editTask.some((item) => item === id) ? (
@@ -258,7 +75,7 @@ const TaskItem = React.memo(
                         />
                     </div>
                 ) : (
-                    <div>
+                    <div className={taskPanel[id]}>
                         <ExpansionPanel
                             style={
                                 missed[id]
@@ -338,6 +155,7 @@ const TaskItem = React.memo(
                                     onMouseDown={(event) => {
                                         event.stopPropagation();
                                     }}
+                                    style={{ wordBreak: "break-word" }}
                                     label={text}
                                 />
                                 <div className="choseDiv">
@@ -374,7 +192,7 @@ const TaskItem = React.memo(
                                 </div>
                                 <DeleteButton
                                     DeleteClass={DeleteClass}
-                                    DeleteTaskThunk={DeleteTaskThunk}
+                                    DeleteTask={DeleteTask}
                                     id={id}
                                     keyFirebase={keyFirebase}
                                     BlockedButtonArray={BlockedButtonArray}
@@ -395,8 +213,4 @@ const TaskItem = React.memo(
         );
     }
 );
-export default connect(null, {
-    UpdateTaskThunk,
-    SetToPrevStatusThunk,
-    SetToDoneThunk,
-})(TaskItem);
+export default TaskItem;

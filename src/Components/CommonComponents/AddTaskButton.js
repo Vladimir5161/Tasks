@@ -14,11 +14,22 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function AddButton({ AddTaskFunc }) {
+export default function AddButton({
+    AddTaskFunc,
+    setAddTaskPanel,
+    addTaskPanel,
+}) {
     const classes = useStyles();
 
     return (
-        <div className={classes.root}>
+        <div
+            className={classes.root}
+            onMouseDown={() => {
+                addTaskPanel === "addTaskPanel"
+                    ? setAddTaskPanel("addTaskPanelAnimation")
+                    : setAddTaskPanel("addTaskPanel");
+            }}
+        >
             <Fab
                 color="primary"
                 aria-label="add"

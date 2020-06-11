@@ -48,15 +48,15 @@ const TaskReducer = (state = initialState, action) => {
                 TasksArray: state.TasksArray.map((item) =>
                     item.id === action.task.id
                         ? {
-                            id: item.id,
-                            priority: action.task.priority,
-                            text: action.task.text,
-                            status: action.task.status,
-                            data: action.task.data,
-                            keyFirebase: action.task.keyFirebase,
-                            settedDate: action.task.settedDate,
-                            settedTime: action.task.settedTime,
-                        }
+                              id: item.id,
+                              priority: action.task.priority,
+                              text: action.task.text,
+                              status: action.task.status,
+                              data: action.task.data,
+                              keyFirebase: action.task.keyFirebase,
+                              settedDate: action.task.settedDate,
+                              settedTime: action.task.settedTime,
+                          }
                         : item
                 ),
             };
@@ -75,7 +75,7 @@ const TaskReducer = (state = initialState, action) => {
         case "FILTERARRAY":
             const newState = { ...state };
             let array = newState.TasksArray;
-            debugger
+            debugger;
             if (action.value === "priority" || action.value === "status") {
                 const newTasksArray = _.sortBy(array, [
                     function (o) {
@@ -87,14 +87,16 @@ const TaskReducer = (state = initialState, action) => {
                     TasksArray: (state.TasksArray = newTasksArray),
                 };
             } else if (action.value === "deadline") {
-                debugger
+                debugger;
                 const newTasksArray = _.sortBy(array, [
                     function (o) {
-                        const dataForSort = o.settedDate + o.settedTime
-                        debugger
-                        return new Moment(dataForSort).format("YYYY-MM-DD, h:mm");
+                        const dataForSort = o.settedDate + o.settedTime;
+                        debugger;
+                        return new Moment(dataForSort).format(
+                            "YYYY-MM-DD, h:mm"
+                        );
                     },
-                ])
+                ]);
                 return {
                     ...state,
                     TasksArray: (state.TasksArray = newTasksArray),
@@ -242,8 +244,8 @@ export const GetTasksThunk = () => async (dispatch) => {
 export const DeleteTaskThunk = (id, keyFirebase) => async (dispatch) => {
     await dispatch(blockButton(id));
     try {
-        await app.firestore().collection("tasks").doc(keyFirebase).delete();
         await dispatch(deleteTask(id));
+        await app.firestore().collection("tasks").doc(keyFirebase).delete();
     } catch {
         dispatch(SetMessage("something went wrong", "error"));
     }
@@ -266,8 +268,8 @@ export const AddTaskThunk = (
         getState().tasks.TasksArray.length !== 0
             ? getState().tasks.TasksArray.length === 1
                 ? +getState().tasks.TasksArray[
-                    getState().tasks.TasksArray.length - 1
-                ].id + +1
+                      getState().tasks.TasksArray.length - 1
+                  ].id + +1
                 : +sortedByIdTasksArray[sortedByIdTasksArray.length - 1].id + +1
             : 1;
     const newDate = new Date()

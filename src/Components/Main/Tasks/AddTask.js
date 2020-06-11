@@ -27,19 +27,26 @@ const AddTask = ({ AddTaskThunk, changeAddTask, BlockedButtonArray }) => {
     const handleTimeChange = (date) => {
         setSelectedTime(date);
     };
-    const settedDate = date === null
-        ? null
-        : date.toLocaleString().split(",")[0].split(".").reverse().join("-");
-    const settedTime = selectedTime === null
-        ? null
-        : selectedTime
-            .toLocaleString()
-            .split(",")[1]
-            .split(":")
-            .reverse()
-            .splice(1, 2)
-            .reverse()
-            .join(":");
+    const settedDate =
+        date === null
+            ? null
+            : date
+                  .toLocaleString()
+                  .split(",")[0]
+                  .split(".")
+                  .reverse()
+                  .join("-");
+    const settedTime =
+        selectedTime === null
+            ? null
+            : selectedTime
+                  .toLocaleString()
+                  .split(",")[1]
+                  .split(":")
+                  .reverse()
+                  .splice(1, 2)
+                  .reverse()
+                  .join(":");
 
     const onSubmit = (formData) => {
         const newDate = new Date()
@@ -82,7 +89,7 @@ const AddTask = ({ AddTaskThunk, changeAddTask, BlockedButtonArray }) => {
         changeAddTask(false);
     };
     return (
-        <div>
+        <>
             <CalendarReact date={date} onChange={onChange} />
             <Clock
                 handleTimeChange={handleTimeChange}
@@ -96,7 +103,7 @@ const AddTask = ({ AddTaskThunk, changeAddTask, BlockedButtonArray }) => {
                 changeStatus={changeStatus}
                 BlockedButtonArray={BlockedButtonArray}
             />
-        </div>
+        </>
     );
 };
 

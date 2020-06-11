@@ -15,7 +15,7 @@ export default function DeleteButton({
     id,
     keyFirebase,
     DeleteClass,
-    DeleteTaskThunk,
+    DeleteTask,
 }) {
     const classes = useStyles();
 
@@ -24,11 +24,11 @@ export default function DeleteButton({
             className={`${classes.root} ${DeleteClass}`}
             onClick={(event) => {
                 event.stopPropagation();
-                DeleteTaskThunk(id, keyFirebase);
+                DeleteTask(id, keyFirebase);
             }}
             onFocus={(event) => {
                 event.stopPropagation();
-                DeleteTaskThunk(id, keyFirebase);
+                DeleteTask(id, keyFirebase);
             }}
         >
             <IconButton aria-label="delete">
