@@ -26,8 +26,6 @@ const ActionsInExpansionPanelSummary = React.memo(
         BlockedButtonArray,
     }) => {
         const classes = useStyles();
-        let [DeleteClass, changeDeleteClass] = useState("deleteButtonTask");
-        let [EditButtonClass, changeEditButton] = useState("editButtonTask");
         let [addTask, changeAddTask] = useState(false);
         let [editTask, changeEditTask] = useState([]);
         const AddTaskFunc = () => {
@@ -80,8 +78,6 @@ const ActionsInExpansionPanelSummary = React.memo(
                                             priority={priority}
                                             status={status}
                                             keyFirebase={keyFirebase}
-                                            DeleteClass={DeleteClass}
-                                            EditButtonClass={EditButtonClass}
                                             data={data}
                                             DeleteTaskThunk={DeleteTaskThunk}
                                             editTask={editTask}

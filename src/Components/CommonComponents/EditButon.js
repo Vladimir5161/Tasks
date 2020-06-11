@@ -9,11 +9,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function EditButton({ EditButtonFunc, EditButtonClass, id }) {
+export default function EditButton({ EditButtonFunc, id }) {
     const classes = useStyles();
 
     return (
-        <div className={EditButtonClass}>
+        <div className="editButtonTask">
             <Button
                 variant="contained"
                 color="grey"

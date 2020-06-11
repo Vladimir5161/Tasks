@@ -11,17 +11,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function DeleteButton({
-    id,
-    keyFirebase,
-    DeleteClass,
-    DeleteTask,
-}) {
+export default function DeleteButton({ id, keyFirebase, DeleteTask }) {
     const classes = useStyles();
 
     return (
         <div
-            className={`${classes.root} ${DeleteClass}`}
+            className={`${classes.root} ${"deleteButtonTask"}`}
             onClick={(event) => {
                 event.stopPropagation();
                 DeleteTask(id, keyFirebase);

@@ -18,9 +18,7 @@ const TaskItem = React.memo(
         text,
         priority,
         status,
-        DeleteClass,
         keyFirebase,
-        EditButtonClass,
         editTask,
         EditButtonFunc,
         BlockedButtonArray,
@@ -95,48 +93,54 @@ const TaskItem = React.memo(
                                 aria-controls="additional-actions1-content"
                                 id="additional-actions1-header"
                             >
-                                <div className="dataTasks">{data}</div>
-                                {missed[id] ? (
-                                    <div
-                                        style={{
-                                            position: "absolute",
-                                            display: "inline",
-                                            margin: "0 auto",
-                                            left: "0",
-                                            right: "0",
-                                        }}
-                                        className="dataTasks urgentTask"
-                                    >
-                                        Missed Task!
-                                    </div>
-                                ) : urgent[id] ? (
-                                    <div
-                                        style={{
-                                            position: "absolute",
-                                            display: "inline",
-                                            margin: "0 auto",
-                                            left: "0",
-                                            right: "0",
-                                        }}
-                                        className="dataTasks urgentTask"
-                                    >
-                                        Urgent Task!
-                                    </div>
-                                ) : null}
-                                {settedDate ? (
-                                    <div className="dataTasks deadlineTasks">
-                                        Deadline:
+                                <>
+                                    <div className="dataTasks">{data}</div>
+                                    {missed[id] ? (
                                         <div
                                             style={{
+                                                position: "absolute",
                                                 display: "inline",
-                                                marginLeft: "5px",
+                                                margin: "0 auto",
+                                                left: "0",
+                                                right: "0",
                                             }}
+                                            className="dataTasks urgentTask"
                                         >
-                                            {!settedDate ? null : settedDate}{" "}
-                                            {!settedTime ? null : settedTime}
+                                            Missed Task!
                                         </div>
-                                    </div>
-                                ) : null}
+                                    ) : urgent[id] ? (
+                                        <div
+                                            style={{
+                                                position: "absolute",
+                                                display: "inline",
+                                                margin: "0 auto",
+                                                left: "0",
+                                                right: "0",
+                                            }}
+                                            className="dataTasks urgentTask"
+                                        >
+                                            Urgent Task!
+                                        </div>
+                                    ) : null}
+                                    {settedDate ? (
+                                        <div className="dataTasks deadlineTasks">
+                                            Deadline:
+                                            <div
+                                                style={{
+                                                    display: "inline",
+                                                    marginLeft: "5px",
+                                                }}
+                                            >
+                                                {!settedDate
+                                                    ? null
+                                                    : settedDate}{" "}
+                                                {!settedTime
+                                                    ? null
+                                                    : settedTime}
+                                            </div>
+                                        </div>
+                                    ) : null}
+                                </>
                                 <FormControlLabel
                                     aria-label="Acknowledge"
                                     control={
@@ -162,40 +166,47 @@ const TaskItem = React.memo(
                                     style={{ wordBreak: "break-word" }}
                                     label={text}
                                 />
-                                <div className="choseDiv">
-                                    {priority ? (
-                                        <div className="priorityTask">
-                                            priority:
-                                            <div
-                                                style={
-                                                    priority === "high"
-                                                        ? {
-                                                              color: "red",
-                                                              textIndent: "5px",
-                                                          }
-                                                        : priority === "middle"
-                                                        ? {
-                                                              color: "green",
-                                                              textIndent: "5px",
-                                                          }
-                                                        : {
-                                                              color: "yellow",
-                                                              textIndent: "5px",
-                                                          }
-                                                }
-                                            >
-                                                {priority}
+                                <>
+                                    <div className="choseDiv">
+                                        {priority ? (
+                                            <div className="priorityTask">
+                                                priority:
+                                                <div
+                                                    style={
+                                                        priority === "high"
+                                                            ? {
+                                                                  color: "red",
+                                                                  textIndent:
+                                                                      "5px",
+                                                              }
+                                                            : priority ===
+                                                              "middle"
+                                                            ? {
+                                                                  color:
+                                                                      "green",
+                                                                  textIndent:
+                                                                      "5px",
+                                                              }
+                                                            : {
+                                                                  color:
+                                                                      "yellow",
+                                                                  textIndent:
+                                                                      "5px",
+                                                              }
+                                                    }
+                                                >
+                                                    {priority}
+                                                </div>
                                             </div>
-                                        </div>
-                                    ) : null}
-                                    {status ? (
-                                        <div className="statusTask">
-                                            status: {status}
-                                        </div>
-                                    ) : null}
-                                </div>
+                                        ) : null}
+                                        {status ? (
+                                            <div className="statusTask">
+                                                status: {status}
+                                            </div>
+                                        ) : null}
+                                    </div>
+                                </>
                                 <DeleteButton
-                                    DeleteClass={DeleteClass}
                                     DeleteTask={DeleteTask}
                                     id={id}
                                     keyFirebase={keyFirebase}
@@ -204,7 +215,6 @@ const TaskItem = React.memo(
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails>
                                 <EditButton
-                                    EditButtonClass={EditButtonClass}
                                     EditButtonFunc={EditButtonFunc}
                                     id={id}
                                     BlockedButtonArray={BlockedButtonArray}

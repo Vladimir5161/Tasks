@@ -168,7 +168,6 @@ export const SetToDoneThunk = (keyFirebase) => async (dispatch) => {
                 );
             });
     } catch (error) {
-        console.log(error);
         dispatch(SetMessage(error.message, "error"));
     }
     dispatch(blockButton(keyFirebase));
@@ -208,7 +207,6 @@ export const SetToPrevStatusThunk = (keyFirebase) => async (dispatch) => {
                 );
             });
     } catch (error) {
-        console.log(error);
         dispatch(SetMessage(error.message, "error"));
     }
     dispatch(blockButton(keyFirebase));

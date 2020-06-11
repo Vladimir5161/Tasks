@@ -1,7 +1,7 @@
 import { WebApi } from "../api/api";
 import app from "../api/firebase";
 import { reset } from "redux-form";
-import { SetMessage, DefaultMessage } from "./AlertReducer";
+import { SetMessage } from "./AlertReducer";
 import { blockButton } from "./TaskReducer";
 
 const initialState = {

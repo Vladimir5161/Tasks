@@ -15,9 +15,7 @@ const TaskItemContainer = React.memo(
         BlockedButtonArray,
         priority,
         status,
-        EditButtonClass,
         editTask,
-        DeleteClass,
         DeleteTaskThunk,
         keyFirebase,
         EditButtonFunc,
@@ -35,6 +33,9 @@ const TaskItemContainer = React.memo(
                 priority: event.target.value,
             });
         };
+
+        //-------------
+
         const [choseStatus, setStatus] = React.useState({
             status: status,
         });
@@ -42,12 +43,18 @@ const TaskItemContainer = React.memo(
             setStatus({ status: event.target.value });
         };
 
+        //-------------
+
         let [date, setDate] = React.useState({ [id]: null });
         const onChange = (date) => setDate({ [id]: date });
+
+        //-------------
 
         const [selectedTime, setSelectedTime] = React.useState({
             [id]: null,
         });
+
+        //-------------
 
         const [missed, setMissed] = React.useState({
             [id]: false,
@@ -56,13 +63,21 @@ const TaskItemContainer = React.memo(
             setSelectedTime({ [id]: time });
         };
 
+        //-------------
+
         let [taskPanel, setTaskPanel] = React.useState({
             [id]: "taskPanel",
         });
+
+        //-------------
+
         const DeleteTask = async (id, keyFirebase) => {
             setTaskPanel({ [id]: "taskPanelDelete" });
             setTimeout(() => DeleteTaskThunk(id, keyFirebase), 2000);
         };
+
+        //-------------
+
         const newSettedDate =
             date[id] !== null
                 ? date[id]
@@ -72,6 +87,7 @@ const TaskItemContainer = React.memo(
                       .reverse()
                       .join("-")
                 : settedDate;
+
         const newSettedTime =
             selectedTime[id] !== null
                 ? selectedTime[id]
@@ -83,7 +99,9 @@ const TaskItemContainer = React.memo(
                       .reverse()
                       .join(":")
                 : settedTime;
+
         // ----------------------
+
         const onSubmit = (form) => {
             const newDate = new Date()
                 .toLocaleString()
@@ -127,6 +145,8 @@ const TaskItemContainer = React.memo(
             }
         };
 
+        //-------------
+
         const OnDoneButtonClick = () => {
             if (status === "done") {
                 SetToPrevStatusThunk(keyFirebase);
@@ -138,13 +158,17 @@ const TaskItemContainer = React.memo(
         // let name = localStorage.getItem("name");
         // console.log(JSON.parse(name).name);
         let [urgent, setUrgent] = React.useState({ [id]: false });
+
         let [deadline, changeDeadline] = React.useState({ [id]: false });
+
         const setDeadline = () => {
             deadline[id]
                 ? changeDeadline({ [id]: false })
                 : changeDeadline({ [id]: true });
         };
+
         // -------------------------
+        // logic below checks if current date is urgent for the task (less 24 hours to deadline time)
         useEffect(() => {
             const newDate = new Date()
                 .toLocaleString()
@@ -219,19 +243,19 @@ const TaskItemContainer = React.memo(
                     }
                 }
             };
+
             const callUrgentFunc = () => {
                 isUrgent(settedDate, settedTime);
             };
             callUrgentFunc();
         }, [id, settedDate, settedTime, status, newSettedDate, newSettedTime]);
+
         return (
             <>
                 <TaskItem
                     deadline={deadline}
-                    date={date}
                     onChange={onChange}
                     handleTimeChange={handleTimeChange}
-                    selectedTime={selectedTime}
                     choseState={choseState}
                     changeStatus={changeStatus}
                     handleChange={handleChange}
@@ -249,9 +273,7 @@ const TaskItemContainer = React.memo(
                     BlockedButtonArray={BlockedButtonArray}
                     priority={priority}
                     status={status}
-                    EditButtonClass={EditButtonClass}
                     editTask={editTask}
-                    DeleteClass={DeleteClass}
                     keyFirebase={keyFirebase}
                     EditButtonFunc={EditButtonFunc}
                     settedDate={settedDate}
