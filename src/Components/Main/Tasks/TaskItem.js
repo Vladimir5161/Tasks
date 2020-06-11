@@ -10,6 +10,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import EditTaskForm from "../../FormControls/EditTaskForm";
 import { CalendarReact } from "../../CommonComponents/Calendar";
 import Clock from "../../CommonComponents/Clock";
+const Moment = require("moment");
 
 const TaskItem = React.memo(
     ({
@@ -43,6 +44,10 @@ const TaskItem = React.memo(
         OnDoneButtonClick,
         DeleteTask,
     }) => {
+        const currentDate = new Date(settedDate.split("-").join("/"));
+        const currentTime = new Date(
+            settedDate.split("-").join("/") + settedTime + ":00"
+        );
         return (
             <div>
                 {editTask.some((item) => item === id) ? (
@@ -50,12 +55,12 @@ const TaskItem = React.memo(
                         {deadline[id] ? (
                             <>
                                 <CalendarReact
-                                    date={date[id]}
+                                    date={currentDate}
                                     onChange={onChange}
                                 />
                                 <Clock
                                     handleTimeChange={handleTimeChange}
-                                    selectedTime={selectedTime[id]}
+                                    selectedTime={currentTime}
                                 />
                             </>
                         ) : null}
