@@ -186,16 +186,11 @@ const TaskItemContainer = React.memo(
                 .join(":");
             const isUrgent = (settedDate, settedTime) => {
                 if (
-                    settedDate === undefined ||
-                    settedDate === null ||
-                    settedTime === undefined ||
-                    settedTime === null
+                    settedDate !== undefined ||
+                    settedDate !== null ||
+                    settedTime !== undefined ||
+                    settedTime !== null
                 ) {
-                    return setUrgent({ [id]: false });
-                } else if (status === "done") {
-                    setUrgent({ [id]: false });
-                    setMissed({ [id]: false });
-                } else {
                     if (
                         new Date(newDate + newTime).getTime() >=
                         new Date(settedDate + settedTime).getTime()
@@ -241,6 +236,11 @@ const TaskItemContainer = React.memo(
                             }
                         } else return null;
                     }
+                } else if (status === "done") {
+                    setUrgent({ [id]: false });
+                    setMissed({ [id]: false });
+                } else {
+                    return setUrgent({ [id]: false });
                 }
             };
 

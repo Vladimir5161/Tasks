@@ -28,25 +28,20 @@ const AddTask = ({ AddTaskThunk, changeAddTask, BlockedButtonArray }) => {
         setSelectedTime(date);
     };
     const settedDate =
-        date === null
-            ? null
-            : date
-                  .toLocaleString()
-                  .split(",")[0]
-                  .split(".")
-                  .reverse()
-                  .join("-");
+        date !== null
+            ? date.toLocaleString().split(",")[0].split(".").reverse().join("-")
+            : null;
     const settedTime =
-        selectedTime === null
-            ? null
-            : selectedTime
+        selectedTime !== null
+            ? selectedTime
                   .toLocaleString()
                   .split(",")[1]
                   .split(":")
                   .reverse()
                   .splice(1, 2)
                   .reverse()
-                  .join(":");
+                  .join(":")
+            : null;
 
     const onSubmit = (formData) => {
         const newDate = new Date()

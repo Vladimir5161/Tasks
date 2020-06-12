@@ -39,10 +39,14 @@ const TaskItem = React.memo(
         OnDoneButtonClick,
         DeleteTask,
     }) => {
-        const currentDate = new Date(settedDate.split("-").join("/"));
-        const currentTime = new Date(
-            settedDate.split("-").join("/") + settedTime + ":00"
-        );
+        const currentDate =
+            settedDate !== null
+                ? new Date(settedDate.split("-").join("/"))
+                : new Date();
+        const currentTime =
+            settedTime !== null
+                ? new Date(settedDate.split("-").join("/") + settedTime + ":00")
+                : new Date();
         return (
             <div>
                 {editTask.some((item) => item === id) ? (
