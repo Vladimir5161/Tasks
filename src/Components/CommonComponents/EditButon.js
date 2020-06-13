@@ -16,7 +16,7 @@ export default function EditButton({ EditButtonFunc, id }) {
         <div className="editButtonTask">
             <Button
                 variant="contained"
-                color="grey"
+                color="primary"
                 size="small"
                 className={classes.button}
                 startIcon={<SaveIcon />}

@@ -18,7 +18,11 @@ const Main = ({
     message,
     Authorized,
     AuthorizationThunk,
+    handleChange,
 }) => {
+    useEffect(() => {
+        setTimeout(() => handleChange(`event`, 1), 0);
+    }, [isAuth, handleChange]);
     useEffect(() => {
         const uploadTasks = () => {
             AuthUser();

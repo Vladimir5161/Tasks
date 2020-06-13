@@ -40,16 +40,17 @@ const TaskItem = React.memo(
         DeleteTask,
     }) => {
         const currentDate =
-            settedDate !== null
+            typeof settedDate === "string"
                 ? new Date(settedDate.split("-").join("/"))
                 : new Date();
         const currentTime =
-            settedTime !== null
+            typeof settedTime === "string"
                 ? new Date(settedDate.split("-").join("/") + settedTime + ":00")
                 : new Date();
+        console.log(editTask);
         return (
             <div>
-                {editTask.some((item) => item === id) ? (
+                {editTask[id] ? (
                     <div>
                         {deadline[id] ? (
                             <>

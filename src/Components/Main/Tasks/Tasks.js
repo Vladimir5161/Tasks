@@ -27,15 +27,10 @@ const ActionsInExpansionPanelSummary = React.memo(
     }) => {
         const classes = useStyles();
         let [addTask, changeAddTask] = useState(false);
-        let [editTask, changeEditTask] = useState([]);
         const AddTaskFunc = () => {
             addTask ? changeAddTask(false) : changeAddTask(true);
         };
-        const EditButtonFunc = (ID) => {
-            editTask.some((id) => id === ID)
-                ? changeEditTask(editTask.filter((id) => id !== ID))
-                : changeEditTask([...editTask, ID]);
-        };
+
         let [addTaskPanel, setAddTaskPanel] = useState("addTaskPanel");
         if (loading) {
             return <Preloader />;
@@ -72,7 +67,6 @@ const ActionsInExpansionPanelSummary = React.memo(
                                 }) => (
                                     <div key={id}>
                                         <TaskItemContainer
-                                            EditButtonFunc={EditButtonFunc}
                                             id={id}
                                             text={text}
                                             priority={priority}
@@ -80,7 +74,6 @@ const ActionsInExpansionPanelSummary = React.memo(
                                             keyFirebase={keyFirebase}
                                             data={data}
                                             DeleteTaskThunk={DeleteTaskThunk}
-                                            editTask={editTask}
                                             DoneIdArray={DoneIdArray}
                                             BlockedButtonArray={
                                                 BlockedButtonArray

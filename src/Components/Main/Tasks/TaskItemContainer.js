@@ -15,10 +15,8 @@ const TaskItemContainer = React.memo(
         BlockedButtonArray,
         priority,
         status,
-        editTask,
         DeleteTaskThunk,
         keyFirebase,
-        EditButtonFunc,
         UpdateTaskThunk,
         SetToPrevStatusThunk,
         SetToDoneThunk,
@@ -249,6 +247,13 @@ const TaskItemContainer = React.memo(
             };
             callUrgentFunc();
         }, [id, settedDate, settedTime, status, newSettedDate, newSettedTime]);
+
+        let [editTask, changeEditTask] = React.useState({ [id]: false });
+        const EditButtonFunc = () => {
+            editTask[id]
+                ? changeEditTask({ [id]: false })
+                : changeEditTask({ [id]: true });
+        };
 
         return (
             <>
