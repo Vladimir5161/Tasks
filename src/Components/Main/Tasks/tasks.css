@@ -27,9 +27,8 @@
     left: auto !important;
     text-align: right !important;
 }
-.MuiTypography-body1 {
-    margin-left: 20px !important;
-    padding-right: 10px !important;
+
+.mainBlockStyle {
     margin-top: 30px !important;
 }
 .clearText {
@@ -41,10 +40,7 @@
     display: block;
 }
 .deleteButtonTask {
-    position: absolute;
     z-index: 999;
-    left: auto;
-    right: 40px;
     display: flex;
     align-self: center;
     top: 15px !important;
@@ -90,8 +86,8 @@
 }
 .alertContainer {
     position: fixed;
-    height: 100vh;
-    width: 100vw;
+    height: 200vh;
+    width: 200vw;
     left: 0;
     right: 0;
     z-index: 90;
@@ -101,10 +97,10 @@
 }
 .alertContainerFirst {
     position: fixed;
-    height: 100vh;
+    height: 200vh;
     left: 0;
     right: 0;
-    width: 100vw;
+    width: 200vw;
     z-index: 90;
     background-color: rgba(46, 49, 49, 0.7);
 }
@@ -201,11 +197,11 @@
     }
     .MuiTypography-body1 {
         margin: 20px auto !important;
-        padding: 10px;
+        padding: 30px 10px 10px 10px;
         text-align: center;
-        padding-right: 0;
     }
     .deleteButtonTask {
+        position: absolute;
         top: 10px !important;
         right: -10px !important;
         margin-top: 20px !important;
@@ -218,6 +214,9 @@
     }
 }
 @media screen and (max-width: 375px) {
+    .MuiTypography-body1 {
+        font-size: 12px !important;
+    }
     .deleteButtonTask {
         position: absolute;
         display: block;
