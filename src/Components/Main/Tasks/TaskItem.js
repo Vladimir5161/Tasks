@@ -24,6 +24,8 @@ const TaskItem = React.memo(
         BlockedButtonArray,
         settedDate,
         settedTime,
+        newSettedDate,
+        newSettedTime,
         deadline,
         onChange,
         handleTimeChange,
@@ -40,14 +42,17 @@ const TaskItem = React.memo(
         DeleteTask,
     }) => {
         const currentDate =
-            typeof settedDate === "string"
-                ? new Date(settedDate.split("-").join("/"))
-                : new Date();
+            newSettedDate !== null && newSettedDate !== undefined ?
+                new Date(newSettedDate.split("-").join("/")) :
+                typeof settedDate === "string" ?
+                    new Date(settedDate.split("-").join("/")) :
+                    new Date()
         const currentTime =
-            typeof settedTime === "string"
-                ? new Date(settedDate.split("-").join("/") + settedTime + ":00")
-                : new Date();
-        console.log(editTask);
+            newSettedTime !== null && newSettedTime !== undefined ?
+                new Date(newSettedDate.split("-").join("/") + newSettedTime + ":00") :
+                typeof settedTime === "string" ?
+                    new Date(settedDate.split("-").join("/") + settedTime + ":00") :
+                    new Date()
         return (
             <div>
                 {editTask[id] ? (
@@ -80,155 +85,155 @@ const TaskItem = React.memo(
                         />
                     </div>
                 ) : (
-                    <div className={taskPanel[id]}>
-                        <ExpansionPanel
-                            style={
-                                missed[id]
-                                    ? { boxShadow: "0 0 10px 3px blue" }
-                                    : urgent[id]
-                                    ? { boxShadow: "0 0 10px 3px red" }
-                                    : status === "done"
+                        <div className={taskPanel[id]}>
+                            <ExpansionPanel
+                                style={status === "done"
                                     ? { boxShadow: "0 0 10px 3px green" }
-                                    : null
-                            }
-                        >
-                            <ExpansionPanelSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-label="Expand"
-                                aria-controls="additional-actions1-content"
-                                id="additional-actions1-header"
+                                    : missed[id]
+                                        ? { boxShadow: "0 0 10px 3px blue" }
+                                        : urgent[id]
+                                            ? { boxShadow: "0 0 10px 3px red" }
+                                            : null
+                                }
                             >
-                                <>
-                                    <div className="dataTasks">{data}</div>
-                                    {missed[id] ? (
-                                        <div
-                                            style={{
-                                                position: "absolute",
-                                                display: "inline",
-                                                margin: "0 auto",
-                                                left: "0",
-                                                right: "0",
-                                            }}
-                                            className="dataTasks urgentTask"
-                                        >
-                                            Missed Task!
-                                        </div>
-                                    ) : urgent[id] ? (
-                                        <div
-                                            style={{
-                                                position: "absolute",
-                                                display: "inline",
-                                                margin: "0 auto",
-                                                left: "0",
-                                                right: "0",
-                                            }}
-                                            className="dataTasks urgentTask"
-                                        >
-                                            Urgent Task!
-                                        </div>
-                                    ) : null}
-                                    {settedDate ? (
-                                        <div className="dataTasks deadlineTasks">
-                                            Deadline:
+                                <ExpansionPanelSummary
+                                    expandIcon={<ExpandMoreIcon />}
+                                    aria-label="Expand"
+                                    aria-controls="additional-actions1-content"
+                                    id="additional-actions1-header"
+                                >
+                                    <>
+                                        <div className="dataTasks">{data}</div>
+                                        {missed[id] ? (
                                             <div
                                                 style={{
+                                                    position: "absolute",
                                                     display: "inline",
-                                                    marginLeft: "5px",
+                                                    margin: "0 auto",
+                                                    left: "0",
+                                                    right: "0",
                                                 }}
+                                                className="dataTasks urgentTask"
                                             >
-                                                {!settedDate
-                                                    ? null
-                                                    : settedDate}{" "}
-                                                {!settedTime
-                                                    ? null
-                                                    : settedTime}
+                                                Missed Task!
                                             </div>
-                                        </div>
-                                    ) : null}
-                                </>
-                                <FormControlLabel
-                                    aria-label="Acknowledge"
-                                    control={
-                                        <Checkbox
-                                            checked={
-                                                status === "done" ? true : false
-                                            }
-                                        />
-                                    }
-                                    className={
-                                        status === "done"
-                                            ? "doneText"
-                                            : "clearText"
-                                    }
-                                    onClick={(event) => {
-                                        event.stopPropagation();
-                                        OnDoneButtonClick();
-                                    }}
-                                    onFocus={(event) => event.stopPropagation()}
-                                    onMouseDown={(event) => {
-                                        event.stopPropagation();
-                                    }}
-                                    style={{ wordBreak: "break-word" }}
-                                    label={text}
-                                />
-                                <>
-                                    <div className="choseDiv">
-                                        {priority ? (
-                                            <div className="priorityTask">
-                                                priority:
+                                        ) : urgent[id] ? (
+                                            <div
+                                                style={{
+                                                    position: "absolute",
+                                                    display: "inline",
+                                                    margin: "0 auto",
+                                                    left: "0",
+                                                    right: "0",
+                                                }}
+                                                className="dataTasks urgentTask"
+                                            >
+                                                Urgent Task!
+                                            </div>
+                                        ) : null}
+                                        {settedDate ? (
+                                            <div className="dataTasks deadlineTasks">
+                                                Deadline:
                                                 <div
-                                                    style={
-                                                        priority === "high"
-                                                            ? {
-                                                                  color: "red",
-                                                                  textIndent:
-                                                                      "5px",
-                                                              }
-                                                            : priority ===
-                                                              "middle"
-                                                            ? {
-                                                                  color:
-                                                                      "green",
-                                                                  textIndent:
-                                                                      "5px",
-                                                              }
-                                                            : {
-                                                                  color:
-                                                                      "yellow",
-                                                                  textIndent:
-                                                                      "5px",
-                                                              }
-                                                    }
+                                                    style={{
+                                                        display: "inline",
+                                                        marginLeft: "5px",
+                                                    }}
                                                 >
-                                                    {priority}
+                                                    {!settedDate
+                                                        ? null
+                                                        : settedDate}{" "}
+                                                    {!settedTime
+                                                        ? null
+                                                        : settedTime}
                                                 </div>
                                             </div>
                                         ) : null}
-                                        {status ? (
-                                            <div className="statusTask">
-                                                status: {status}
-                                            </div>
-                                        ) : null}
-                                    </div>
-                                </>
-                                <DeleteButton
-                                    DeleteTask={DeleteTask}
-                                    id={id}
-                                    keyFirebase={keyFirebase}
-                                    BlockedButtonArray={BlockedButtonArray}
-                                />
-                            </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
-                                <EditButton
-                                    EditButtonFunc={EditButtonFunc}
-                                    id={id}
-                                    BlockedButtonArray={BlockedButtonArray}
-                                />
-                            </ExpansionPanelDetails>
-                        </ExpansionPanel>
-                    </div>
-                )}
-            </div>
+                                    </>
+                                    <FormControlLabel
+                                        aria-label="Acknowledge"
+                                        control={
+                                            <Checkbox
+                                                checked={
+                                                    status === "done" ? true : false
+                                                }
+                                            />
+                                        }
+                                        className={
+                                            status === "done"
+                                                ? "doneText"
+                                                : "clearText"
+                                        }
+                                        onClick={(event) => {
+                                            event.stopPropagation();
+                                            OnDoneButtonClick();
+                                        }}
+                                        onFocus={(event) => event.stopPropagation()}
+                                        onMouseDown={(event) => {
+                                            event.stopPropagation();
+                                        }}
+                                        style={{ wordBreak: "break-word" }}
+                                        label={text}
+                                    />
+                                    <>
+                                        <div className="choseDiv">
+                                            {priority ? (
+                                                <div className="priorityTask">
+                                                    priority:
+                                                    <div
+                                                        style={
+                                                            priority === "high"
+                                                                ? {
+                                                                    color: "red",
+                                                                    textIndent:
+                                                                        "5px",
+                                                                }
+                                                                : priority ===
+                                                                    "middle"
+                                                                    ? {
+                                                                        color:
+                                                                            "green",
+                                                                        textIndent:
+                                                                            "5px",
+                                                                    }
+                                                                    : {
+                                                                        color:
+                                                                            "yellow",
+                                                                        textIndent:
+                                                                            "5px",
+                                                                    }
+                                                        }
+                                                    >
+                                                        {priority}
+                                                    </div>
+                                                </div>
+                                            ) : null}
+                                            {status ? (
+                                                <div className="statusTask">
+                                                    status: {status}
+                                                </div>
+                                            ) : null}
+                                        </div>
+                                    </>
+                                    <DeleteButton
+                                        DeleteTask={DeleteTask}
+                                        id={id}
+                                        keyFirebase={keyFirebase}
+                                        BlockedButtonArray={BlockedButtonArray}
+                                    />
+                                </ExpansionPanelSummary>
+                                <ExpansionPanelDetails>
+                                    <EditButton
+                                        EditButtonFunc={EditButtonFunc}
+                                        id={id}
+                                        BlockedButtonArray={BlockedButtonArray}
+                                    />
+                                </ExpansionPanelDetails>
+                            </ExpansionPanel>
+                        </div>
+                    )
+                }
+            </div >
         );
     }
 );

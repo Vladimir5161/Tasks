@@ -89,6 +89,16 @@
     animation-name: deleteTranslate;
     animation-duration: 1.5s;
 }
+.alertClass {
+    width: "70%",
+    margin: "0 auto",
+    position: "fixed",
+    left: "0",
+    right: "0",
+    top: "35%",
+    zIndex: "100",
+    maxWidth: "700px"
+}
 @keyframes deleteTranslate {
     0% {
         transform: translateX(0);

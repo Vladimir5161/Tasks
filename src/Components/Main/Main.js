@@ -17,19 +17,13 @@ const Main = ({
     TasksArray,
     message,
     Authorized,
-    AuthorizationThunk,
-    handleChange,
 }) => {
-    useEffect(() => {
-        setTimeout(() => handleChange(`event`, 1), 0);
-    }, [isAuth, handleChange]);
     useEffect(() => {
         const uploadTasks = () => {
             AuthUser();
-            AuthorizationThunk();
         };
         uploadTasks();
-    }, [TasksArray.length, AuthorizationThunk, isAuth, AuthUser]);
+    }, [TasksArray.length, , isAuth, AuthUser]);
     if (Authorized === false) {
         return <Preloader />;
     } else
@@ -77,4 +71,4 @@ const mapStateToProps = (state) => ({
     message: state.alert.message,
     Authorized: state.authorized.Authorized,
 });
-export default connect(mapStateToProps, { AuthorizationThunk, AuthUser })(Main);
+export default connect(mapStateToProps, { AuthUser })(Main);

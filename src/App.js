@@ -1,16 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import Header from "./Components/Header/Header";
 import Main from "./Components/Main/Main";
-import { Provider } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
-import { createStore, applyMiddleware } from "redux";
-import rootReducer from "./store/rootReducer";
-import thunk from "redux-thunk";
+import { connect } from "react-redux";
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
 
-function App({ isAuth }) {
+
+const App = ({ isAuth }) => {
+    console.log(isAuth)
+
+    useEffect(() => {
+        setTimeout(() => handleChange(`event`, 1), 0);
+    }, [isAuth]);
+
     const [value, setValue] = React.useState(isAuth ? 1 : 0);
 
     const handleChange = (event, newValue) => {
@@ -18,17 +20,14 @@ function App({ isAuth }) {
     };
 
     return (
-        <Provider store={store}>
-            <React.StrictMode>
-                <BrowserRouter>
-                    <div className="App">
-                        <Header value={value} handleChange={handleChange} />
-                        <Main value={value} handleChange={handleChange} />
-                    </div>
-                </BrowserRouter>
-            </React.StrictMode>
-        </Provider>
-    );
+        <div className="App">
+            <Header value={value} handleChange={handleChange} />
+            <Main value={value} handleChange={handleChange} />
+        </div>
+    )
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+    isAuth: state.auth.isAuth
+})
+export default connect(mapStateToProps)(App)

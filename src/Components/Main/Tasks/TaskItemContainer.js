@@ -71,31 +71,31 @@ const TaskItemContainer = React.memo(
 
         const DeleteTask = async (id, keyFirebase) => {
             setTaskPanel({ [id]: "taskPanelDelete" });
-            setTimeout(() => DeleteTaskThunk(id, keyFirebase), 2000);
+            setTimeout(() => DeleteTaskThunk(id, keyFirebase), 1000);
         };
 
         //-------------
-
+        console.log(selectedTime)
         const newSettedDate =
             date[id] !== null
                 ? date[id]
-                      .toLocaleString()
-                      .split(",")[0]
-                      .split(".")
-                      .reverse()
-                      .join("-")
+                    .toLocaleString()
+                    .split(",")[0]
+                    .split(".")
+                    .reverse()
+                    .join("-")
                 : settedDate;
 
         const newSettedTime =
             selectedTime[id] !== null
                 ? selectedTime[id]
-                      .toLocaleString()
-                      .split(",")[1]
-                      .split(":")
-                      .reverse()
-                      .splice(1, 2)
-                      .reverse()
-                      .join(":")
+                    .toLocaleString()
+                    .split(",")[1]
+                    .split(":")
+                    .reverse()
+                    .splice(1, 2)
+                    .reverse()
+                    .join(":")
                 : settedTime;
 
         // ----------------------
@@ -283,6 +283,8 @@ const TaskItemContainer = React.memo(
                     EditButtonFunc={EditButtonFunc}
                     settedDate={settedDate}
                     settedTime={settedTime}
+                    newSettedDate={newSettedDate}
+                    newSettedTime={newSettedTime}
                 />
             </>
         );

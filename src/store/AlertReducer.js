@@ -1,5 +1,5 @@
 const initialState = {
-    message: null,
+    message: "BLA",
     type: "success",
 };
 

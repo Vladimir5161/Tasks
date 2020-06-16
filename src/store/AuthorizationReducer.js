@@ -19,7 +19,7 @@ export const Autorization = (status) => ({ type: "SETAUTHORIZED", status });
 
 export const AuthorizationThunk = () => async (dispatch) => {
     await dispatch(GetTasksThunk());
-    await dispatch(Autorization(true));
+    dispatch(Autorization(true));
 };
 
 export default AuthorizationReducer;
