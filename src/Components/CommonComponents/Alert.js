@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@material-ui/lab/Alert";
 import IconButton from "@material-ui/core/IconButton";
@@ -16,15 +16,16 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function AlertModal({ message, type, DefaultMessage }) {
+function AlertModal({ message, type, DefaultMessage, alertClass }) {
     const classes = useStyles();
-    const [open, setOpen] = React.useState(true);
+    let [open, setOpen] = useState(true);
 
     useEffect(() => {
         setTimeout(() => {
             DefaultMessage();
         }, 10000);
-    }, [DefaultMessage, message]);
+    }, [DefaultMessage]);
+    console.log(message);
     if (message === null) {
         return null;
     } else
@@ -36,45 +37,36 @@ function AlertModal({ message, type, DefaultMessage }) {
                     margin: "0 auto",
                 }}
             >
-                <Collapse
-                    in={open}
-                    style={{
-                        width: "70%",
-                        margin: "0 auto",
-                        position: "fixed",
-                        left: "0",
-                        right: "0",
-                        top: "35%",
-                        zIndex: "100",
-                        maxWidth: "700px"
-                    }}
-                >
-                    <Alert
-                        severity={type}
-                        action={
-                            <IconButton
-                                aria-label="message"
-                                color="inherit"
-                                size="small"
-                                onClick={() => {
-                                    setOpen(false);
-                                }}
-                            >
-                                <CloseIcon
-                                    fontSize="inherit"
-                                    onMouseDown={() => DefaultMessage()}
-                                />
-                            </IconButton>
-                        }
-                    >
-                        {message}
-                    </Alert>
-                </Collapse>
+                <div className={alertClass}>
+                    <Collapse in={open} className="alertClass">
+                        <Alert
+                            severity={type}
+                            action={
+                                <IconButton
+                                    aria-label="message"
+                                    color="inherit"
+                                    size="small"
+                                    onClick={() => {
+                                        setOpen(false);
+                                    }}
+                                >
+                                    <CloseIcon
+                                        fontSize="inherit"
+                                        onMouseDown={() => DefaultMessage()}
+                                    />
+                                </IconButton>
+                            }
+                        >
+                            {message}
+                        </Alert>
+                    </Collapse>
+                </div>
             </div>
         );
 }
 const mapStateToProps = (state) => ({
     message: state.alert.message,
     type: state.alert.type,
+    alertClass: state.alert.alertClass,
 });
 export default connect(mapStateToProps, { DefaultMessage })(AlertModal);

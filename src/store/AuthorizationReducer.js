@@ -1,4 +1,4 @@
-import { GetTasksThunk } from "./TaskReducer";
+import { GetTasksThunk, Loading } from "./TaskReducer";
 
 const initialState = {
     Authorized: false,

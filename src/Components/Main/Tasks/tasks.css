@@ -29,6 +29,8 @@
 }
 .MuiTypography-body1 {
     margin-left: 20px !important;
+    padding-right: 10px !important;
+    margin-top: 30px !important;
 }
 .clearText {
     text-decoration: none;
@@ -67,9 +69,6 @@
 .MuiExpansionPanelDetails-root {
     justify-content: center;
 }
-.MuiTypography-body1 {
-    padding-right: 10px;
-}
 .MuiExpansionPanel-root,
 .MuiExpansionPanel-root.Mui-expanded {
     margin: 15px auto 15px auto !important;
@@ -89,15 +88,49 @@
     animation-name: deleteTranslate;
     animation-duration: 1.5s;
 }
+.alertContainer {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    left: 0;
+    right: 0;
+    z-index: 90;
+    background-color: rgba(46, 49, 49, 0.7);
+    animation-name: alert;
+    animation-duration: 1s;
+}
+.alertContainerFirst {
+    position: fixed;
+    height: 100vh;
+    left: 0;
+    right: 0;
+    width: 100vw;
+    z-index: 90;
+    background-color: rgba(46, 49, 49, 0.7);
+}
+.alertNone {
+    position: relative;
+    background-color: inherit;
+    display: none;
+}
+@keyframes alert {
+    0% {
+        background-color: rgba(46, 49, 49, 0.7);
+    }
+    100% {
+        background-color: rgba(0, 0, 0, 0);
+    }
+}
+
 .alertClass {
-    width: "70%",
-    margin: "0 auto",
-    position: "fixed",
-    left: "0",
-    right: "0",
-    top: "35%",
-    zIndex: "100",
-    maxWidth: "700px"
+    width: 70%;
+    margin: 0 auto;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 6%;
+    z-index: 100;
+    max-width: 700px;
 }
 @keyframes deleteTranslate {
     0% {
@@ -143,9 +176,6 @@
         bottom: 0 !important;
         right: 10px;
     }
-    .MuiTypography-body1 {
-        padding-right: 0;
-    }
     .PrivateSwitchBase-input-128 {
         z-index: 45;
     }
@@ -170,9 +200,10 @@
         flex-grow: 0 !important;
     }
     .MuiTypography-body1 {
-        margin: 10px auto !important;
+        margin: 20px auto !important;
         padding: 10px;
         text-align: center;
+        padding-right: 0;
     }
     .deleteButtonTask {
         top: 10px !important;
@@ -196,10 +227,6 @@
         right: 20px;
         margin: 0 auto;
         width: 70px;
-    }
-    .MuiFab-primary {
-        position: relative !important;
-        right: 40%;
     }
     .MuiExpansionPanelSummary-expandIcon {
         position: absolute !important;

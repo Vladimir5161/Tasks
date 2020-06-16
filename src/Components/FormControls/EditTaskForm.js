@@ -24,6 +24,7 @@ const EditTaskReduxFrom = React.memo(
         changeStatus,
         BlockedButtonArray,
         setDeadline,
+        selectedTime,
         ...props
     }) => {
         const classes = useStyles();

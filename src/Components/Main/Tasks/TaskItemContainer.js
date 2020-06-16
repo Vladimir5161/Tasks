@@ -75,27 +75,26 @@ const TaskItemContainer = React.memo(
         };
 
         //-------------
-        console.log(selectedTime)
         const newSettedDate =
             date[id] !== null
                 ? date[id]
-                    .toLocaleString()
-                    .split(",")[0]
-                    .split(".")
-                    .reverse()
-                    .join("-")
+                      .toLocaleString()
+                      .split(",")[0]
+                      .split(".")
+                      .reverse()
+                      .join("-")
                 : settedDate;
 
         const newSettedTime =
             selectedTime[id] !== null
                 ? selectedTime[id]
-                    .toLocaleString()
-                    .split(",")[1]
-                    .split(":")
-                    .reverse()
-                    .splice(1, 2)
-                    .reverse()
-                    .join(":")
+                      .toLocaleString()
+                      .split(",")[1]
+                      .split(":")
+                      .reverse()
+                      .splice(1, 2)
+                      .reverse()
+                      .join(":")
                 : settedTime;
 
         // ----------------------

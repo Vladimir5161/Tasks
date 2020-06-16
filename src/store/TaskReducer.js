@@ -48,15 +48,15 @@ const TaskReducer = (state = initialState, action) => {
                 TasksArray: state.TasksArray.map((item) =>
                     item.id === action.task.id
                         ? {
-                            id: item.id,
-                            priority: action.task.priority,
-                            text: action.task.text,
-                            status: action.task.status,
-                            data: action.task.data,
-                            keyFirebase: action.task.keyFirebase,
-                            settedDate: action.task.settedDate,
-                            settedTime: action.task.settedTime,
-                        }
+                              id: item.id,
+                              priority: action.task.priority,
+                              text: action.task.text,
+                              status: action.task.status,
+                              data: action.task.data,
+                              keyFirebase: action.task.keyFirebase,
+                              settedDate: action.task.settedDate,
+                              settedTime: action.task.settedTime,
+                          }
                         : item
                 ),
             };
@@ -135,19 +135,22 @@ export const blockButton = (id) => ({ type: "BLOCKBUTTON", id });
 export const filterArray = (value) => ({ type: "FILTERARRAY", value });
 
 export const SetToDoneThunk = (keyFirebase) => async (dispatch, getState) => {
-    const userId = getState().auth.user.userId
+    const userId = getState().auth.user.userId;
 
     await dispatch(blockButton(keyFirebase));
     try {
-        await app.firestore()
+        await app
+            .firestore()
             .collection("users")
-            .doc(userId).collection("tasks").get()
+            .doc(userId)
+            .collection("tasks")
+            .get()
             .then(function (querySnapshot) {
                 querySnapshot.forEach(function (doc) {
-                    console.log(doc.data())
                     app.firestore()
                         .collection("users")
-                        .doc(userId).collection("tasks")
+                        .doc(userId)
+                        .collection("tasks")
                         .doc(keyFirebase)
                         .update({
                             ...doc.data(),
@@ -168,29 +171,35 @@ export const SetToDoneThunk = (keyFirebase) => async (dispatch, getState) => {
                                     ? "new"
                                     : doc.data().status,
                         })
-                    )
-                })
-            })
+                    );
+                });
+            });
     } catch (error) {
         dispatch(SetMessage(error.message, "error"));
     }
     dispatch(blockButton(keyFirebase));
 };
 
-export const SetToPrevStatusThunk = (keyFirebase) => async (dispatch, getState) => {
-    const userId = getState().auth.user.userId
+export const SetToPrevStatusThunk = (keyFirebase) => async (
+    dispatch,
+    getState
+) => {
+    const userId = getState().auth.user.userId;
 
     dispatch(blockButton(keyFirebase));
     try {
-        await app.firestore()
+        await app
+            .firestore()
             .collection("users")
-            .doc(userId).collection("tasks").get()
+            .doc(userId)
+            .collection("tasks")
+            .get()
             .then(function (querySnapshot) {
                 querySnapshot.forEach(function (doc) {
-                    console.log(doc.data())
                     app.firestore()
                         .collection("users")
-                        .doc(userId).collection("tasks")
+                        .doc(userId)
+                        .collection("tasks")
                         .doc(keyFirebase)
                         .update({
                             ...doc.data(),
@@ -211,8 +220,8 @@ export const SetToPrevStatusThunk = (keyFirebase) => async (dispatch, getState) 
                                     : doc.data().prevStatus,
                             prevStatus: doc.data().status,
                         })
-                    )
-                })
+                    );
+                });
             });
     } catch (error) {
         dispatch(SetMessage(error.message, "error"));
@@ -220,31 +229,35 @@ export const SetToPrevStatusThunk = (keyFirebase) => async (dispatch, getState) 
     dispatch(blockButton(keyFirebase));
 };
 export const GetTasksThunk = () => async (dispatch, getState) => {
-    const userId = getState().auth.user.userId
+    const userId = getState().auth.user.userId;
+    const isAuth = getState().auth.isAuth;
     try {
-        const array = [];
-        debugger
-        await app.firestore()
-            .collection("users")
-            .doc(userId).collection("tasks").get()
-            .then(function (querySnapshot) {
-                debugger
-                try {
-                    querySnapshot.forEach(function (doc) {
-                        debugger
-                        console.log(doc.data())
-                        // doc.data() is never undefined for query doc snapshots
-                        const task = {
-                            keyFirebase: doc.id,
-                            ...doc.data(),
-                        };
-                        array.push(task);
-                    })
-                } catch (e) {
-                    console.log(e.message)
-                }
-            });
-        dispatch(getTasks(array));
+        if (isAuth) {
+            const array = [];
+            debugger;
+            await app
+                .firestore()
+                .collection("users")
+                .doc(userId)
+                .collection("tasks")
+                .get()
+                .then(function (querySnapshot) {
+                    debugger;
+                    try {
+                        querySnapshot.forEach(function (doc) {
+                            // doc.data() is never undefined for query doc snapshots
+                            const task = {
+                                keyFirebase: doc.id,
+                                ...doc.data(),
+                            };
+                            array.push(task);
+                        });
+                    } catch (e) {
+                        console.log(e.message);
+                    }
+                });
+            dispatch(getTasks(array));
+        } else return null;
     } catch (error) {
         dispatch(
             SetMessage(
@@ -255,13 +268,20 @@ export const GetTasksThunk = () => async (dispatch, getState) => {
     }
 };
 
-export const DeleteTaskThunk = (id, keyFirebase) => async (dispatch, getState) => {
-    const userId = getState().auth.user.userId
+export const DeleteTaskThunk = (id, keyFirebase) => async (
+    dispatch,
+    getState
+) => {
+    const userId = getState().auth.user.userId;
     dispatch(blockButton(id));
     try {
-        await app.firestore()
+        await app
+            .firestore()
             .collection("users")
-            .doc(userId).collection("tasks").doc(keyFirebase).delete();
+            .doc(userId)
+            .collection("tasks")
+            .doc(keyFirebase)
+            .delete();
         await dispatch(deleteTask(id));
     } catch {
         dispatch(SetMessage("something went wrong", "error"));
@@ -275,7 +295,7 @@ export const AddTaskThunk = (
     settedTime,
     settedDate
 ) => async (dispatch, getState) => {
-    const userId = getState().auth.user.userId
+    const userId = getState().auth.user.userId;
 
     const sortedByIdTasksArray = getState().tasks.TasksArray.sort(function (
         a,
@@ -287,8 +307,8 @@ export const AddTaskThunk = (
         getState().tasks.TasksArray.length !== 0
             ? getState().tasks.TasksArray.length === 1
                 ? +getState().tasks.TasksArray[
-                    getState().tasks.TasksArray.length - 1
-                ].id + +1
+                      getState().tasks.TasksArray.length - 1
+                  ].id + +1
                 : +sortedByIdTasksArray[sortedByIdTasksArray.length - 1].id + +1
             : 1;
     const newDate = new Date()
@@ -319,9 +339,12 @@ export const AddTaskThunk = (
     dispatch(blockButton("addTask"));
     try {
         dispatch(Loading());
-        await app.firestore()
+        await app
+            .firestore()
             .collection("users")
-            .doc(userId).collection("tasks").add(task)
+            .doc(userId)
+            .collection("tasks")
+            .add(task);
         await dispatch(addTask(task));
         dispatch(reset("addTask"));
         dispatch(Loading());
@@ -340,7 +363,7 @@ export const UpdateTaskThunk = (
     newSettedDate,
     newSettedTime
 ) => async (dispatch, getState) => {
-    const userId = getState().auth.user.userId
+    const userId = getState().auth.user.userId;
 
     const task = {
         keyFirebase: keyFirebase,
@@ -355,9 +378,13 @@ export const UpdateTaskThunk = (
     };
     await dispatch(blockButton("editTask"));
     try {
-        await app.firestore()
+        await app
+            .firestore()
             .collection("users")
-            .doc(userId).collection("tasks").doc(keyFirebase).update(task)
+            .doc(userId)
+            .collection("tasks")
+            .doc(keyFirebase)
+            .update(task);
         await dispatch(updateTask(task));
         dispatch(reset("editTask"));
     } catch {

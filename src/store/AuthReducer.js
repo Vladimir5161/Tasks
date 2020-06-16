@@ -3,29 +3,32 @@ import app from "../api/firebase";
 import { reset } from "redux-form";
 import { SetMessage } from "./AlertReducer";
 import { blockButton } from "./TaskReducer";
-import { AuthorizationThunk } from "./AuthorizationReducer";
 
 const initialState = {
     isAuth: false,
     user: {
         name: null,
-        userId: null
+        userId: null,
     },
 };
 
 const AuthReducer = (state = initialState, action) => {
-    console.log(state.user.userId)
-    console.log(state.user.name)
+    console.log(state.user.userId);
+    console.log(state.user.name);
     switch (action.type) {
         case "ISAUTH":
             return { ...state, isAuth: (state.isAuth = action.authStatus) };
         case "SETUSERNAME":
-            debugger
+            debugger;
             return {
                 ...state,
                 user:
                     action.name !== null
-                        ? { ...state.user, name: action.name, userId: action.userId }
+                        ? {
+                              ...state.user,
+                              name: action.name,
+                              userId: action.userId,
+                          }
                         : { ...state.user, name: null, userId: null },
             };
         default:
@@ -34,7 +37,11 @@ const AuthReducer = (state = initialState, action) => {
 };
 
 export const setAuth = (authStatus) => ({ type: "ISAUTH", authStatus });
-export const setUserNameAndId = (name, userId) => ({ type: "SETUSERNAME", name, userId });
+export const setUserNameAndId = (name, userId) => ({
+    type: "SETUSERNAME",
+    name,
+    userId,
+});
 
 export const CreateAccount = (email, password, userName) => async (
     dispatch
@@ -75,13 +82,16 @@ export const Login = (email, password) => async (dispatch) => {
                         .get()
                         .then((querySnapshot) => {
                             dispatch(
-                                setUserNameAndId(querySnapshot.data().userName, querySnapshot.data().userId)
-                            )
-                            dispatch(setAuth(true))
+                                setUserNameAndId(
+                                    querySnapshot.data().userName,
+                                    querySnapshot.data().userId
+                                )
+                            );
+                            dispatch(setAuth(true));
                             dispatch(
                                 SetMessage(
                                     `Hello ${
-                                    querySnapshot.data().userName
+                                        querySnapshot.data().userName
                                     } you are logged in`,
                                     "success"
                                 )
@@ -100,20 +110,22 @@ export const Login = (email, password) => async (dispatch) => {
     dispatch(blockButton("login"));
 };
 
-export const AuthUser = () => async (dispatch, getState) => {
+export const AuthUser = () => async (dispatch) => {
     app.auth().onAuthStateChanged(async (user) => {
         if (user) {
-            app
-                .firestore()
+            app.firestore()
                 .collection("users")
                 .doc(user.uid)
                 .get()
                 .then(async (querySnapshot) => {
-                    await dispatch(setUserNameAndId(querySnapshot.data().userName, querySnapshot.data().userId));
-                    dispatch(setAuth(true))
-                    dispatch(AuthorizationThunk())
-
-                })
+                    await dispatch(
+                        setUserNameAndId(
+                            querySnapshot.data().userName,
+                            querySnapshot.data().userId
+                        )
+                    );
+                    dispatch(setAuth(true));
+                });
         } else {
             dispatch(setAuth(false));
             dispatch(setUserNameAndId(null, null));

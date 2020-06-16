@@ -3,11 +3,21 @@ import "./App.css";
 import Header from "./Components/Header/Header";
 import Main from "./Components/Main/Main";
 import { connect } from "react-redux";
+import { AuthUser } from "./store/AuthReducer";
+import { Loading } from "./store/TaskReducer";
+import { AuthorizationThunk } from "./store/AuthorizationReducer";
 
-
-
-const App = ({ isAuth }) => {
-    console.log(isAuth)
+const App = ({ isAuth, AuthUser, TasksArray, AuthorizationThunk, Loading }) => {
+    console.log(isAuth);
+    useEffect(() => {
+        const uploadTasks = async () => {
+            Loading();
+            await AuthUser();
+            await AuthorizationThunk();
+            Loading();
+        };
+        uploadTasks();
+    }, [TasksArray.length, isAuth, AuthUser, Loading, AuthorizationThunk]);
 
     useEffect(() => {
         setTimeout(() => handleChange(`event`, 1), 0);
@@ -24,10 +34,15 @@ const App = ({ isAuth }) => {
             <Header value={value} handleChange={handleChange} />
             <Main value={value} handleChange={handleChange} />
         </div>
-    )
-}
+    );
+};
 
 const mapStateToProps = (state) => ({
-    isAuth: state.auth.isAuth
-})
-export default connect(mapStateToProps)(App)
+    isAuth: state.auth.isAuth,
+    TasksArray: state.tasks.TasksArray,
+});
+export default connect(mapStateToProps, {
+    AuthUser,
+    Loading,
+    AuthorizationThunk,
+})(App);

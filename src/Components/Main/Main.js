@@ -1,31 +1,29 @@
-import React, { useEffect } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Tasks from "./Tasks/Tasks";
 import LoginPage from "./Login/LoginPage";
 import { connect } from "react-redux";
-import { AuthorizationThunk } from "../../store/AuthorizationReducer";
 import Alert from "../CommonComponents/Alert.js";
 import Preloader from "../CommonComponents/Preloader";
-import { AuthUser } from "../../store/AuthReducer";
 
-const Main = ({
-    value,
-    isAuth,
-    AuthUser,
-    TasksArray,
-    message,
-    Authorized,
-}) => {
-    useEffect(() => {
-        const uploadTasks = () => {
-            AuthUser();
-        };
-        uploadTasks();
-    }, [TasksArray.length, , isAuth, AuthUser]);
-    if (Authorized === false) {
+const Main = ({ value, message, Authorized, loading }) => {
+    if (loading) {
         return <Preloader />;
+    }
+    if (Authorized === false) {
+        return (
+            <div>
+                <TabPanel value={value} index={0}>
+                    <LoginPage />
+                </TabPanel>
+                <TabPanel value={value} index={1} style={{ marginTop: "50px" }}>
+                    You are not logged in, please log in to see your tasks or
+                    create an account
+                </TabPanel>
+            </div>
+        );
     } else
         return (
             <div>
@@ -70,5 +68,6 @@ const mapStateToProps = (state) => ({
     isAuth: state.auth.isAuth,
     message: state.alert.message,
     Authorized: state.authorized.Authorized,
+    loading: state.tasks.loading,
 });
-export default connect(mapStateToProps, { AuthUser })(Main);
+export default connect(mapStateToProps)(Main);
