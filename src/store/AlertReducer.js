@@ -37,10 +37,14 @@ export const SetMessage = (message, types) => ({
     types,
 });
 export const toDefaultMessage = () => ({ type: "SETDEFAULTMESSAGE" });
+
+// this runs when the alert modalis closing and it set "alertContainer" class to show and run animation
 export const setAlertClass = (alertClass) => ({
     type: "SETALERTCLASS",
     alertClass,
 });
+
+// here we are setting message text to null and hiding alert modal
 export const DefaultMessage = () => async (dispatch, getState) => {
     if (getState().alert.alertClass !== "alertNone") {
         dispatch(setAlertClass("alertContainer"));

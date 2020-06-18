@@ -25,10 +25,10 @@ const AuthReducer = (state = initialState, action) => {
                 user:
                     action.name !== null
                         ? {
-                              ...state.user,
-                              name: action.name,
-                              userId: action.userId,
-                          }
+                            ...state.user,
+                            name: action.name,
+                            userId: action.userId,
+                        }
                         : { ...state.user, name: null, userId: null },
             };
         default:
@@ -43,6 +43,8 @@ export const setUserNameAndId = (name, userId) => ({
     userId,
 });
 
+
+// here we are creating user account, and setting his user name
 export const CreateAccount = (email, password, userName) => async (
     dispatch
 ) => {
@@ -66,6 +68,8 @@ export const CreateAccount = (email, password, userName) => async (
     }
     dispatch(blockButton("createUser"));
 };
+
+//login in on a server and setting user name and id
 export const Login = (email, password) => async (dispatch) => {
     await dispatch(blockButton("login"));
     try {
@@ -91,7 +95,7 @@ export const Login = (email, password) => async (dispatch) => {
                             dispatch(
                                 SetMessage(
                                     `Hello ${
-                                        querySnapshot.data().userName
+                                    querySnapshot.data().userName
                                     } you are logged in`,
                                     "success"
                                 )
@@ -110,6 +114,8 @@ export const Login = (email, password) => async (dispatch) => {
     dispatch(blockButton("login"));
 };
 
+
+// here we are checking if user is logged in or not
 export const AuthUser = () => async (dispatch) => {
     app.auth().onAuthStateChanged(async (user) => {
         if (user) {
@@ -133,6 +139,7 @@ export const AuthUser = () => async (dispatch) => {
     });
 };
 
+// loggin out on a server
 export const Logout = () => async (dispatch) => {
     await dispatch(blockButton("login"));
     try {

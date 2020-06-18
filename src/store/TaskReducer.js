@@ -13,6 +13,7 @@ const initialState = {
 
 const TaskReducer = (state = initialState, action) => {
     switch (action.type) {
+        // getting a new array oof tasks sorted by the date
         case "GETTASKS":
             const gotedArr = _.sortBy(action.tasks, [
                 function (o) {
@@ -23,16 +24,19 @@ const TaskReducer = (state = initialState, action) => {
                 ...state,
                 TasksArray: (state.TasksArray = gotedArr),
             };
+        // deleting the task for an array
         case "DELETETASK":
             return {
                 ...state,
                 TasksArray: state.TasksArray.filter((i) => i.id !== action.id),
             };
+        // adding task to an array
         case "ADDTASK":
             return {
                 ...state,
                 TasksArray: [...state.TasksArray, action.task],
             };
+        // adding or deleting an id of button which should be blocked once it was clicked till request will be finished
         case "BLOCKBUTTON":
             return {
                 ...state,
@@ -42,29 +46,32 @@ const TaskReducer = (state = initialState, action) => {
                     ? state.BlockedButtonArray.filter((id) => id !== action.id)
                     : [...state.BlockedButtonArray, action.id],
             };
+        // updating the task in array
         case "UPDATETASK":
             return {
                 ...state,
                 TasksArray: state.TasksArray.map((item) =>
                     item.id === action.task.id
                         ? {
-                              id: item.id,
-                              priority: action.task.priority,
-                              text: action.task.text,
-                              status: action.task.status,
-                              data: action.task.data,
-                              keyFirebase: action.task.keyFirebase,
-                              settedDate: action.task.settedDate,
-                              settedTime: action.task.settedTime,
-                          }
+                            id: item.id,
+                            priority: action.task.priority,
+                            text: action.task.text,
+                            status: action.task.status,
+                            data: action.task.data,
+                            keyFirebase: action.task.keyFirebase,
+                            settedDate: action.task.settedDate,
+                            settedTime: action.task.settedTime,
+                        }
                         : item
                 ),
             };
+        // setting task's status to "done" value 
         case "SETTODONE":
             return {
                 ...state,
                 DoneIdArray: [...state.DoneIdArray, action.value],
             };
+        // setting task's status to the previous value
         case "SETTOUNDONE":
             return {
                 ...state,
@@ -72,10 +79,10 @@ const TaskReducer = (state = initialState, action) => {
                     (item) => item.id !== action.id
                 ),
             };
+        // aorting an array by the chosen value
         case "FILTERARRAY":
             const newState = { ...state };
             let array = newState.TasksArray;
-            debugger;
             if (action.value === "priority" || action.value === "status") {
                 const newTasksArray = _.sortBy(array, [
                     function (o) {
@@ -87,11 +94,9 @@ const TaskReducer = (state = initialState, action) => {
                     TasksArray: (state.TasksArray = newTasksArray),
                 };
             } else if (action.value === "deadline") {
-                debugger;
                 const newTasksArray = _.sortBy(array, [
                     function (o) {
                         const dataForSort = o.settedDate + o.settedTime;
-                        debugger;
                         return new Moment(dataForSort).format(
                             "YYYY-MM-DD, h:mm"
                         );
@@ -112,6 +117,7 @@ const TaskReducer = (state = initialState, action) => {
                     TasksArray: (state.TasksArray = newTasksArray),
                 };
             }
+        // booling value for loader
         case "LOADING":
             return {
                 ...state,
@@ -138,41 +144,41 @@ export const SetToDoneThunk = (keyFirebase) => async (dispatch, getState) => {
     const userId = getState().auth.user.userId;
 
     await dispatch(blockButton(keyFirebase));
+    // here we are getting an array of tasks an updating one of tasks with new value of STATUS field, making some actions if request failed
     try {
         await app
             .firestore()
             .collection("users")
             .doc(userId)
             .collection("tasks")
+            .doc(keyFirebase)
             .get()
-            .then(function (querySnapshot) {
-                querySnapshot.forEach(function (doc) {
-                    app.firestore()
-                        .collection("users")
-                        .doc(userId)
-                        .collection("tasks")
-                        .doc(keyFirebase)
-                        .update({
-                            ...doc.data(),
-                            keyFirebase: keyFirebase,
-                            status: "done",
-                            prevStatus:
-                                doc.data().status === "done"
-                                    ? "new"
-                                    : doc.data().status,
-                        });
-                    dispatch(
-                        updateTask({
-                            ...doc.data(),
-                            keyFirebase: keyFirebase,
-                            status: "done",
-                            prevStatus:
-                                doc.data().status === "done"
-                                    ? "new"
-                                    : doc.data().status,
-                        })
-                    );
-                });
+            .then((querySnapshot) => {
+                app.firestore()
+                    .collection("users")
+                    .doc(userId)
+                    .collection("tasks")
+                    .doc(keyFirebase)
+                    .update({
+                        ...querySnapshot.data(),
+                        keyFirebase: keyFirebase,
+                        status: "done",
+                        prevStatus:
+                            querySnapshot.data().status === "done"
+                                ? "new"
+                                : querySnapshot.data().status,
+                    });
+                dispatch(
+                    updateTask({
+                        ...querySnapshot.data(),
+                        keyFirebase: keyFirebase,
+                        status: "done",
+                        prevStatus:
+                            querySnapshot.data().status === "done"
+                                ? "new"
+                                : querySnapshot.data().status,
+                    })
+                );
             });
     } catch (error) {
         dispatch(SetMessage(error.message, "error"));
@@ -180,6 +186,7 @@ export const SetToDoneThunk = (keyFirebase) => async (dispatch, getState) => {
     dispatch(blockButton(keyFirebase));
 };
 
+// here we are getting an array of tasks an updating one of tasks with new value of STATUS field, making some actions if request failed
 export const SetToPrevStatusThunk = (keyFirebase) => async (
     dispatch,
     getState
@@ -193,48 +200,49 @@ export const SetToPrevStatusThunk = (keyFirebase) => async (
             .collection("users")
             .doc(userId)
             .collection("tasks")
+            .doc(keyFirebase)
             .get()
-            .then(function (querySnapshot) {
-                querySnapshot.forEach(function (doc) {
-                    app.firestore()
-                        .collection("users")
-                        .doc(userId)
-                        .collection("tasks")
-                        .doc(keyFirebase)
-                        .update({
-                            ...doc.data(),
-                            keyFirebase: keyFirebase,
-                            status:
-                                doc.data().prevStatus === doc.data().status
-                                    ? "new"
-                                    : doc.data().prevStatus,
-                            prevStatus: doc.data().status,
-                        });
-                    dispatch(
-                        updateTask({
-                            ...doc.data(),
-                            keyFirebase: keyFirebase,
-                            status:
-                                doc.data().prevStatus === doc.data().status
-                                    ? "new"
-                                    : doc.data().prevStatus,
-                            prevStatus: doc.data().status,
-                        })
-                    );
-                });
+            .then((querySnapshot) => {
+                app.firestore()
+                    .collection("users")
+                    .doc(userId)
+                    .collection("tasks")
+                    .doc(keyFirebase)
+                    .update({
+                        ...querySnapshot.data(),
+                        keyFirebase: keyFirebase,
+                        status:
+                            querySnapshot.data().prevStatus === querySnapshot.data().status
+                                ? "new"
+                                : querySnapshot.data().prevStatus,
+                        prevStatus: querySnapshot.data().status,
+                    });
+                dispatch(
+                    updateTask({
+                        ...querySnapshot.data(),
+                        keyFirebase: keyFirebase,
+                        status:
+                            querySnapshot.data().prevStatus === querySnapshot.data().status
+                                ? "new"
+                                : querySnapshot.data().prevStatus,
+                        prevStatus: querySnapshot.data().status,
+                    })
+                );
             });
     } catch (error) {
         dispatch(SetMessage(error.message, "error"));
     }
     dispatch(blockButton(keyFirebase));
 };
+
+// here we are getting the collection of tasks of an authorized user or making some actions in case if request failed
 export const GetTasksThunk = () => async (dispatch, getState) => {
+    console.log(getState().tasks.TasksArray)
     const userId = getState().auth.user.userId;
     const isAuth = getState().auth.isAuth;
     try {
         if (isAuth) {
             const array = [];
-            debugger;
             await app
                 .firestore()
                 .collection("users")
@@ -242,7 +250,6 @@ export const GetTasksThunk = () => async (dispatch, getState) => {
                 .collection("tasks")
                 .get()
                 .then(function (querySnapshot) {
-                    debugger;
                     try {
                         querySnapshot.forEach(function (doc) {
                             // doc.data() is never undefined for query doc snapshots
@@ -268,6 +275,8 @@ export const GetTasksThunk = () => async (dispatch, getState) => {
     }
 };
 
+
+// deleting the task from an array and on a server
 export const DeleteTaskThunk = (id, keyFirebase) => async (
     dispatch,
     getState
@@ -288,6 +297,8 @@ export const DeleteTaskThunk = (id, keyFirebase) => async (
     }
     dispatch(blockButton(id));
 };
+
+// ading task to server and to current tasks array
 export const AddTaskThunk = (
     priority,
     text,
@@ -306,9 +317,7 @@ export const AddTaskThunk = (
     const newId =
         getState().tasks.TasksArray.length !== 0
             ? getState().tasks.TasksArray.length === 1
-                ? +getState().tasks.TasksArray[
-                      getState().tasks.TasksArray.length - 1
-                  ].id + +1
+                ? 2
                 : +sortedByIdTasksArray[sortedByIdTasksArray.length - 1].id + +1
             : 1;
     const newDate = new Date()
@@ -353,6 +362,8 @@ export const AddTaskThunk = (
     }
     dispatch(blockButton("addTask"));
 };
+
+// updating the task 
 export const UpdateTaskThunk = (
     priority,
     text,

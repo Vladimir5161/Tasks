@@ -20,9 +20,14 @@ const AddTask = ({ AddTaskThunk, changeAddTask, BlockedButtonArray }) => {
     const changeStatus = (event) => {
         setStatus({ status: event.target.value });
     };
-    let [date, setDate] = React.useState(null);
-    const onChange = (date) => setDate(date);
 
+    //-----------------
+    // here we can set new date for "deadline" and check if it is not older than the current date
+    let [date, setDate] = React.useState(null);
+    const onChange = (date) => { if (date >= new Date()) { setDate(date) } else return null }
+
+
+    // the same for time
     const [selectedTime, setSelectedTime] = React.useState(null);
     const handleTimeChange = (date) => {
         setSelectedTime(date);
@@ -34,13 +39,13 @@ const AddTask = ({ AddTaskThunk, changeAddTask, BlockedButtonArray }) => {
     const settedTime =
         selectedTime !== null
             ? selectedTime
-                  .toLocaleString()
-                  .split(",")[1]
-                  .split(":")
-                  .reverse()
-                  .splice(1, 2)
-                  .reverse()
-                  .join(":")
+                .toLocaleString()
+                .split(",")[1]
+                .split(":")
+                .reverse()
+                .splice(1, 2)
+                .reverse()
+                .join(":")
             : null;
 
     const onSubmit = (formData) => {

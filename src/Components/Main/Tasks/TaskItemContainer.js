@@ -42,12 +42,12 @@ const TaskItemContainer = React.memo(
         };
 
         //-------------
-
+        // here we can set new date for "deadline" and check if it is not older than the current date
         let [date, setDate] = React.useState({ [id]: null });
-        const onChange = (date) => setDate({ [id]: date });
+        const onChange = (date) => { if (date >= new Date()) { setDate({ [id]: date }) } else return null }
 
         //-------------
-
+        // the same for time
         const [selectedTime, setSelectedTime] = React.useState({
             [id]: null,
         });
@@ -78,27 +78,27 @@ const TaskItemContainer = React.memo(
         const newSettedDate =
             date[id] !== null
                 ? date[id]
-                      .toLocaleString()
-                      .split(",")[0]
-                      .split(".")
-                      .reverse()
-                      .join("-")
+                    .toLocaleString()
+                    .split(",")[0]
+                    .split(".")
+                    .reverse()
+                    .join("-")
                 : settedDate;
 
         const newSettedTime =
             selectedTime[id] !== null
                 ? selectedTime[id]
-                      .toLocaleString()
-                      .split(",")[1]
-                      .split(":")
-                      .reverse()
-                      .splice(1, 2)
-                      .reverse()
-                      .join(":")
+                    .toLocaleString()
+                    .split(",")[1]
+                    .split(":")
+                    .reverse()
+                    .splice(1, 2)
+                    .reverse()
+                    .join(":")
                 : settedTime;
 
         // ----------------------
-
+        // here we are creating new date,
         const onSubmit = (form) => {
             const newDate = new Date()
                 .toLocaleString()
@@ -181,12 +181,13 @@ const TaskItemContainer = React.memo(
                 .splice(1, 2)
                 .reverse()
                 .join(":");
+
+
+            // whis logic checks if the 'DEADLINE' date is later then the curent time and date and sets one of values for the task 
+            // - "missed", "urgent" - if difference is less then 24, or false
             const isUrgent = (settedDate, settedTime) => {
                 if (
-                    settedDate !== undefined ||
-                    settedDate !== null ||
-                    settedTime !== undefined ||
-                    settedTime !== null
+                    settedDate
                 ) {
                     if (
                         new Date(newDate + newTime).getTime() >=
@@ -237,10 +238,11 @@ const TaskItemContainer = React.memo(
                     setUrgent({ [id]: false });
                     setMissed({ [id]: false });
                 } else {
-                    return setUrgent({ [id]: false });
+                    setUrgent({ [id]: false });
+                    setMissed({ [id]: false });
                 }
             };
-
+            // this is a function which runs the logic above when component is mounted or shen one of the dependencies is changed
             const callUrgentFunc = () => {
                 isUrgent(settedDate, settedTime);
             };
