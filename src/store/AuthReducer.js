@@ -87,6 +87,7 @@ export const Login = (email, password) => async (dispatch) => {
                                     querySnapshot.data().userId
                                 )
                             );
+
                             dispatch(setAuth(true));
                             dispatch(
                                 SetMessage(
@@ -117,12 +118,11 @@ export const AuthUser = () => async (dispatch) => {
                 .collection("users")
                 .doc(user.uid)
                 .get()
-                .then(async (querySnapshot) => {
+                .then(async function (snapshot) {
+                    console.log(snapshot);
+                    debugger;
                     await dispatch(
-                        setUserNameAndId(
-                            querySnapshot.data().userName,
-                            querySnapshot.data().userId
-                        )
+                        setUserNameAndId(snapshot.userName, snapshot.userId)
                     );
                     dispatch(setAuth(true));
                 });
