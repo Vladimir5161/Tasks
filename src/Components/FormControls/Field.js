@@ -13,17 +13,17 @@ export const createField = (
     props = {},
     text = ""
 ) => (
-    <div className="createField">
-        <Field
-            placeholder={placeholder}
-            name={name}
-            validate={validators}
-            component={component}
-            {...props}
-        />{" "}
-        {text}
-    </div>
-);
+        <div className="createField">
+            <Field
+                placeholder={placeholder}
+                name={name}
+                validate={validators}
+                component={component}
+                {...props}
+            />{" "}
+            {text}
+        </div>
+    );
 
 export const InputForm = ({ inputLabel, ...props }) => {
     let { input, meta, ...restProps } = props;
@@ -33,15 +33,15 @@ export const InputForm = ({ inputLabel, ...props }) => {
             {hasError ? (
                 <ErrorValidate {...input} {...restProps} meta={meta} />
             ) : (
-                <div className="formBlock">
-                    <TextField
-                        label={inputLabel}
-                        type="text"
-                        {...input}
-                        {...restProps}
-                    />
-                </div>
-            )}
+                    <div className="formBlock">
+                        <TextField
+                            label={inputLabel}
+                            type="text"
+                            {...input}
+                            {...restProps}
+                        />
+                    </div>
+                )}
         </div>
     );
 };
@@ -50,7 +50,7 @@ export const InputFormPass = ({ inputLabel, ...props }) => {
     let { input, meta, ...restProps } = props;
     const hasError = meta.error && meta.touched;
     const [state, setState] = React.useState({
-        checkedB: false,
+        showPass: false,
     });
 
     return (
@@ -71,16 +71,16 @@ export const InputFormPass = ({ inputLabel, ...props }) => {
                     state={state}
                 />
             ) : (
-                <div className="formBlock">
-                    <TextField
-                        label={inputLabel}
-                        type={state.checkedB ? "text" : "password"}
-                        autoComplete="current-password"
-                        {...input}
-                        {...restProps}
-                    />
-                </div>
-            )}
+                    <div className="formBlock">
+                        <TextField
+                            label={inputLabel}
+                            type={state.showPass ? "text" : "password"}
+                            autoComplete="current-password"
+                            {...input}
+                            {...restProps}
+                        />
+                    </div>
+                )}
         </div>
     );
 };

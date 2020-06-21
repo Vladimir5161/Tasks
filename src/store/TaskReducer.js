@@ -237,7 +237,6 @@ export const SetToPrevStatusThunk = (keyFirebase) => async (
 
 // here we are getting the collection of tasks of an authorized user or making some actions in case if request failed
 export const GetTasksThunk = () => async (dispatch, getState) => {
-    console.log(getState().tasks.TasksArray)
     const userId = getState().auth.user.userId;
     const isAuth = getState().auth.isAuth;
     try {
@@ -281,7 +280,6 @@ export const DeleteTaskThunk = (id, keyFirebase) => async (
     dispatch,
     getState
 ) => {
-    debugger
     const userId = getState().auth.user.userId;
     dispatch(blockButton(id));
     try {

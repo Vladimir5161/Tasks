@@ -7,9 +7,10 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import DeleteButton from "../../CommonComponents/DeleteButton";
 import EditButton from "../../CommonComponents/EditButon";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import EditTaskForm from "../../FormControls/EditTaskForm";
 import { CalendarReact } from "../../CommonComponents/Calendar";
-import Clock from "../../CommonComponents/Clock";
+
+const EditTaskForm = React.lazy(() => import("../../FormControls/EditTaskForm"))
+const Clock = React.lazy(() => import("../../CommonComponents/Clock"))
 
 const TaskItem = React.memo(
     ({

@@ -5,13 +5,14 @@ import Adapter from "enzyme-adapter-react-16";
 
 Enzyme.configure({ adapter: new Adapter() });
 
+
 test("props which we throw to component should be in it", () => {
     const component = mount(
         <TaskItem
             text="some text"
             editTask={{ id: false }}
             id="1"
-            taskPanel={{ id: false }}
+            taskPanel={[]}
             missed={{ id: false }}
             urgent={{ id: false }}
         />

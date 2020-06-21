@@ -7,6 +7,8 @@ const state = {
     ],
 };
 
+
+
 test("task object should be added to state", () => {
     let action = addTask({ id: 1000, text: "bla bla" });
 
