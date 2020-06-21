@@ -281,9 +281,11 @@ export const DeleteTaskThunk = (id, keyFirebase) => async (
     dispatch,
     getState
 ) => {
+    debugger
     const userId = getState().auth.user.userId;
     dispatch(blockButton(id));
     try {
+        await dispatch(deleteTask(id));
         await app
             .firestore()
             .collection("users")
@@ -291,9 +293,8 @@ export const DeleteTaskThunk = (id, keyFirebase) => async (
             .collection("tasks")
             .doc(keyFirebase)
             .delete();
-        await dispatch(deleteTask(id));
-    } catch {
-        dispatch(SetMessage("something went wrong", "error"));
+    } catch (e) {
+        dispatch(SetMessage(e.message, "error"));
     }
     dispatch(blockButton(id));
 };
@@ -315,11 +316,9 @@ export const AddTaskThunk = (
         return a.id - b.id;
     });
     const newId =
-        getState().tasks.TasksArray.length !== 0
-            ? getState().tasks.TasksArray.length === 1
-                ? 2
-                : +sortedByIdTasksArray[sortedByIdTasksArray.length - 1].id + +1
-            : 1;
+        getState().tasks.TasksArray.length === 0
+            ? 1
+            : +sortedByIdTasksArray[sortedByIdTasksArray.length - 1].id + +1
     const newDate = new Date()
         .toLocaleString()
         .split(",")[0]
@@ -388,6 +387,7 @@ export const UpdateTaskThunk = (
         settedTime: newSettedTime,
     };
     await dispatch(blockButton("editTask"));
+    debugger
     try {
         await app
             .firestore()
@@ -398,8 +398,8 @@ export const UpdateTaskThunk = (
             .update(task);
         await dispatch(updateTask(task));
         dispatch(reset("editTask"));
-    } catch {
-        dispatch(SetMessage("something went wrong", "error"));
+    } catch (e) {
+        dispatch(SetMessage(e.message, "error"));
     }
     dispatch(blockButton("editTask"));
 };

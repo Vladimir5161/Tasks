@@ -13,8 +13,6 @@ const initialState = {
 };
 
 const AuthReducer = (state = initialState, action) => {
-    console.log(state.user.userId);
-    console.log(state.user.name);
     switch (action.type) {
         case "ISAUTH":
             return { ...state, isAuth: (state.isAuth = action.authStatus) };

@@ -5,10 +5,11 @@ import Box from "@material-ui/core/Box";
 import Tasks from "./Tasks/Tasks";
 import LoginPage from "./Login/LoginPage";
 import { connect } from "react-redux";
-import Alert from "../CommonComponents/Alert.js";
 import Preloader from "../CommonComponents/Preloader";
 
-const Main = ({ value, message, Authorized, loading }) => {
+const Alert = React.lazy(() => import("../CommonComponents/Alert"))
+
+const Main = ({ value, message, Authorized, loading, confirm }) => {
     if (loading) {
         return <Preloader />;
     }
@@ -27,7 +28,7 @@ const Main = ({ value, message, Authorized, loading }) => {
     } else
         return (
             <div>
-                {message === null ? null : <Alert />}
+                {message === null ? null : < Alert />}
                 <TabPanel value={value} index={0}>
                     <LoginPage />
                 </TabPanel>

@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import "./tasks.css";
 import { DeleteTaskThunk, filterArray } from "../../../store/TaskReducer";
+import { setTaskPanel } from "../../../store/AlertReducer"
 import AddTaskButton from "../../CommonComponents/AddTaskButton";
 import AddTask from "./AddTask";
 import Filter from "./Filter";
@@ -23,7 +24,12 @@ const ActionsInExpansionPanelSummary = React.memo(
         DoneIdArray,
         filterArray,
         loading,
+        confirm,
         BlockedButtonArray,
+        deleteId,
+        deleteKey,
+        taskPanel,
+        setTaskPanel
     }) => {
         const classes = useStyles();
         let [addTask, changeAddTask] = useState(false);
@@ -35,6 +41,7 @@ const ActionsInExpansionPanelSummary = React.memo(
         if (loading) {
             return <Preloader />;
         }
+
         return (
             <>
                 {isAuth ? (
@@ -65,24 +72,30 @@ const ActionsInExpansionPanelSummary = React.memo(
                                     settedTime,
                                     settedDate,
                                 }) => (
-                                    <div key={id}>
-                                        <TaskItemContainer
-                                            id={id}
-                                            text={text}
-                                            priority={priority}
-                                            status={status}
-                                            keyFirebase={keyFirebase}
-                                            data={data}
-                                            DeleteTaskThunk={DeleteTaskThunk}
-                                            DoneIdArray={DoneIdArray}
-                                            BlockedButtonArray={
-                                                BlockedButtonArray
-                                            }
-                                            settedTime={settedTime}
-                                            settedDate={settedDate}
-                                        />
-                                    </div>
-                                )
+                                        <div key={id}>
+                                            <TaskItemContainer
+                                                id={id}
+                                                text={text}
+                                                priority={priority}
+                                                status={status}
+                                                keyFirebase={keyFirebase}
+                                                data={data}
+                                                DeleteTaskThunk={DeleteTaskThunk}
+                                                DoneIdArray={DoneIdArray}
+                                                BlockedButtonArray={
+                                                    BlockedButtonArray
+                                                }
+                                                settedTime={settedTime}
+                                                settedDate={settedDate}
+                                                confirm={confirm}
+                                                TasksArray={TasksArray}
+                                                deleteId={deleteId}
+                                                deleteKey={deleteKey}
+                                                taskPanel={taskPanel}
+                                                setTaskPanel={setTaskPanel}
+                                            />
+                                        </div>
+                                    )
                             )}
                         </div>
                     </div>
@@ -97,9 +110,14 @@ const mapStateToProps = (state) => ({
     DoneIdArray: state.tasks.DoneIdArray,
     loading: state.tasks.loading,
     BlockedButtonArray: state.tasks.BlockedButtonArray,
+    confirm: state.alert.confirm,
+    deleteId: state.alert.deleteId,
+    deleteKey: state.alert.deleteKey,
+    taskPanel: state.alert.taskPanel
 });
 
 export default connect(mapStateToProps, {
     DeleteTaskThunk,
     filterArray,
+    setTaskPanel
 })(ActionsInExpansionPanelSummary);

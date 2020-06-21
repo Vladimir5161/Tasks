@@ -9,6 +9,7 @@ import PrioritySelect from "../CommonComponents/PrioritySelect";
 import { ExpansionPanel, ExpansionPanelSummary } from "@material-ui/core";
 import StatusSelect from "../CommonComponents/StatusSelect";
 import { required } from "../../validators/validators";
+import ConfirmSave from "../CommonComponents/ConfirmSave";
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -25,11 +26,25 @@ const EditTaskReduxFrom = React.memo(
         BlockedButtonArray,
         setDeadline,
         selectedTime,
+        confirm,
+        setConfirm,
+        handleUpdate,
+        confirmSave,
+        setConfirmSave,
         ...props
     }) => {
         const classes = useStyles();
+        const handleEditConfirm = (value) => {
+            if (value) {
+                setConfirmSave(false);
+                handleUpdate()
+            } else {
+                setConfirmSave(false);
+            }
+        };
         return (
             <form onSubmit={props.handleSubmit} style={{ width: "100%" }}>
+                {confirmSave ? <ConfirmSave open={confirmSave} handleSave={handleEditConfirm} /> : null}
                 <ExpansionPanel>
                     <ExpansionPanelSummary
                         aria-label="Expand"

@@ -25,7 +25,6 @@ function AlertModal({ message, type, DefaultMessage, alertClass }) {
             DefaultMessage();
         }, 10000);
     }, [DefaultMessage]);
-    console.log(message);
     if (message === null) {
         return null;
     } else

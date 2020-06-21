@@ -40,6 +40,14 @@ const TaskItem = React.memo(
         urgent,
         OnDoneButtonClick,
         DeleteTask,
+        confirm,
+        setConfirm,
+        handleUpdate,
+        handleEditConfirm,
+        deleteId,
+        deleteKey,
+        confirmSave,
+        setConfirmSave,
     }) => {
         const currentDate =
             newSettedDate !== null && newSettedDate !== undefined ?
@@ -82,10 +90,16 @@ const TaskItem = React.memo(
                             onSubmit={onSubmit}
                             BlockedButtonArray={BlockedButtonArray}
                             setDeadline={setDeadline}
+                            confirm={confirm}
+                            setConfirm={setConfirm}
+                            handleUpdate={handleUpdate}
+                            handleEditConfirm={handleEditConfirm}
+                            confirmSave={confirmSave}
+                            setConfirmSave={setConfirmSave}
                         />
                     </div>
                 ) : (
-                        <div className={taskPanel[id]}>
+                        <div className={taskPanel.some(iD => iD === id) ? "taskPanelDelete" : "taskPanel"}>
                             <ExpansionPanel
                                 style={status === "done"
                                     ? { boxShadow: "0 0 10px 3px green" }
@@ -220,6 +234,10 @@ const TaskItem = React.memo(
                                         id={id}
                                         keyFirebase={keyFirebase}
                                         BlockedButtonArray={BlockedButtonArray}
+                                        confirm={confirm}
+                                        setConfirm={setConfirm}
+                                        deleteId={deleteId}
+                                        deleteKey={deleteKey}
                                     />
                                 </ExpansionPanelSummary>
                                 <ExpansionPanelDetails>

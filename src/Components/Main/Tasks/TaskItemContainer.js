@@ -6,7 +6,7 @@ import {
     SetToDoneThunk,
 } from "../../../store/TaskReducer";
 import TaskItem from "./TaskItem";
-
+import { setConfirm } from '../../../store/AlertReducer'
 const TaskItemContainer = React.memo(
     ({
         data,
@@ -22,8 +22,37 @@ const TaskItemContainer = React.memo(
         SetToDoneThunk,
         settedDate,
         settedTime,
+        confirm,
+        setConfirm,
+        handleEditConfirm,
+        TasksArray,
+        deleteId,
+        deleteKey,
+        taskPanel,
+        setTaskPanel
     }) => {
-        const [choseState, setChoseState] = React.useState({
+        // simple useEffect which upates task once one of params changes(written to add keyFirebase to each task which was created), keyFirebase is task's id given by Firebase
+        useEffect(() => {
+            UpdateTaskThunk(
+                priority,
+                text,
+                status,
+                id,
+                keyFirebase,
+                data,
+                settedDate,
+                settedTime
+            )
+        }, [TasksArray.length, UpdateTaskThunk, priority,
+            text,
+            status,
+            id,
+            keyFirebase,
+            data,
+            settedDate,
+            settedTime])
+
+        let [choseState, setChoseState] = React.useState({
             priority: priority,
         });
         const handleChange = (event) => {
@@ -33,8 +62,10 @@ const TaskItemContainer = React.memo(
         };
 
         //-------------
+        // value for data from the edit form which we use in a function "handleUpdate" after user confirms updating
+        let [form, setFormData] = React.useState(null)
 
-        const [choseStatus, setStatus] = React.useState({
+        let [choseStatus, setStatus] = React.useState({
             status: status,
         });
         const changeStatus = (event) => {
@@ -48,7 +79,7 @@ const TaskItemContainer = React.memo(
 
         //-------------
         // the same for time
-        const [selectedTime, setSelectedTime] = React.useState({
+        let [selectedTime, setSelectedTime] = React.useState({
             [id]: null,
         });
 
@@ -63,18 +94,11 @@ const TaskItemContainer = React.memo(
 
         //-------------
 
-        let [taskPanel, setTaskPanel] = React.useState({
-            [id]: "taskPanel",
-        });
+
 
         //-------------
+        // here we are creating new date,checking if user has chosed a new deadline date and depends on it setting new or old deadline date
 
-        const DeleteTask = async (id, keyFirebase) => {
-            setTaskPanel({ [id]: "taskPanelDelete" });
-            setTimeout(() => DeleteTaskThunk(id, keyFirebase), 1000);
-        };
-
-        //-------------
         const newSettedDate =
             date[id] !== null
                 ? date[id]
@@ -98,52 +122,35 @@ const TaskItemContainer = React.memo(
                 : settedTime;
 
         // ----------------------
-        // here we are creating new date,
-        const onSubmit = (form) => {
-            const newDate = new Date()
-                .toLocaleString()
-                .split(",")[0]
-                .split(".")
-                .reverse()
-                .join("-");
-            const newTime = new Date()
-                .toLocaleString()
-                .split(",")[1]
-                .split(":")
-                .reverse()
-                .splice(1, 2)
-                .reverse()
-                .join(":");
-            if (
-                new Date(newDate + newTime) >
-                new Date(newSettedDate + newSettedTime)
-            ) {
-                UpdateTaskThunk(
-                    choseState.priority,
-                    form.text,
-                    choseStatus.status,
-                    id,
-                    keyFirebase,
-                    data,
-                    settedDate,
-                    settedTime
-                ).then(EditButtonFunc(id));
-            } else {
-                UpdateTaskThunk(
-                    choseState.priority,
-                    form.text,
-                    choseStatus.status,
-                    id,
-                    keyFirebase,
-                    data,
-                    newSettedDate,
-                    newSettedTime
-                ).then(EditButtonFunc(id));
-            }
+
+        // this function opens confirm modal window and save user's data which is going to be used in a function below
+
+        let [confirmSave, setConfirmSave] = React.useState(false)
+        const onSubmit = (formData) => {
+            setConfirmSave(true)
+            setFormData(formData)
+        }
+        const handleUpdate = () => {
+            UpdateTaskThunk(
+                choseState.priority,
+                form.text,
+                choseStatus.status,
+                id,
+                keyFirebase,
+                data,
+                newSettedDate,
+                newSettedTime
+            ).then(EditButtonFunc(id));
         };
 
-        //-------------
-
+        //----------------------------------
+        // function which sets animated css style to the item and then deleting the task once animation finished
+        const DeleteTask = (iD, keyFirebase) => {
+            setTaskPanel(iD);
+            setTimeout(() => { DeleteTaskThunk(id, keyFirebase); setTaskPanel(iD) }, 1000);
+        };
+        //----------------------------------
+        // changing the task status by clicking the checkbox
         const OnDoneButtonClick = () => {
             if (status === "done") {
                 SetToPrevStatusThunk(keyFirebase);
@@ -166,6 +173,7 @@ const TaskItemContainer = React.memo(
 
         // -------------------------
         // logic below checks if current date is urgent for the task (less 24 hours to deadline time)
+
         useEffect(() => {
             const newDate = new Date()
                 .toLocaleString()
@@ -238,8 +246,8 @@ const TaskItemContainer = React.memo(
                     setUrgent({ [id]: false });
                     setMissed({ [id]: false });
                 } else {
-                    setUrgent({ [id]: false });
                     setMissed({ [id]: false });
+                    setUrgent({ [id]: false });
                 }
             };
             // this is a function which runs the logic above when component is mounted or shen one of the dependencies is changed
@@ -266,13 +274,14 @@ const TaskItemContainer = React.memo(
                     changeStatus={changeStatus}
                     handleChange={handleChange}
                     setDeadline={setDeadline}
+                    handleUpdate={handleUpdate}
                     onSubmit={onSubmit}
                     choseStatus={choseStatus}
                     missed={missed}
                     taskPanel={taskPanel}
                     urgent={urgent}
                     OnDoneButtonClick={OnDoneButtonClick}
-                    DeleteTask={DeleteTask}
+                    setTaskPanel={setTaskPanel}
                     data={data}
                     id={id}
                     text={text}
@@ -286,6 +295,14 @@ const TaskItemContainer = React.memo(
                     settedTime={settedTime}
                     newSettedDate={newSettedDate}
                     newSettedTime={newSettedTime}
+                    confirm={confirm}
+                    setConfirm={setConfirm}
+                    handleEditConfirm={handleEditConfirm}
+                    DeleteTask={DeleteTask}
+                    deleteId={deleteId}
+                    deleteKey={deleteKey}
+                    confirmSave={confirmSave}
+                    setConfirmSave={setConfirmSave}
                 />
             </>
         );
@@ -296,4 +313,5 @@ export default connect(null, {
     UpdateTaskThunk,
     SetToPrevStatusThunk,
     SetToDoneThunk,
+    setConfirm
 })(TaskItemContainer);
