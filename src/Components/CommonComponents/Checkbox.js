@@ -9,10 +9,10 @@ export default function Checkbox({ setState, state }) {
     return (
         <div style={{ position: "absolute", left: "-57%", bottom: "20%" }}>
             <Switch
-                checked={state.checkedB}
+                checked={state.showPass}
                 onChange={handleChange}
                 color="primary"
-                name="checkedB"
+                name="showPass"
                 inputProps={{ "aria-label": "primary checkbox" }}
             />
         </div>

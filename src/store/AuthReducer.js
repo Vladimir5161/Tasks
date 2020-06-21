@@ -17,7 +17,6 @@ const AuthReducer = (state = initialState, action) => {
         case "ISAUTH":
             return { ...state, isAuth: (state.isAuth = action.authStatus) };
         case "SETUSERNAME":
-            debugger;
             return {
                 ...state,
                 user:

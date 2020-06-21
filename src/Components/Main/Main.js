@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import PropTypes from "prop-types";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
@@ -28,7 +28,7 @@ const Main = ({ value, message, Authorized, loading, confirm }) => {
     } else
         return (
             <div>
-                {message === null ? null : < Alert />}
+                {message === null ? null : <Suspense fallback={<Preloader />}> <Alert /></Suspense>}
                 <TabPanel value={value} index={0}>
                     <LoginPage />
                 </TabPanel>

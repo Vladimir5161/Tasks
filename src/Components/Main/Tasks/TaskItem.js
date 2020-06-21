@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
@@ -8,6 +8,7 @@ import DeleteButton from "../../CommonComponents/DeleteButton";
 import EditButton from "../../CommonComponents/EditButon";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { CalendarReact } from "../../CommonComponents/Calendar";
+import Preloader from "../../CommonComponents/Preloader";
 
 const EditTaskForm = React.lazy(() => import("../../FormControls/EditTaskForm"))
 const Clock = React.lazy(() => import("../../CommonComponents/Clock"))
@@ -72,13 +73,13 @@ const TaskItem = React.memo(
                                     date={currentDate}
                                     onChange={onChange}
                                 />
-                                <Clock
+                                <Suspense fallback={<Preloader />}><Clock
                                     handleTimeChange={handleTimeChange}
                                     selectedTime={currentTime}
-                                />
+                                /></Suspense>
                             </>
                         ) : null}
-                        <EditTaskForm
+                        <Suspense fallback={<Preloader />}><EditTaskForm
                             initialValues={{
                                 text: text,
                                 keyFirebase: keyFirebase,
@@ -97,7 +98,7 @@ const TaskItem = React.memo(
                             handleEditConfirm={handleEditConfirm}
                             confirmSave={confirmSave}
                             setConfirmSave={setConfirmSave}
-                        />
+                        /></Suspense>
                     </div>
                 ) : (
                         <div className={taskPanel.some(iD => iD === id) ? "taskPanelDelete" : "taskPanel"}>

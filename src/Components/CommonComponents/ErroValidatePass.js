@@ -19,7 +19,7 @@ export default function ErrorValidatePass(props) {
             <div>
                 <TextField
                     error
-                    type={state.checkedB ? "text" : "password"}
+                    type={state.showPass ? "text" : "password"}
                     id="standard-error"
                     label={meta.error}
                     defaultValue="Hello World"
