@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import "./tasks.css";
 import { DeleteTaskThunk, filterArray } from "../../../store/TaskReducer";
 import { setTaskPanel } from "../../../store/AlertReducer"
 import AddTaskButton from "../../CommonComponents/AddTaskButton";
-import AddTask from "./AddTask";
 import Filter from "./Filter";
 import Preloader from "../../CommonComponents/Preloader";
 import TaskItemContainer from "./TaskItemContainer";
+
+const AddTask = React.lazy(() => import("./AddTask"))
 
 const useStyles = makeStyles({
     root: {
@@ -56,10 +57,10 @@ const ActionsInExpansionPanelSummary = React.memo(
                         </div>
                         <div className={addTaskPanel}>
                             {addTask ? (
-                                <AddTask
+                                <Suspense fallback={<Preloader />}> <AddTask
                                     changeAddTask={changeAddTask}
                                     BlockedButtonArray={BlockedButtonArray}
-                                />
+                                /></Suspense>
                             ) : null}
                             {TasksArray.map(
                                 ({
