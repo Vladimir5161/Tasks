@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { connect } from "react-redux";
 import {
     UpdateTaskThunk,
@@ -174,26 +174,25 @@ const TaskItemContainer = React.memo(
         // -------------------------
         // logic below checks if current date is urgent for the task (less 24 hours to deadline time)
 
-        useEffect(() => {
-            const newDate = new Date()
-                .toLocaleString()
-                .split(",")[0]
-                .split(".")
-                .reverse()
-                .join("-");
-            const newTime = new Date()
-                .toLocaleString()
-                .split(",")[1]
-                .split(":")
-                .reverse()
-                .splice(1, 2)
-                .reverse()
-                .join(":");
+        // this logic checks if the 'DEADLINE' date is later then the curent time and date and sets one of values for the task 
+        // - "missed", "urgent" - if difference is less then 24, or false
+        const isUrgent = useCallback(
+            () => {
 
-
-            // whis logic checks if the 'DEADLINE' date is later then the curent time and date and sets one of values for the task 
-            // - "missed", "urgent" - if difference is less then 24, or false
-            const isUrgent = (settedDate, settedTime) => {
+                const newDate = new Date()
+                    .toLocaleString()
+                    .split(",")[0]
+                    .split(".")
+                    .reverse()
+                    .join("-");
+                const newTime = new Date()
+                    .toLocaleString()
+                    .split(",")[1]
+                    .split(":")
+                    .reverse()
+                    .splice(1, 2)
+                    .reverse()
+                    .join(":");
                 if (
                     settedDate
                 ) {
@@ -249,13 +248,16 @@ const TaskItemContainer = React.memo(
                     setMissed({ [id]: false });
                     setUrgent({ [id]: false });
                 }
-            };
+            },
+            [settedDate, settedTime, id, status],
+        );
+        useEffect(() => {
             // this is a function which runs the logic above when component is mounted or shen one of the dependencies is changed
             const callUrgentFunc = () => {
                 isUrgent(settedDate, settedTime);
             };
             callUrgentFunc();
-        }, [id, settedDate, settedTime, status, newSettedDate, newSettedTime]);
+        }, [settedDate, settedTime, isUrgent, status]);
 
         let [editTask, changeEditTask] = React.useState({ [id]: false });
         const EditButtonFunc = () => {
@@ -269,7 +271,7 @@ const TaskItemContainer = React.memo(
                 <TaskItem
                     deadline={deadline}
                     onChange={onChange}
-                    handleTimeChange={handleTimeChange}
+                    handleTimeChange={handleTimeChange} // changes deadline time
                     choseState={choseState}
                     changeStatus={changeStatus}
                     handleChange={handleChange}
@@ -278,14 +280,14 @@ const TaskItemContainer = React.memo(
                     onSubmit={onSubmit}
                     choseStatus={choseStatus}
                     missed={missed}
-                    taskPanel={taskPanel}
+                    taskPanel={taskPanel} // an array of id's with setted animation css for deleting the task
                     urgent={urgent}
                     OnDoneButtonClick={OnDoneButtonClick}
-                    setTaskPanel={setTaskPanel}
+                    setTaskPanel={setTaskPanel} // function deletes or adds task's id from taskPanel array
                     data={data}
                     id={id}
                     text={text}
-                    BlockedButtonArray={BlockedButtonArray}
+                    BlockedButtonArray={BlockedButtonArray} // an array of ids which shows should button be blocked or not
                     priority={priority}
                     status={status}
                     editTask={editTask}

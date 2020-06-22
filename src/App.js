@@ -8,7 +8,6 @@ import { Loading } from "./store/TaskReducer";
 import { AuthorizationThunk } from "./store/AuthorizationReducer";
 
 const App = ({ isAuth, AuthUser, TasksArray, AuthorizationThunk, Loading }) => {
-    console.log(isAuth);
     useEffect(() => {
         const uploadTasks = async () => {
             Loading();
