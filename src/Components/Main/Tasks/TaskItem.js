@@ -196,7 +196,7 @@ const TaskItem = React.memo(
                                             {priority ? (
                                                 <div className="priorityTask">
                                                     priority:
-                                                    <div
+                                                    <p
                                                         style={
                                                             priority === "high"
                                                                 ? {
@@ -221,7 +221,7 @@ const TaskItem = React.memo(
                                                         }
                                                     >
                                                         {priority}
-                                                    </div>
+                                                    </p>
                                                 </div>
                                             ) : null}
                                             {status ? (
