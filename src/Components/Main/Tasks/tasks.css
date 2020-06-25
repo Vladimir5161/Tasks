@@ -6,7 +6,7 @@
     grid-template-columns: 65% 30% 5% !important;
     max-width: 1170px;
 }
-
+.choseDiv {display:flex;}
 .priorityTask,
 .statusTask {
     display: flex;

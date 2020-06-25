@@ -193,7 +193,12 @@ const TaskItemContainer = React.memo(
                     .splice(1, 2)
                     .reverse()
                     .join(":");
-                if (
+
+                if (status === "done") {
+                    setUrgent({ [id]: false });
+                    setMissed({ [id]: false });
+                }
+                else if (
                     settedDate
                 ) {
                     if (
@@ -241,9 +246,6 @@ const TaskItemContainer = React.memo(
                             }
                         } else return null;
                     }
-                } else if (status === "done") {
-                    setUrgent({ [id]: false });
-                    setMissed({ [id]: false });
                 } else {
                     setMissed({ [id]: false });
                     setUrgent({ [id]: false });
