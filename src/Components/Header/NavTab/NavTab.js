@@ -53,12 +53,12 @@ const NavTabs = React.memo(({ handleChange, value, Logout, isAuth, user }) => {
                     {isAuth && user.name !== null ? (
                         <LinkTab label={label} {...a11yProps(0)} />
                     ) : (
-                        <LinkTab
-                            label={label}
-                            href="/login"
-                            {...a11yProps(0)}
-                        />
-                    )}
+                            <LinkTab
+                                label={label}
+                                href="/login"
+                                {...a11yProps(0)}
+                            />
+                        )}
                     <LinkTab
                         label="All Tasks"
                         href="/tasks"
