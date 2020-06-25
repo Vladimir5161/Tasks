@@ -1,0 +1,246 @@
+.MuiExpansionPanelSummary-content.Mui-expanded,
+.MuiExpansionPanelSummary-content {
+    justify-content: space-between !important;
+    margin: 25px auto 15px auto !important;
+    display: grid !important;
+    grid-template-columns: 65% 30% 5% !important;
+    max-width: 1170px;
+}
+.choseDiv {display:flex;}
+.priorityTask,
+.statusTask {
+    display: flex;
+    align-self: center;
+    margin: 0 auto;
+    justify-content: center !important;
+}
+.statusTask div,
+.priorityTask div {
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    max-width: 100px !important;
+}
+.deadlineTasks {
+    display: block !important;
+    right: 25px !important;
+    left: auto !important;
+    text-align: right !important;
+}
+
+.mainBlockStyle {
+    margin-top: 30px !important;
+}
+.clearText {
+    text-decoration: none;
+    display: block;
+}
+.doneText {
+    text-decoration: line-through;
+    display: block;
+}
+.deleteButtonTask {
+    z-index: 999;
+    display: flex;
+    align-self: center;
+    top: 15px !important;
+}
+.MuiExpansionPanelSummary-expandIcon {
+    position: relative !important;
+    z-index: 20;
+}
+
+.dataTasks {
+    position: absolute;
+    display: flex;
+    align-self: center;
+    font-size: 14px;
+    left: 10px;
+    top: 2px;
+}
+.MuiIconButton-root:hover .MuiSvgIcon-root {
+    color: black;
+}
+
+.MuiExpansionPanelDetails-root {
+    justify-content: center;
+}
+.MuiExpansionPanel-root,
+.MuiExpansionPanel-root.Mui-expanded {
+    margin: 15px auto 15px auto !important;
+    max-width: 1170px;
+}
+.MuiFormControlLabel-root {
+    width: 100% !important;
+}
+.makeStyles-root-298 {
+    margin: 0;
+    top: 2px !important;
+}
+.MuiTextField-root {
+    margin: 0 auto !important;
+}
+.taskPanelDelete {
+    animation-name: deleteTranslate;
+    animation-duration: 1.5s;
+}
+.alertContainer {
+    position: fixed;
+    height: 200vh;
+    width: 200vw;
+    left: 0;
+    right: 0;
+    z-index: 90;
+    background-color: rgba(46, 49, 49, 0.7);
+    animation-name: alert;
+    animation-duration: 1s;
+}
+.alertContainerFirst {
+    position: fixed;
+    height: 200vh;
+    left: 0;
+    right: 0;
+    width: 200vw;
+    z-index: 90;
+    background-color: rgba(46, 49, 49, 0.7);
+}
+.alertNone {
+    position: relative;
+    background-color: inherit;
+    display: none;
+}
+@keyframes alert {
+    0% {
+        background-color: rgba(46, 49, 49, 0.7);
+    }
+    100% {
+        background-color: rgba(0, 0, 0, 0);
+    }
+}
+
+.alertClass {
+    width: 70%;
+    margin: 0 auto;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 6%;
+    z-index: 100;
+    max-width: 700px;
+}
+@keyframes deleteTranslate {
+    0% {
+        transform: translateX(0);
+    }
+    30% {
+        transform: translateX(50px);
+    }
+    100% {
+        transform: translateX(-2000px);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .MuiExpansionPanelSummary-content.Mui-expanded,
+    .MuiExpansionPanelSummary-content {
+        justify-content: space-between !important;
+        display: grid !important;
+        grid-template-columns: 55% 40% 5% !important;
+    }
+}
+@media screen and (max-width: 425px) {
+    .editButtonTask {
+        position: relative;
+        right: -10px;
+    }
+    .dataTasks {
+        font-size: 10px !important;
+    }
+    .urgentTask {
+        top: 20px;
+        position: relative;
+        font-size: 16px !important;
+    }
+    .deadlineTasks {
+        text-align: center !important;
+        right: 5px !important;
+        top: 0 !important;
+        left: auto !important;
+    }
+    .MuiExpansionPanelSummary-expandIcon.Mui-expanded {
+        position: absolute !important;
+        bottom: 0 !important;
+        right: 10px;
+    }
+    .PrivateSwitchBase-input-128 {
+        z-index: 45;
+    }
+    .dataTasks {
+        bottom: 10px;
+        left: 5px;
+    }
+    .TaskText {
+        margin-left: 0;
+        position: relative;
+        left: -20px;
+        text-decoration: none;
+        display: block;
+    }
+    .MuiExpansionPanelSummary-content.Mui-expanded,
+    .MuiExpansionPanelSummary-content {
+        justify-content: center !important;
+        display: grid !important;
+        grid-template-rows: 60% 40% !important;
+        grid-template-columns: 100% !important;
+        width: 100% !important;
+        flex-grow: 0 !important;
+    }
+    .MuiTypography-body1 {
+        margin: 20px auto !important;
+        padding: 30px 10px 10px 10px;
+        text-align: center;
+    }
+    .deleteButtonTask {
+        position: absolute;
+        top: 10px !important;
+        right: -10px !important;
+        margin-top: 20px !important;
+    }
+    .MuiExpansionPanelSummary-expandIcon {
+        position: absolute !important;
+        left: auto;
+        right: 10px;
+        bottom: 0;
+    }
+}
+@media screen and (max-width: 375px) {
+    .MuiTypography-body1 {
+        font-size: 12px !important;
+    }
+    .deleteButtonTask {
+        position: absolute;
+        display: block;
+        top: 10px !important;
+        right: -13px !important;
+        left: auto;
+        right: 20px;
+        margin: 0 auto;
+        width: 70px;
+    }
+    .MuiExpansionPanelSummary-expandIcon {
+        position: absolute !important;
+        left: auto;
+        right: 10px;
+        bottom: 0;
+    }
+    .statusTask,
+    .priorityTask {
+        display: block !important;
+    }
+    .statusTask div,
+    .priorityTask div {
+        min-width: 80px !important;
+        justify-content: center;
+        width: 100px !important;
+    }
+}

@@ -1,0 +1,10 @@
+.MuiTab-root {
+    text-transform: none !important;
+}
+@media screen and (max-width: 425px) {
+    .MuiTab-wrapper {
+        font-size: 10px !important;
+        align-items: unset !important;
+        word-wrap: break-word !important;
+    }
+}
