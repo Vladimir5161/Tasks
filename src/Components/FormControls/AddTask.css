@@ -28,13 +28,35 @@
 }
 .setDeadlineIcon {
     position: absolute !important;
-    right: 0 !important;
+    right: 25px!important;
     left: auto !important;
     top: 50% !important;
     transform: translateY(-50%) !important;
     display: flex !important;
     justify-content: center !important;
+    max-width: 100% !important;
     min-width: 20px !important;
+    padding: 0;
+}
+.setDeadlineIcon:hover {
+    box-shadow: 0 0 10px 5px rgba(46, 49, 49, 0.5);;
+}
+.setDeadlineIcon:hover::after {
+    content: "set deadline";
+    display: flex;
+    position: absolute;
+    right: 40px;
+    top: -30px;
+    width: 65px;
+    height: 20px;
+    font-size: 8px;
+    background-color: initial;
+    justify-content: center;
+    align-items: center;
+    border: 1pt solid black;
+}
+.setDeadlineIcon span {
+    margin:  0;
 }
 .addTaskPanelAnimation {
     animation: addTaskTransition 2s;
@@ -79,13 +101,14 @@
         flex-direction: row;
     }
     .setDeadlineIcon {
-        position: absolute;
-        right: 0% !important;
-        left: auto;
-        top: 15% !important;
-        transform: translateY(-50%);
-        display: flex;
-        justify-content: center;
-        min-width: 20px;
+        position: absolute !important;
+        right: 10px!important;
+        left: auto !important;
+        display: flex !important;
+        top: 25px !important;
+        justify-content: center !important;
+        max-width: 100% !important;
+        min-width: 20px !important;
+        padding: 0;
     }
 }

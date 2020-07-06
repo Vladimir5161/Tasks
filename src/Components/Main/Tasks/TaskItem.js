@@ -225,8 +225,8 @@ const TaskItem = React.memo(
                                                 </div>
                                             ) : null}
                                             {status ? (
-                                                <div className="statusTask">
-                                                    status: {status}
+                                                <div className="statusTask" >
+                                                    status: <div style={status === "done" ? { fontWeight: 'bold', marginLeft: "5px" } : { marginLeft: "5px" }}>{status === "done" ? status.toUpperCase() : status}</div>
                                                 </div>
                                             ) : null}
                                         </div>
