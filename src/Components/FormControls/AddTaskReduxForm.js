@@ -24,6 +24,7 @@ const AddTaskReduxFrom = ({
     BlockedButtonArray,
     settedTime,
     settedDate,
+    setDeadline,
     ...props
 }) => {
     const classes = useStyles();
@@ -56,6 +57,38 @@ const AddTaskReduxFrom = ({
                             handleChange={changeStatus}
                         />
                     </div>
+                    {settedDate ? (
+                        <div className="dataTasks deadlineTasks">
+                            Deadline:
+                            <div
+                                style={{
+                                    display: "inline",
+                                    marginLeft: "5px",
+                                }}
+                            >
+                                {!settedDate
+                                    ? null
+                                    : settedDate}{" "}
+                                {!settedTime
+                                    ? null
+                                    : settedTime}
+                            </div>
+                        </div>
+                    ) : null}
+                    <Button
+                        className="setDeadlineIcon"
+                        startIcon={
+                            <img
+                                alt=""
+                                src="/calendar.png"
+                                style={{
+                                    width: "30px",
+                                    height: "30px",
+                                }}
+                            />
+                        }
+                        onClick={() => setDeadline()}
+                    ></Button>
                 </ExpansionPanelSummary>
             </ExpansionPanel>
             <div>

@@ -4,8 +4,8 @@ import "react-calendar/dist/Calendar.css";
 
 export const CalendarReact = ({ date, onChange }) => {
     return (
-        <div style={{ maxWidth: "300px", margin: "0 auto" }}>
-            <div>Set deadline</div>
+        <div className="calendarBlock">
+            <div className="deadlineText">Set deadline</div>
             <Calendar onChange={onChange} value={date} />
         </div>
     );

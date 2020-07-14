@@ -1,3 +1,5 @@
+
+
 .MuiExpansionPanelSummary-content.Mui-expanded,
 .MuiExpansionPanelSummary-content {
     justify-content: space-between !important;
@@ -40,7 +42,7 @@
     display: block;
 }
 .deleteButtonTask {
-    z-index: 999;
+    z-index: 80;
     display: flex;
     align-self: center;
     position: relative;
@@ -152,7 +154,56 @@
         transform: translateX(-2000px);
     }
 }
-
+.deadlineText {
+    font-size: 24px;
+    font-weight: 600;
+    animation: animationDeadlineText 2s ease infinite;
+    animation-delay: 0ms;
+}
+.deadlineText:hover {
+    color: wheat;
+    cursor: pointer;
+}
+@keyframes animationDeadlineText {
+    0% {
+        transform: translateY(-7px);
+        }
+    50% {
+        transform: translateY(7px);
+    }
+    100% {
+        transform: translateY(-7px);
+    }
+}
+.deadline {
+    width: 50%;
+    height: 55%;
+    background-color: white;
+    border-radius: 20px;
+    margin: 0 auto;
+    padding: 20px;
+    display: grid;
+}
+.deadlineBlock {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(102,102,102,0.95);
+    z-index: 100;
+    display: grid;
+    justify-self: center;
+    align-items: center;
+}
+.calendarBlock {
+    width: 300px;
+    margin: 0 auto;
+}
+.addDeadline {
+    display: none;
+}
 @media screen and (max-width: 768px) {
     .MuiExpansionPanelSummary-content.Mui-expanded,
     .MuiExpansionPanelSummary-content {
@@ -162,6 +213,15 @@
     }
 }
 @media screen and (max-width: 425px) {
+    .deadline {
+        width: 90%;
+        height: 60%;
+        background-color: white;
+        border-radius: 20px;
+        margin: 0 auto;
+        padding: 20px;
+        display: grid;
+    }
     .editButtonTask {
         position: relative;
         right: -10px;
@@ -228,6 +288,9 @@
     }
 }
 @media screen and (max-width: 375px) {
+    .deadline {
+        height: 55%;
+    }
     .MuiTypography-body1 {
         font-size: 12px !important;
     }
@@ -256,5 +319,10 @@
         min-width: 80px !important;
         justify-content: center;
         width: 100px !important;
+    }
+}
+@media screen and (max-width: 320px) {
+    .calendarBlock {
+        width: 250px;
     }
 }

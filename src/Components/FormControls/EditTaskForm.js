@@ -31,6 +31,8 @@ const EditTaskReduxFrom = React.memo(
         handleUpdate,
         confirmSave,
         setConfirmSave,
+        newSettedDate,
+        newSettedTime,
         ...props
     }) => {
         const classes = useStyles();
@@ -62,6 +64,24 @@ const EditTaskReduxFrom = React.memo(
                                 }
                             )}
                         </div>
+                        {newSettedDate ? (
+                            <div className="dataTasks deadlineTasks">
+                                Deadline:
+                                <div
+                                    style={{
+                                        display: "inline",
+                                        marginLeft: "5px",
+                                    }}
+                                >
+                                    {!newSettedDate
+                                        ? null
+                                        : newSettedDate}{" "}
+                                    {!newSettedTime
+                                        ? null
+                                        : newSettedTime}
+                                </div>
+                            </div>
+                        ) : null}
                         <div className="choseDiv">
                             <PrioritySelect
                                 choseState={choseState}

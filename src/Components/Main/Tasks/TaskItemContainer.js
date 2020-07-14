@@ -88,8 +88,10 @@ const TaskItemContainer = React.memo(
         const [missed, setMissed] = React.useState({
             [id]: false,
         });
+
         const handleTimeChange = (time) => {
             setSelectedTime({ [id]: time });
+            setDeadline(id)
         };
 
         //-------------

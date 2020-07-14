@@ -26,11 +26,18 @@ const AddTask = ({ AddTaskThunk, changeAddTask, BlockedButtonArray }) => {
     let [date, setDate] = React.useState(null);
     const onChange = (date) => { if (date >= new Date()) { setDate(date) } else return null }
 
+    let [deadline, changeDeadline] = React.useState(false);
 
+    const setDeadline = () => {
+        deadline
+            ? changeDeadline(false)
+            : changeDeadline(true);
+    };
     // the same for time
     const [selectedTime, setSelectedTime] = React.useState(null);
     const handleTimeChange = (date) => {
         setSelectedTime(date);
+        changeDeadline()
     };
     const settedDate =
         date !== null
@@ -69,7 +76,6 @@ const AddTask = ({ AddTaskThunk, changeAddTask, BlockedButtonArray }) => {
                 : false;
 
         if (resultDate) {
-            debugger;
             AddTaskThunk(
                 choseState.priority,
                 formData.text,
@@ -90,11 +96,17 @@ const AddTask = ({ AddTaskThunk, changeAddTask, BlockedButtonArray }) => {
     };
     return (
         <>
-            <CalendarReact date={date} onChange={onChange} />
-            <Clock
-                handleTimeChange={handleTimeChange}
-                selectedTime={selectedTime}
-            />
+            {deadline ?
+                <div className="deadlineBlock" >
+                    <div className="deadline">
+                        <CalendarReact date={date} onChange={onChange} />
+                        <Clock
+                            handleTimeChange={handleTimeChange}
+                            selectedTime={selectedTime}
+                        />
+                    </div>
+                </div>
+                : null}
             <AddTaskForm
                 onSubmit={onSubmit}
                 handleChange={handleChange}
@@ -102,6 +114,9 @@ const AddTask = ({ AddTaskThunk, changeAddTask, BlockedButtonArray }) => {
                 choseStatus={choseStatus}
                 changeStatus={changeStatus}
                 BlockedButtonArray={BlockedButtonArray}
+                setDeadline={setDeadline}
+                settedDate={settedDate}
+                settedTime={settedTime}
             />
         </>
     );

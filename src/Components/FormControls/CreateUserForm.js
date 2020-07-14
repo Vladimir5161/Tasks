@@ -31,7 +31,7 @@ function CreateUser({ changePage, isAuth, BlockedButtonArray, ...props }) {
             onSubmit={props.handleSubmit}
         >
             <div style={{ display: "flex", justifyContent: "center" }}>
-                Here You can create an account
+                Here You can create a new account
             </div>
             {createField("email", "email", [required, minLength], InputForm, {
                 inputLabel: "write your email",

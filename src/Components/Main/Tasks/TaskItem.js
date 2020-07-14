@@ -68,16 +68,18 @@ const TaskItem = React.memo(
                 {editTask[id] ? (
                     <div>
                         {deadline[id] ? (
-                            <>
-                                <CalendarReact
-                                    date={currentDate}
-                                    onChange={onChange}
-                                />
-                                <Suspense fallback={<Preloader />}><Clock
-                                    handleTimeChange={handleTimeChange}
-                                    selectedTime={currentTime}
-                                /></Suspense>
-                            </>
+                            <div className="deadlineBlock" >
+                                <div className="deadline">
+                                    <CalendarReact
+                                        date={currentDate}
+                                        onChange={onChange}
+                                    />
+                                    <Suspense fallback={<Preloader />}><Clock
+                                        handleTimeChange={handleTimeChange}
+                                        selectedTime={currentTime}
+                                    /></Suspense>
+                                </div>
+                            </div>
                         ) : null}
                         <Suspense fallback={<Preloader />}><EditTaskForm
                             initialValues={{
@@ -98,6 +100,8 @@ const TaskItem = React.memo(
                             handleEditConfirm={handleEditConfirm}
                             confirmSave={confirmSave}
                             setConfirmSave={setConfirmSave}
+                            newSettedDate={newSettedDate}
+                            newSettedTime={newSettedTime}
                         /></Suspense>
                     </div>
                 ) : (
@@ -147,7 +151,7 @@ const TaskItem = React.memo(
                                                 Urgent Task!
                                             </div>
                                         ) : null}
-                                        {settedDate ? (
+                                        {settedDate ? (  //deadline date and time which will be changed if a customer will change deadline
                                             <div className="dataTasks deadlineTasks">
                                                 Deadline:
                                                 <div

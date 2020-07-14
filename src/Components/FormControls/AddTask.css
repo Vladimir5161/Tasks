@@ -46,7 +46,7 @@
     display: flex;
     position: absolute;
     right: 40px;
-    top: -30px;
+    top: -10px;
     width: 65px;
     height: 20px;
     font-size: 8px;
@@ -59,14 +59,14 @@
     margin:  0;
 }
 .addTaskPanelAnimation {
-    animation: addTaskTransition 2s;
+    animation: addTaskTransition 1s;
     position: relative;
     z-index: 1;
 }
 @keyframes addTaskTransition {
     0% {
         position: relative;
-        top: -200px;
+        top: -100px;
         opacity: 0;
     }
     100% {
@@ -110,5 +110,8 @@
         max-width: 100% !important;
         min-width: 20px !important;
         padding: 0;
+    }
+    .setDeadlineIcon:hover::after {
+        top: 10px;
     }
 }
