@@ -1,6 +1,6 @@
 import React from "react";
 import TaskItem from "./TaskItem";
-import Enzyme, { mount, shallow } from "enzyme";
+import Enzyme, { mount } from "enzyme";
 
 import Adapter from "enzyme-adapter-react-16";
 

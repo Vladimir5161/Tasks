@@ -385,7 +385,6 @@ export const UpdateTaskThunk = (
         settedTime: newSettedTime,
     };
     await dispatch(blockButton("editTask"));
-    debugger
     try {
         await app
             .firestore()

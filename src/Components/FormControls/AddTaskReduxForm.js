@@ -4,11 +4,12 @@ import { createField, InputForm } from "./Field";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
-import "./AddTask.css";
+import "./AddTask.scss";
+import "../Main/Tasks/tasks.scss";
 import PrioritySelect from "../CommonComponents/PrioritySelect";
 import { ExpansionPanel, ExpansionPanelSummary } from "@material-ui/core";
 import StatusSelect from "../CommonComponents/StatusSelect";
-import { required, minLength } from "../../validators/validators";
+import { required, minLength, maxLength } from "../../validators/validators";
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -40,7 +41,7 @@ const AddTaskReduxFrom = ({
                         {createField(
                             "texts",
                             "text",
-                            [required, minLength],
+                            [required, minLength, maxLength],
                             InputForm,
                             {
                                 inputLabel: "Task text",

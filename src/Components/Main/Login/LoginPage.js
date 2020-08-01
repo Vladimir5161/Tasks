@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./login.css";
+import "./login.scss";
 import LoginForm from "../../FormControls/LoginForm";
 import CreateUserForm from "../../FormControls/CreateUserForm.js";
 import { connect } from "react-redux";
@@ -43,12 +43,12 @@ const LoginPage = ({
                     BlockedButtonArray={BlockedButtonArray}
                 />
             ) : (
-                <LoginForm
-                    changePage={changePage}
-                    onSubmit={onSubmitLogin}
-                    BlockedButtonArray={BlockedButtonArray}
-                />
-            )}
+                            <LoginForm
+                                changePage={changePage}
+                                onSubmit={onSubmitLogin}
+                                BlockedButtonArray={BlockedButtonArray}
+                            />
+                        )}
         </div>
     );
 };

@@ -4,7 +4,8 @@ import { createField, InputForm } from "./Field";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import SaveIcon from "@material-ui/icons/Save";
-import "./AddTask.css";
+import "./AddTask.scss";
+import "../Main/Tasks/tasks.scss";
 import PrioritySelect from "../CommonComponents/PrioritySelect";
 import { ExpansionPanel, ExpansionPanelSummary } from "@material-ui/core";
 import StatusSelect from "../CommonComponents/StatusSelect";
@@ -64,8 +65,19 @@ const EditTaskReduxFrom = React.memo(
                                 }
                             )}
                         </div>
+                        <div className="choseDiv">
+                            <PrioritySelect
+                                choseState={choseState}
+                                handleChange={handleChange}
+                            />
+                            <StatusSelect
+                                choseStatus={choseStatus}
+                                handleChange={changeStatus}
+                            />
+                        </div>
+
                         {newSettedDate ? (
-                            <div className="dataTasks deadlineTasks">
+                            <div className="dataTasks deadlineTasks deadlineTasksEdit">
                                 Deadline:
                                 <div
                                     style={{
@@ -82,16 +94,6 @@ const EditTaskReduxFrom = React.memo(
                                 </div>
                             </div>
                         ) : null}
-                        <div className="choseDiv">
-                            <PrioritySelect
-                                choseState={choseState}
-                                handleChange={handleChange}
-                            />
-                            <StatusSelect
-                                choseStatus={choseStatus}
-                                handleChange={changeStatus}
-                            />
-                        </div>
                         <Button
                             className="setDeadlineIcon"
                             startIcon={

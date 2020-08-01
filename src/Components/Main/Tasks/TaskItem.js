@@ -106,6 +106,19 @@ const TaskItem = React.memo(
                     </div>
                 ) : (
                         <div className={taskPanel.some(iD => iD === id) ? "taskPanelDelete" : "taskPanel"}>
+                            {missed[id] ? (
+                                <div
+                                    className=" urgentTask"
+                                >
+                                    Missed Task!
+                                </div>
+                            ) : urgent[id] ? (
+                                <div
+                                    className=" urgentTask"
+                                >
+                                    Urgent Task!
+                                </div>
+                            ) : null}
                             <ExpansionPanel
                                 style={status === "done"
                                     ? { boxShadow: "0 0 10px 3px green" }
@@ -123,34 +136,8 @@ const TaskItem = React.memo(
                                     id="additional-actions1-header"
                                 >
                                     <>
-                                        <div className="dataTasks">{data}</div>
-                                        {missed[id] ? (
-                                            <div
-                                                style={{
-                                                    position: "absolute",
-                                                    display: "inline",
-                                                    margin: "0 auto",
-                                                    left: "0",
-                                                    right: "0",
-                                                }}
-                                                className="dataTasks urgentTask"
-                                            >
-                                                Missed Task!
-                                            </div>
-                                        ) : urgent[id] ? (
-                                            <div
-                                                style={{
-                                                    position: "absolute",
-                                                    display: "inline",
-                                                    margin: "0 auto",
-                                                    left: "0",
-                                                    right: "0",
-                                                }}
-                                                className="dataTasks urgentTask"
-                                            >
-                                                Urgent Task!
-                                            </div>
-                                        ) : null}
+                                        <div className="dataTasks">Date: {data}</div>
+
                                         {settedDate ? (  //deadline date and time which will be changed if a customer will change deadline
                                             <div className="dataTasks deadlineTasks">
                                                 Deadline:
@@ -195,63 +182,64 @@ const TaskItem = React.memo(
                                         style={{ wordBreak: "break-word" }}
                                         label={text}
                                     />
-                                    <>
-                                        <div className="choseDiv">
-                                            {priority ? (
-                                                <div className="priorityTask">
-                                                    priority:
-                                                    <p
-                                                        style={
-                                                            priority === "high"
+
+                                </ExpansionPanelSummary>
+                                <ExpansionPanelDetails>
+                                    <div className="choseDiv">
+                                        {priority ? (
+                                            <div className="priorityTask">
+                                                priority:
+                                                <p
+                                                    style={
+                                                        priority === "high"
+                                                            ? {
+                                                                color: "red",
+                                                                textIndent:
+                                                                    "5px",
+                                                            }
+                                                            : priority ===
+                                                                "middle"
                                                                 ? {
-                                                                    color: "red",
+                                                                    color:
+                                                                        "green",
                                                                     textIndent:
                                                                         "5px",
                                                                 }
-                                                                : priority ===
-                                                                    "middle"
-                                                                    ? {
-                                                                        color:
-                                                                            "green",
-                                                                        textIndent:
-                                                                            "5px",
-                                                                    }
-                                                                    : {
-                                                                        color:
-                                                                            "yellow",
-                                                                        textIndent:
-                                                                            "5px",
-                                                                    }
-                                                        }
-                                                    >
-                                                        {priority}
-                                                    </p>
-                                                </div>
-                                            ) : null}
-                                            {status ? (
-                                                <div className="statusTask" >
-                                                    status: <div style={status === "done" ? { fontWeight: 'bold', marginLeft: "5px" } : { marginLeft: "5px" }}>{status === "done" ? status.toUpperCase() : status}</div>
-                                                </div>
-                                            ) : null}
-                                        </div>
-                                    </>
-                                    <DeleteButton
-                                        DeleteTask={DeleteTask}
-                                        id={id}
-                                        keyFirebase={keyFirebase}
-                                        BlockedButtonArray={BlockedButtonArray}
-                                        confirm={confirm}
-                                        setConfirm={setConfirm}
-                                        deleteId={deleteId}
-                                        deleteKey={deleteKey}
-                                    />
-                                </ExpansionPanelSummary>
-                                <ExpansionPanelDetails>
-                                    <EditButton
-                                        EditButtonFunc={EditButtonFunc}
-                                        id={id}
-                                        BlockedButtonArray={BlockedButtonArray}
-                                    />
+                                                                : {
+                                                                    color:
+                                                                        "yellow",
+                                                                    textIndent:
+                                                                        "5px",
+                                                                }
+                                                    }
+                                                >
+                                                    {priority}
+                                                </p>
+                                            </div>
+                                        ) : null}
+                                        <EditButton
+                                            EditButtonFunc={EditButtonFunc}
+                                            id={id}
+                                            BlockedButtonArray={BlockedButtonArray}
+                                        />
+                                        <DeleteButton
+                                            DeleteTask={DeleteTask}
+                                            id={id}
+                                            keyFirebase={keyFirebase}
+                                            BlockedButtonArray={BlockedButtonArray}
+                                            confirm={confirm}
+                                            setConfirm={setConfirm}
+                                            deleteId={deleteId}
+                                            deleteKey={deleteKey}
+                                        />
+                                        {status ? (
+                                            <div className="statusTask" >
+                                                status: <div style={status === "done" ? { fontWeight: 'bold', marginLeft: "5px" } : { marginLeft: "5px" }}>{status === "done" ? status.toUpperCase() : status}</div>
+                                            </div>
+                                        ) : null}
+
+
+                                    </div>
                                 </ExpansionPanelDetails>
                             </ExpansionPanel>
                         </div>

@@ -12,6 +12,14 @@ export const minLength = (value) => {
         }
     } else return undefined;
 };
+export const maxLength = (value) => {
+    if (value !== undefined) {
+        const splitedValue = value.split("");
+        if (splitedValue.length > 300) {
+            return "too long";
+        }
+    } else return undefined;
+};
 export const includesNumbers = (value) => {
     if (value !== undefined) {
         const splitedValue = value.split("");

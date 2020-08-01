@@ -7,7 +7,10 @@ import Select from "@material-ui/core/Select";
 const useStyles = makeStyles((theme) => ({
     formControl: {
         margin: theme.spacing(1),
-        minWidth: 150,
+        minWidth: 100,
+        position: 'absolute',
+        right: 0,
+        top: '20px',
     },
     selectEmpty: {
         marginTop: theme.spacing(2),
@@ -18,17 +21,9 @@ export default function FilterSelect({ value, handleChange }) {
     const classes = useStyles();
 
     return (
-        <div
-            style={{
-                position: "relative",
-                maxWidth: "1170px",
-                margin: "0 auto",
-            }}
-            className="statusTask"
-        >
+        <>
             <FormControl
                 className={classes.formControl}
-                style={{ position: "absolute", right: "-40px", top: "20px" }}
             >
                 <InputLabel
                     htmlFor="filter-native-simple"
@@ -52,6 +47,6 @@ export default function FilterSelect({ value, handleChange }) {
                     <option value={"deadline"}>deadline</option>
                 </Select>
             </FormControl>
-        </div>
+        </>
     );
 }
