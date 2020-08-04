@@ -1,15 +1,17 @@
 import React from "react";
-import { reduxForm } from "redux-form";
-import { createField, InputForm } from "./Field";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import "./AddTask.scss";
 import "../Main/Tasks/tasks.scss";
 import PrioritySelect from "../CommonComponents/PrioritySelect";
-import { ExpansionPanel, ExpansionPanelSummary } from "@material-ui/core";
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import Accordion from '@material-ui/core/Accordion';
+import { TextField } from "@material-ui/core";
 import StatusSelect from "../CommonComponents/StatusSelect";
-import { required, minLength, maxLength } from "../../validators/validators";
+import ErrorValidate from "../CommonComponents/ErrorValidate";
+import { compose } from "redux";
+import { FormHOC } from "../HOC/formHOC";
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -17,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const AddTaskReduxFrom = ({
+const AddTaskForm = ({
     choseState,
     handleChange,
     choseStatus,
@@ -26,27 +28,35 @@ const AddTaskReduxFrom = ({
     settedTime,
     settedDate,
     setDeadline,
+    formik,
     ...props
 }) => {
     const classes = useStyles();
     return (
-        <form onSubmit={props.handleSubmit} style={{ width: "100%" }}>
-            <ExpansionPanel>
-                <ExpansionPanelSummary
+        <form onSubmit={formik.handleSubmit} style={{ width: "100%" }}>
+            <Accordion>
+                <AccordionSummary
                     aria-label="Expand"
                     aria-controls="additional-actions1-content"
                     id="additional-actions1-header"
                 >
                     <div className="inputTaskDiv">
-                        {createField(
-                            "texts",
-                            "text",
-                            [required, minLength, maxLength],
-                            InputForm,
-                            {
-                                inputLabel: "Task text",
-                            }
-                        )}
+                        <div className="inputBlock">
+                            {formik.errors.addTask ? (
+                                <ErrorValidate name='addTask' onChange={formik.handleChange}
+                                    value={formik.values.addTask} label={formik.errors.addTask} />
+                            ) : (
+                                    <div className="formBlock">
+                                        <TextField
+                                            label="add Task"
+                                            type="text"
+                                            name='addTask'
+                                            onChange={formik.handleChange}
+                                            value={formik.values.addTask}
+                                        />
+                                    </div>
+                                )}
+                        </div>
                     </div>
                     <div className="choseDiv">
                         <PrioritySelect
@@ -90,8 +100,8 @@ const AddTaskReduxFrom = ({
                         }
                         onClick={() => setDeadline()}
                     ></Button>
-                </ExpansionPanelSummary>
-            </ExpansionPanel>
+                </AccordionSummary>
+            </Accordion>
             <div>
                 <Button
                     type="submit"
@@ -108,5 +118,4 @@ const AddTaskReduxFrom = ({
     );
 };
 
-const AddTaskForm = reduxForm({ form: "addTask" })(AddTaskReduxFrom);
-export default AddTaskForm;
+export default compose(FormHOC)(AddTaskForm);

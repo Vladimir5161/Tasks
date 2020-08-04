@@ -22,7 +22,7 @@ export default function AddButton({ state, editState }) {
             <Fab
                 color={state ? "secondary" : "primary"}
                 aria-label="add"
-                onMouseDown={() => editState()}
+                onMouseDown={(event) => { editState(); event.preventDefault() }}
             >
                 <AddIcon />
             </Fab>

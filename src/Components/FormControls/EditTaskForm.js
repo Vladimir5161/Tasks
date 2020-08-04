@@ -1,16 +1,18 @@
 import React from "react";
-import { reduxForm } from "redux-form";
-import { createField, InputForm } from "./Field";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import SaveIcon from "@material-ui/icons/Save";
 import "./AddTask.scss";
 import "../Main/Tasks/tasks.scss";
 import PrioritySelect from "../CommonComponents/PrioritySelect";
-import { ExpansionPanel, ExpansionPanelSummary } from "@material-ui/core";
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import Accordion from '@material-ui/core/Accordion';
+import { TextField } from "@material-ui/core";
 import StatusSelect from "../CommonComponents/StatusSelect";
-import { required } from "../../validators/validators";
 import ConfirmSave from "../CommonComponents/ConfirmSave";
+import ErrorValidate from "../CommonComponents/ErrorValidate";
+import { compose } from "redux";
+import { FormHOC } from "../HOC/formHOC";
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -18,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const EditTaskReduxFrom = React.memo(
+const EditTaskForm = React.memo(
     ({
         choseState,
         handleChange,
@@ -34,6 +36,7 @@ const EditTaskReduxFrom = React.memo(
         setConfirmSave,
         newSettedDate,
         newSettedTime,
+        formik,
         ...props
     }) => {
         const classes = useStyles();
@@ -46,24 +49,31 @@ const EditTaskReduxFrom = React.memo(
             }
         };
         return (
-            <form onSubmit={props.handleSubmit} style={{ width: "100%" }}>
+            <form onSubmit={formik.handleSubmit} style={{ width: "100%" }}>
                 {confirmSave ? <ConfirmSave open={confirmSave} handleSave={handleEditConfirm} /> : null}
-                <ExpansionPanel>
-                    <ExpansionPanelSummary
+                <Accordion>
+                    <AccordionSummary
                         aria-label="Expand"
                         aria-controls="additional-actions1-content"
                         id="additional-actions1-header"
                     >
                         <div className="inputTaskDiv">
-                            {createField(
-                                "texts",
-                                "text",
-                                [required],
-                                InputForm,
-                                {
-                                    inputLabel: "Task text",
-                                }
-                            )}
+                            <div className="inputBlock">
+                                {formik.errors.addTask ? (
+                                    <ErrorValidate name='text' onChange={formik.handleChange}
+                                        value={formik.values.text} label={formik.errors.text} />
+                                ) : (
+                                        <div className="formBlock">
+                                            <TextField
+                                                label="edit Task"
+                                                type="text"
+                                                name='text'
+                                                onChange={formik.handleChange}
+                                                value={formik.values.text}
+                                            />
+                                        </div>
+                                    )}
+                            </div>
                         </div>
                         <div className="choseDiv">
                             <PrioritySelect
@@ -108,8 +118,8 @@ const EditTaskReduxFrom = React.memo(
                             }
                             onClick={() => setDeadline()}
                         ></Button>
-                    </ExpansionPanelSummary>
-                </ExpansionPanel>
+                    </AccordionSummary>
+                </Accordion>
                 <div>
                     <Button
                         variant="contained"
@@ -130,5 +140,5 @@ const EditTaskReduxFrom = React.memo(
     }
 );
 
-const EditTaskForm = reduxForm({ form: "editTask" })(EditTaskReduxFrom);
-export default EditTaskForm;
+
+export default compose(FormHOC)(EditTaskForm);

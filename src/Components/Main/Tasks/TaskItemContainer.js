@@ -59,7 +59,7 @@ const TaskItemContainer = React.memo(
             setChoseState({
                 priority: event.target.value,
             });
-        };
+        }
 
         //-------------
         // value for data from the edit form which we use in a function "handleUpdate" after user confirms updating

@@ -9,8 +9,8 @@
 .inputTaskDiv {
     width: 100%;
 }
-.MuiExpansionPanelSummary-content.Mui-expanded,
-.MuiExpansionPanelSummary-content {
+.MuiAccordionSummary-content.Mui-expanded,
+.MuiAccordionSummary-content {
     margin: 25px auto 15px auto !important;
     position: relative;
     display: grid;
@@ -22,8 +22,8 @@
     justify-content: space-between;
     width: 100%;
 }
-.MuiExpansionPanelSummary-root.Mui-expanded,
-.MuiExpansionPanelSummary-root {
+.MuiAccordionSummary-root.Mui-expanded,
+.MuiAccordionSummary-root {
     box-sizing: border-box;
 }
 .makeStyles-formControl-197,
@@ -38,7 +38,7 @@
     position: absolute !important;
     right: 10px !important;
     left: auto !important;
-    bottom: -5px !important;
+    bottom: 5px !important;
     transform: translateY(-50%) !important;
     display: flex !important;
     justify-content: center !important;
@@ -81,8 +81,8 @@
     }
 }
 @media screen and (max-width: 1000px) {
-    .MuiExpansionPanelSummary-content.Mui-expanded,
-    .MuiExpansionPanelSummary-content {
+    .MuiAccordionSummary-content.Mui-expanded,
+    .MuiAccordionSummary-content {
     margin: 25px auto 15px auto !important;
     position: relative;
     display: grid;

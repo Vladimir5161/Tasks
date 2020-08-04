@@ -2,42 +2,75 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
-import { createField, InputForm, InputFormPass } from "./Field";
-import { reduxForm } from "redux-form";
 import ChangePageButton from "../CommonComponents/ChangePageButton";
-import { required, minLength } from "../../validators/validators";
+import ErrorValidate from "../CommonComponents/ErrorValidate";
+import { TextField } from "@material-ui/core";
+import ErrorValidatePass from "../CommonComponents/ErroValidatePass";
+import Checkbox from "../CommonComponents/Checkbox";
+import { FormHOC } from "../HOC/formHOC";
+import { compose } from "redux";
 
 const useStyles = makeStyles((theme) => ({
     root: {
         "& > *": {
             margin: theme.spacing(1),
-            width: "25ch",
+            width: "90%",
         },
     },
 }));
 
-function Login({ changePage, BlockedButtonArray, ...props }) {
+function LoginForm({ formik, changePage, BlockedButtonArray }) {
+    const [state, setState] = React.useState({
+        showPass: false,
+    });
     const classes = useStyles();
-
     return (
         <form
-            className={classes.root}
-            noValidate
-            autoComplete="off"
-            onSubmit={props.handleSubmit}
+            className="loginForm"
+            onSubmit={formik.handleSubmit}
         >
-            {createField("email", "email", [required, minLength], InputForm, {
-                inputLabel: "your login",
-            })}
-            {createField(
-                "password",
-                "password",
-                [required, minLength],
-                InputFormPass,
-                {
-                    inputLabel: "your password",
-                }
-            )}
+            <div style={{ display: "flex", justifyContent: "center" }}>
+                Log in
+            </div>
+            <div className="inputTaskDiv">
+                {formik.errors.email ? (
+                    <ErrorValidate name='email' onChange={formik.handleChange}
+                        value={formik.values.email} label={formik.errors.email} />
+                ) : (
+                        <div className="formBlock">
+                            <TextField
+                                label="email"
+                                type="text"
+                                name='email'
+                                onChange={formik.handleChange}
+                                value={formik.values.email}
+                            />
+                        </div>
+                    )}
+                <div style={{ position: "relative" }}>
+                    <Checkbox setState={setState} state={state} />
+                    {formik.errors.password ? (
+                        <ErrorValidatePass
+                            label={formik.errors.password}
+                            type={state.showPass ? "text" : "password"}
+                            name='password'
+                            onChange={formik.handleChange}
+                            value={formik.values.password}
+                            state={state}
+                        />
+                    ) : (
+                            <div className="formBlock">
+                                <TextField
+                                    label="password"
+                                    type={state.showPass ? "text" : "password"}
+                                    name='password'
+                                    onChange={formik.handleChange}
+                                    value={formik.values.password}
+                                />
+                            </div>
+                        )}
+                </div>
+            </div>
             <ChangePageButton
                 buttonName="Create Account"
                 changePage={changePage}
@@ -56,6 +89,5 @@ function Login({ changePage, BlockedButtonArray, ...props }) {
         </form>
     );
 }
-const LoginForm = reduxForm({ form: "loginForm" })(Login);
 
-export default LoginForm;
+export default compose(FormHOC)(LoginForm)

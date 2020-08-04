@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import Accordion from '@material-ui/core/Accordion';
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import DeleteButton from "../../CommonComponents/DeleteButton";
@@ -9,6 +9,7 @@ import EditButton from "../../CommonComponents/EditButon";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { CalendarReact } from "../../CommonComponents/Calendar";
 import Preloader from "../../CommonComponents/Preloader";
+
 
 const EditTaskForm = React.lazy(() => import("../../FormControls/EditTaskForm"))
 const Clock = React.lazy(() => import("../../CommonComponents/Clock"))
@@ -82,11 +83,7 @@ const TaskItem = React.memo(
                             </div>
                         ) : null}
                         <Suspense fallback={<Preloader />}><EditTaskForm
-                            initialValues={{
-                                text: text,
-                                keyFirebase: keyFirebase,
-                                data: data,
-                            }}
+                            initialValues={{ text: text, data: data }}
                             choseState={choseState}
                             choseStatus={choseStatus}
                             changeStatus={changeStatus}
@@ -102,6 +99,7 @@ const TaskItem = React.memo(
                             setConfirmSave={setConfirmSave}
                             newSettedDate={newSettedDate}
                             newSettedTime={newSettedTime}
+                            functionToCall={onSubmit}
                         /></Suspense>
                     </div>
                 ) : (
@@ -119,7 +117,7 @@ const TaskItem = React.memo(
                                     Urgent Task!
                                 </div>
                             ) : null}
-                            <ExpansionPanel
+                            <Accordion
                                 style={status === "done"
                                     ? { boxShadow: "0 0 10px 3px green" }
                                     : missed[id]
@@ -129,7 +127,7 @@ const TaskItem = React.memo(
                                             : null
                                 }
                             >
-                                <ExpansionPanelSummary
+                                <AccordionSummary
                                     expandIcon={<ExpandMoreIcon />}
                                     aria-label="Expand"
                                     aria-controls="additional-actions1-content"
@@ -183,8 +181,8 @@ const TaskItem = React.memo(
                                         label={text}
                                     />
 
-                                </ExpansionPanelSummary>
-                                <ExpansionPanelDetails>
+                                </AccordionSummary>
+                                <AccordionDetails>
                                     <div className="choseDiv">
                                         {priority ? (
                                             <div className="priorityTask">
@@ -240,8 +238,8 @@ const TaskItem = React.memo(
 
 
                                     </div>
-                                </ExpansionPanelDetails>
-                            </ExpansionPanel>
+                                </AccordionDetails>
+                            </Accordion>
                         </div>
                     )
                 }

@@ -1,7 +1,7 @@
 
 
-.MuiExpansionPanelSummary-content.Mui-expanded,
-.MuiExpansionPanelSummary-content {
+.MuiAccordionSummary-content.Mui-expanded,
+.MuiAccordionSummary-content {
     margin: 25px auto 15px auto !important;
     position: relative;
     display: grid;
@@ -87,7 +87,7 @@
     align-items: center;
     border: 1pt solid black;
 }
-.MuiExpansionPanelSummary-expandIcon {
+.MuiAccordionSummary-expandIcon {
     position: relative !important;
     margin-top: 10px !important;
 }
@@ -97,11 +97,11 @@
     color: black;
 }
 
-.MuiExpansionPanelDetails-root {
+.MuiAccordionDetails-root {
     justify-content: center;
 }
-.MuiExpansionPanel-root,
-.MuiExpansionPanel-root.Mui-expanded {
+.MuiAccordion-root,
+.MuiAccordion-root.Mui-expanded {
     margin: 10px auto 20px auto !important;
     max-width: 1170px;
     min-width: 270px;

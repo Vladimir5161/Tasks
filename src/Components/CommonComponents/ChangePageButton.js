@@ -21,13 +21,14 @@ export default function ChangePageButton({ buttonName, changePage }) {
                     style={{
                         border: "1px solid blue",
                         display: "block",
-                        margin: "0 0 0 auto",
+                        margin: "10px 0 0 auto",
                         textTransform: "none",
                     }}
                     size="medium"
                     className={classes.margin}
                     onMouseDown={() => {
                         changePage();
+
                     }}
                 >
                     {buttonName}

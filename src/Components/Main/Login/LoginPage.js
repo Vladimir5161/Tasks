@@ -27,28 +27,26 @@ const LoginPage = ({
             {createUser && isAuth ? (
                 <CreateUserForm
                     changePage={changePage}
-                    onSubmit={onSubmit}
                     BlockedButtonArray={BlockedButtonArray}
+                    initialValues={{ password: "", email: "", userName: "" }}
+                    functionToCall={onSubmit}
                 />
-            ) : isAuth ? (
-                <CreateUserForm
+            ) : !createUser ? (
+                <LoginForm
                     changePage={changePage}
-                    onSubmit={onSubmit}
+                    functionToCall={onSubmitLogin}
                     BlockedButtonArray={BlockedButtonArray}
+                    initialValues={{ password: "", email: "", userName: "" }}
                 />
-            ) : createUser ? (
-                <CreateUserForm
-                    changePage={changePage}
-                    onSubmit={onSubmit}
-                    BlockedButtonArray={BlockedButtonArray}
-                />
+
             ) : (
-                            <LoginForm
-                                changePage={changePage}
-                                onSubmit={onSubmitLogin}
-                                BlockedButtonArray={BlockedButtonArray}
-                            />
-                        )}
+                        <CreateUserForm
+                            changePage={changePage}
+                            functionToCall={onSubmit}
+                            BlockedButtonArray={BlockedButtonArray}
+                            initialValues={{ password: "", email: "", userName: "" }}
+                        />
+                    )}
         </div>
     );
 };

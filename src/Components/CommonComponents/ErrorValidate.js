@@ -14,18 +14,20 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ErrorValidate(props) {
     const classes = useStyles();
-    const { input, meta, ...restProps } = props;
+    const { label, name, value, onChange } = props;
     return (
         <form className={classes.root} noValidate autoComplete="off">
-            <div>
-                <TextField
-                    error
-                    id="standard-error"
-                    label={meta.error}
-                    defaultValue="Hello World"
-                    {...restProps}
-                    {...input}
-                />
+            <div className="inputBlock">
+                <div className="formBlock">
+                    <TextField
+                        error
+                        label={label}
+                        type="text"
+                        name={name}
+                        onChange={onChange}
+                        value={value}
+                    />
+                </div>
             </div>
         </form>
     );
