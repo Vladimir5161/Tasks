@@ -49,93 +49,95 @@ const EditTaskForm = React.memo(
             }
         };
         return (
-            <form onSubmit={formik.handleSubmit} style={{ width: "100%" }}>
-                {confirmSave ? <ConfirmSave open={confirmSave} handleSave={handleEditConfirm} /> : null}
-                <Accordion>
-                    <AccordionSummary
-                        aria-label="Expand"
-                        aria-controls="additional-actions1-content"
-                        id="additional-actions1-header"
-                    >
-                        <div className="inputTaskDiv">
-                            <div className="inputBlock">
-                                {formik.errors.addTask ? (
-                                    <ErrorValidate name='text' onChange={formik.handleChange}
-                                        value={formik.values.text} label={formik.errors.text} />
-                                ) : (
-                                        <div className="formBlock">
-                                            <TextField
-                                                label="edit Task"
-                                                type="text"
-                                                name='text'
-                                                onChange={formik.handleChange}
-                                                value={formik.values.text}
-                                            />
-                                        </div>
-                                    )}
-                            </div>
-                        </div>
-                        <div className="choseDiv">
-                            <PrioritySelect
-                                choseState={choseState}
-                                handleChange={handleChange}
-                            />
-                            <StatusSelect
-                                choseStatus={choseStatus}
-                                handleChange={changeStatus}
-                            />
-                        </div>
+            <>{confirmSave ? <ConfirmSave open={confirmSave} handleSave={handleEditConfirm} /> : null}
+                <form onSubmit={formik.handleSubmit} style={{ width: "100%" }}>
 
-                        {newSettedDate ? (
-                            <div className="dataTasks deadlineTasks deadlineTasksEdit">
-                                Deadline:
-                                <div
-                                    style={{
-                                        display: "inline",
-                                        marginLeft: "5px",
-                                    }}
-                                >
-                                    {!newSettedDate
-                                        ? null
-                                        : newSettedDate}{" "}
-                                    {!newSettedTime
-                                        ? null
-                                        : newSettedTime}
+                    <Accordion>
+                        <AccordionSummary
+                            aria-label="Expand"
+                            aria-controls="additional-actions1-content"
+                            id="additional-actions1-header"
+                        >
+                            <div className="inputTaskDiv">
+                                <div className="inputBlock">
+                                    {formik.errors.text ? (
+                                        <ErrorValidate name='text' onChange={formik.handleChange}
+                                            value={formik.values.text} label={formik.errors.text} />
+                                    ) : (
+                                            <div className="formBlock">
+                                                <TextField
+                                                    label="edit Task"
+                                                    type="text"
+                                                    name='text'
+                                                    onChange={formik.handleChange}
+                                                    value={formik.values.text}
+                                                />
+                                            </div>
+                                        )}
                                 </div>
                             </div>
-                        ) : null}
-                        <Button
-                            className="setDeadlineIcon"
-                            startIcon={
-                                <img
-                                    alt=""
-                                    src="/calendar.png"
-                                    style={{
-                                        width: "30px",
-                                        height: "30px",
-                                    }}
+                            <div className="choseDiv">
+                                <PrioritySelect
+                                    choseState={choseState}
+                                    handleChange={handleChange}
                                 />
-                            }
-                            onClick={() => setDeadline()}
-                        ></Button>
-                    </AccordionSummary>
-                </Accordion>
-                <div>
-                    <Button
-                        variant="contained"
-                        type="submit"
-                        color="primary"
-                        size="small"
-                        className={classes.button}
-                        startIcon={<SaveIcon />}
-                        disabled={BlockedButtonArray.some(
-                            (id) => id === "editTask"
-                        )}
-                    >
-                        Save
+                                <StatusSelect
+                                    choseStatus={choseStatus}
+                                    handleChange={changeStatus}
+                                />
+                            </div>
+
+                            {newSettedDate ? (
+                                <div className="dataTasks deadlineTasks deadlineTasksEdit">
+                                    Deadline:
+                                    <div
+                                        style={{
+                                            display: "inline",
+                                            marginLeft: "5px",
+                                        }}
+                                    >
+                                        {!newSettedDate
+                                            ? null
+                                            : newSettedDate}{" "}
+                                        {!newSettedTime
+                                            ? null
+                                            : newSettedTime}
+                                    </div>
+                                </div>
+                            ) : null}
+                            <Button
+                                className="setDeadlineIcon"
+                                startIcon={
+                                    <img
+                                        alt=""
+                                        src="/calendar.png"
+                                        style={{
+                                            width: "30px",
+                                            height: "30px",
+                                        }}
+                                    />
+                                }
+                                onClick={() => setDeadline()}
+                            ></Button>
+                        </AccordionSummary>
+                    </Accordion>
+                    <div>
+                        <Button
+                            variant="contained"
+                            type="submit"
+                            color="primary"
+                            size="small"
+                            className={classes.button}
+                            startIcon={<SaveIcon />}
+                            disabled={BlockedButtonArray.some(
+                                (id) => id === "editTask"
+                            )}
+                        >
+                            Save
                     </Button>
-                </div>
-            </form>
+                    </div>
+                </form>
+            </>
         );
     }
 );

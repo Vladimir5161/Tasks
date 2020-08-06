@@ -4,6 +4,7 @@ import AddTaskForm from "../../FormControls/AddTaskReduxForm";
 import { connect } from "react-redux";
 import { CalendarReact } from "../../CommonComponents/Calendar";
 import Clock from "../../CommonComponents/Clock";
+import { validateAdd } from "../../../validators/validators";
 
 
 const AddTask = ({ AddTaskThunk, changeAddTask, BlockedButtonArray }) => {
@@ -120,6 +121,7 @@ const AddTask = ({ AddTaskThunk, changeAddTask, BlockedButtonArray }) => {
                 settedTime={settedTime}
                 initialValues={{ addTask: "" }}
                 functionToCall={onSubmit}
+                validate={validateAdd}
             />
         </>
     );

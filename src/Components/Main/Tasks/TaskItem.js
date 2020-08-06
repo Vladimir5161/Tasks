@@ -9,6 +9,7 @@ import EditButton from "../../CommonComponents/EditButon";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { CalendarReact } from "../../CommonComponents/Calendar";
 import Preloader from "../../CommonComponents/Preloader";
+import { validateEdit } from "../../../validators/validators";
 
 
 const EditTaskForm = React.lazy(() => import("../../FormControls/EditTaskForm"))
@@ -83,7 +84,7 @@ const TaskItem = React.memo(
                             </div>
                         ) : null}
                         <Suspense fallback={<Preloader />}><EditTaskForm
-                            initialValues={{ text: text, data: data }}
+                            initialValues={{ text: text }}
                             choseState={choseState}
                             choseStatus={choseStatus}
                             changeStatus={changeStatus}
@@ -100,6 +101,7 @@ const TaskItem = React.memo(
                             newSettedDate={newSettedDate}
                             newSettedTime={newSettedTime}
                             functionToCall={onSubmit}
+                            validate={validateEdit}
                         /></Suspense>
                     </div>
                 ) : (

@@ -16,19 +16,15 @@ export default function ErrorValidatePass(props) {
     const classes = useStyles();
     const { label, name, value, onChange, state } = props;
     return (
-        <form className={classes.root} noValidate autoComplete="off">
-            <div className="inputBlock">
-                <div className="formBlock">
-                    <TextField
-                        error
-                        label={label}
-                        type={state.showPass ? "text" : "password"}
-                        name={name}
-                        onChange={onChange}
-                        value={value}
-                    />
-                </div>
-            </div>
-        </form>
+        <div className="formBlock">
+            <TextField
+                error
+                label={label}
+                type={state.showPass ? "text" : "password"}
+                name={name}
+                onChange={onChange}
+                value={value}
+            />
+        </div>
     );
 }

@@ -1,4 +1,4 @@
-export const validate = (values) => {
+export const validateLogin = (values) => {
     const errors = {}
     if (!values.email) {
         errors.email = 'Required';
@@ -8,11 +8,11 @@ export const validate = (values) => {
 
     if (!values.password) {
         errors.password = 'Required';
-    } else if (values.password.length < 5) {
+    } else if (values.password.length > 0 && values.password.length < 5) {
         errors.password = 'Must be 5 characters or more';
     }
 
-    if (values.password.split("").some(
+    if (values.password.length > 0 && values.password.split("").some(
         (item) => item === "1" ||
             item === "3" ||
             item === "4" ||
@@ -27,7 +27,11 @@ export const validate = (values) => {
     } else {
         errors.password = "password should includes at least one number";
     }
+    return errors;
+}
 
+export const validateAdd = (values) => {
+    const errors = {}
     if (!values.addTask) {
         errors.addTask = 'Required';
     } else if (values.addTask.length < 5) {
@@ -35,7 +39,11 @@ export const validate = (values) => {
     } else if (values.addTask.length > 300) {
         errors.addTask = 'Too long';
     }
+    return errors;
+}
 
+export const validateEdit = (values) => {
+    const errors = {}
     if (!values.text) {
         errors.text = 'Required';
     } else if (values.text.length < 5) {

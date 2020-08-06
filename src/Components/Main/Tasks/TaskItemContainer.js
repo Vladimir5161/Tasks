@@ -129,8 +129,9 @@ const TaskItemContainer = React.memo(
 
         let [confirmSave, setConfirmSave] = React.useState(false)
         const onSubmit = (formData) => {
-            setConfirmSave(true)
             setFormData(formData)
+            setConfirmSave(true)
+
         }
         const handleUpdate = () => {
             UpdateTaskThunk(

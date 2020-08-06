@@ -8,7 +8,7 @@ export const FormHOC = (Component) => {
     const FormComponent = (props) => {
         const formik = useFormik({
             initialValues: props.initialValues,
-            validate,
+            validate: props.validate,
             onSubmit: (values, { resetForm }) => {
                 console.log(values)
                 props.functionToCall(values)

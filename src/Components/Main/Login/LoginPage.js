@@ -4,6 +4,7 @@ import LoginForm from "../../FormControls/LoginForm";
 import CreateUserForm from "../../FormControls/CreateUserForm.js";
 import { connect } from "react-redux";
 import { CreateAccount, Login, AuthUser } from "../../../store/AuthReducer";
+import { validateLogin } from "../../../validators/validators";
 
 const LoginPage = ({
     CreateAccount,
@@ -30,6 +31,7 @@ const LoginPage = ({
                     BlockedButtonArray={BlockedButtonArray}
                     initialValues={{ password: "", email: "", userName: "" }}
                     functionToCall={onSubmit}
+                    validate={validateLogin}
                 />
             ) : !createUser ? (
                 <LoginForm
@@ -37,6 +39,7 @@ const LoginPage = ({
                     functionToCall={onSubmitLogin}
                     BlockedButtonArray={BlockedButtonArray}
                     initialValues={{ password: "", email: "", userName: "" }}
+                    validate={validateLogin}
                 />
 
             ) : (
@@ -45,6 +48,7 @@ const LoginPage = ({
                             functionToCall={onSubmit}
                             BlockedButtonArray={BlockedButtonArray}
                             initialValues={{ password: "", email: "", userName: "" }}
+                            validate={validateLogin}
                         />
                     )}
         </div>
