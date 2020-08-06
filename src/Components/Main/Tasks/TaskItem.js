@@ -106,19 +106,21 @@ const TaskItem = React.memo(
                     </div>
                 ) : (
                         <div className={taskPanel.some(iD => iD === id) ? "taskPanelDelete" : "taskPanel"}>
-                            {missed[id] ? (
-                                <div
-                                    className=" urgentTask"
-                                >
-                                    Missed Task!
-                                </div>
-                            ) : urgent[id] ? (
-                                <div
-                                    className=" urgentTask"
-                                >
-                                    Urgent Task!
-                                </div>
-                            ) : null}
+                            {
+                                missed[id] ? (
+                                    <div
+                                        className=" urgentTask"
+                                    >
+                                        Missed Task!
+                                    </div>
+                                ) : urgent[id] ? (
+                                    <div
+                                        className=" urgentTask"
+                                    >
+                                        Urgent Task!
+                                    </div>
+                                ) : null
+                            }
                             <Accordion
                                 style={status === "done"
                                     ? { boxShadow: "0 0 10px 3px green" }
@@ -183,7 +185,7 @@ const TaskItem = React.memo(
                                         label={text}
                                     />
 
-                                </AccordionSummary>
+                                </AccordionSummary >
                                 <AccordionDetails>
                                     <div className="choseDiv">
                                         {priority ? (
@@ -241,8 +243,8 @@ const TaskItem = React.memo(
 
                                     </div>
                                 </AccordionDetails>
-                            </Accordion>
-                        </div>
+                            </Accordion >
+                        </div >
                     )
                 }
             </div >

@@ -1,4 +1,3 @@
-
 import { SetMessage } from "./AlertReducer";
 import app from "../api/firebase";
 import _ from "lodash";

@@ -42,7 +42,6 @@ const ActionsInExpansionPanelSummary = React.memo(
         if (loading) {
             return <Preloader />;
         }
-
         return (
             <>
                 {isAuth ? (

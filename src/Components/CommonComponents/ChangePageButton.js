@@ -28,7 +28,6 @@ export default function ChangePageButton({ buttonName, changePage }) {
                     className={classes.margin}
                     onMouseDown={() => {
                         changePage();
-
                     }}
                 >
                     {buttonName}
