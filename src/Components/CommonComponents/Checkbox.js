@@ -7,13 +7,13 @@ export default function Checkbox({ setState, state }) {
     };
 
     return (
-        <div style={{ position: "absolute", left: "-57%", bottom: "20%" }}>
+        <div style={{ position: "absolute", left: "-57%", bottom: "-0" }}>
             <Switch
                 checked={state.showPass}
                 onChange={handleChange}
                 color="primary"
                 name="showPass"
-                inputProps={{ "aria-label": "primary checkbox" }}
+                inputProps={{ "aria-label": "secondary checkbox" }}
             />
         </div>
     );

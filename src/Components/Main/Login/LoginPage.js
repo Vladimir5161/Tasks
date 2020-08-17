@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import "./login.css";
+import "./login.scss";
 import LoginForm from "../../FormControls/LoginForm";
 import CreateUserForm from "../../FormControls/CreateUserForm.js";
 import { connect } from "react-redux";
 import { CreateAccount, Login, AuthUser } from "../../../store/AuthReducer";
+import { validateLogin } from "../../../validators/validators";
 
 const LoginPage = ({
     CreateAccount,
@@ -27,28 +28,29 @@ const LoginPage = ({
             {createUser && isAuth ? (
                 <CreateUserForm
                     changePage={changePage}
-                    onSubmit={onSubmit}
                     BlockedButtonArray={BlockedButtonArray}
+                    initialValues={{ password: "", email: "", userName: "" }}
+                    functionToCall={onSubmit}
+                    validate={validateLogin}
                 />
-            ) : isAuth ? (
-                <CreateUserForm
-                    changePage={changePage}
-                    onSubmit={onSubmit}
-                    BlockedButtonArray={BlockedButtonArray}
-                />
-            ) : createUser ? (
-                <CreateUserForm
-                    changePage={changePage}
-                    onSubmit={onSubmit}
-                    BlockedButtonArray={BlockedButtonArray}
-                />
-            ) : (
+            ) : !createUser ? (
                 <LoginForm
                     changePage={changePage}
-                    onSubmit={onSubmitLogin}
+                    functionToCall={onSubmitLogin}
                     BlockedButtonArray={BlockedButtonArray}
+                    initialValues={{ password: "", email: "", userName: "" }}
+                    validate={validateLogin}
                 />
-            )}
+
+            ) : (
+                        <CreateUserForm
+                            changePage={changePage}
+                            functionToCall={onSubmit}
+                            BlockedButtonArray={BlockedButtonArray}
+                            initialValues={{ password: "", email: "", userName: "" }}
+                            validate={validateLogin}
+                        />
+                    )}
         </div>
     );
 };

@@ -1,7 +1,7 @@
 import React, { useState, Suspense } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import "./tasks.css";
+import "./tasks.scss";
 import { DeleteTaskThunk, filterArray } from "../../../store/TaskReducer";
 import { setTaskPanel } from "../../../store/AlertReducer"
 import AddTaskButton from "../../CommonComponents/AddTaskButton";
@@ -42,7 +42,6 @@ const ActionsInExpansionPanelSummary = React.memo(
         if (loading) {
             return <Preloader />;
         }
-
         return (
             <>
                 {isAuth ? (
@@ -52,7 +51,7 @@ const ActionsInExpansionPanelSummary = React.memo(
                             setAddTaskPanel={setAddTaskPanel}
                             addTaskPanel={addTaskPanel}
                         />
-                        <div style={{ position: "relative", top: "-100px" }}>
+                        <div style={{ position: "relative", top: "-80px" }}>
                             <Filter filterArray={filterArray} />
                         </div>
                         <div className={addTaskPanel}>

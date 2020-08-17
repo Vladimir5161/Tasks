@@ -2,7 +2,7 @@ import React from "react";
 import TabsWrappedLabel from "./NavTab/NavTab";
 import { connect } from "react-redux";
 import { Logout } from "../../store/AuthReducer";
-import "./header.css";
+import "./header.scss";
 
 const Header = ({ handleChange, value, Logout, isAuth, user }) => {
     return (

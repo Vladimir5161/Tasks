@@ -59,8 +59,7 @@ const TaskItemContainer = React.memo(
             setChoseState({
                 priority: event.target.value,
             });
-        };
-
+        }
         //-------------
         // value for data from the edit form which we use in a function "handleUpdate" after user confirms updating
         let [form, setFormData] = React.useState(null)
@@ -93,12 +92,6 @@ const TaskItemContainer = React.memo(
             setSelectedTime({ [id]: time });
             setDeadline(id)
         };
-
-        //-------------
-
-
-
-        //-------------
         // here we are creating new date,checking if user has chosed a new deadline date and depends on it setting new or old deadline date
 
         const newSettedDate =
@@ -129,8 +122,8 @@ const TaskItemContainer = React.memo(
 
         let [confirmSave, setConfirmSave] = React.useState(false)
         const onSubmit = (formData) => {
-            setConfirmSave(true)
             setFormData(formData)
+            setConfirmSave(true)
         }
         const handleUpdate = () => {
             UpdateTaskThunk(

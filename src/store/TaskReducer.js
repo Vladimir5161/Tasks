@@ -1,4 +1,3 @@
-import { reset } from "redux-form";
 import { SetMessage } from "./AlertReducer";
 import app from "../api/firebase";
 import _ from "lodash";
@@ -352,7 +351,6 @@ export const AddTaskThunk = (
             .collection("tasks")
             .add(task);
         await dispatch(addTask(task));
-        dispatch(reset("addTask"));
         dispatch(Loading());
     } catch (e) {
         dispatch(SetMessage(e.message, "error"));
@@ -385,7 +383,6 @@ export const UpdateTaskThunk = (
         settedTime: newSettedTime,
     };
     await dispatch(blockButton("editTask"));
-    debugger
     try {
         await app
             .firestore()
@@ -395,7 +392,6 @@ export const UpdateTaskThunk = (
             .doc(keyFirebase)
             .update(task);
         await dispatch(updateTask(task));
-        dispatch(reset("editTask"));
     } catch (e) {
         dispatch(SetMessage(e.message, "error"));
     }

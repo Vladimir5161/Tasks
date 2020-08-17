@@ -1,6 +1,5 @@
 import { WebApi } from "../api/api";
 import app from "../api/firebase";
-import { reset } from "redux-form";
 import { SetMessage } from "./AlertReducer";
 import { blockButton } from "./TaskReducer";
 
@@ -59,7 +58,6 @@ export const CreateAccount = (email, password, userName) => async (
                     )
                 );
         });
-        dispatch(reset("createUserForm"));
     } catch (error) {
         dispatch(SetMessage(error.message, "error"));
     }
@@ -71,7 +69,6 @@ export const Login = (email, password) => async (dispatch) => {
     await dispatch(blockButton("login"));
     try {
         let responce = await WebApi.login(email, password);
-        await dispatch(reset("loginForm"));
 
         if (responce.user !== undefined) {
             app.auth().onAuthStateChanged(async (user) => {
@@ -105,8 +102,7 @@ export const Login = (email, password) => async (dispatch) => {
             });
         }
     } catch (error) {
-        dispatch(SetMessage(error.message, "error"));
-        dispatch(reset("loginForm"));
+        dispatch(SetMessage(error.message, "error"));;
     }
     dispatch(blockButton("login"));
 };

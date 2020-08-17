@@ -13,20 +13,17 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ErrorValidatePass(props) {
     const classes = useStyles();
-    const { input, meta, state, ...restProps } = props;
+    const { label, name, value, onChange, state } = props;
     return (
-        <form className={classes.root} noValidate autoComplete="off">
-            <div>
-                <TextField
-                    error
-                    type={state.showPass ? "text" : "password"}
-                    id="standard-error"
-                    label={meta.error}
-                    defaultValue="Hello World"
-                    {...restProps}
-                    {...input}
-                />
-            </div>
-        </form>
+        <div className="formBlock">
+            <TextField
+                error
+                label={label}
+                type={state.showPass ? "text" : "password"}
+                name={name}
+                onChange={onChange}
+                value={value}
+            />
+        </div>
     );
 }

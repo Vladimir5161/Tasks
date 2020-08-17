@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  min-width: 335px;
 }
 
 
@@ -14,3 +15,7 @@
   color: white;
 }
 
+main {
+  max-width: 1170px;
+  margin: 0 auto;
+}

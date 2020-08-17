@@ -4,6 +4,8 @@ import AddTaskForm from "../../FormControls/AddTaskReduxForm";
 import { connect } from "react-redux";
 import { CalendarReact } from "../../CommonComponents/Calendar";
 import Clock from "../../CommonComponents/Clock";
+import { validateAdd } from "../../../validators/validators";
+
 
 const AddTask = ({ AddTaskThunk, changeAddTask, BlockedButtonArray }) => {
     const [choseState, setChoseState] = React.useState({
@@ -55,7 +57,7 @@ const AddTask = ({ AddTaskThunk, changeAddTask, BlockedButtonArray }) => {
                 .join(":")
             : null;
 
-    const onSubmit = (formData) => {
+    const onSubmit = (data) => {
         const newDate = new Date()
             .toLocaleString()
             .split(",")[0]
@@ -78,7 +80,7 @@ const AddTask = ({ AddTaskThunk, changeAddTask, BlockedButtonArray }) => {
         if (resultDate) {
             AddTaskThunk(
                 choseState.priority,
-                formData.text,
+                data.addTask,
                 choseStatus.status,
                 null,
                 null
@@ -86,7 +88,7 @@ const AddTask = ({ AddTaskThunk, changeAddTask, BlockedButtonArray }) => {
         } else {
             AddTaskThunk(
                 choseState.priority,
-                formData.text,
+                data.addTask,
                 choseStatus.status,
                 settedTime,
                 settedDate
@@ -117,6 +119,9 @@ const AddTask = ({ AddTaskThunk, changeAddTask, BlockedButtonArray }) => {
                 setDeadline={setDeadline}
                 settedDate={settedDate}
                 settedTime={settedTime}
+                initialValues={{ addTask: "" }}
+                functionToCall={onSubmit}
+                validate={validateAdd}
             />
         </>
     );

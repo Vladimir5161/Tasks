@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import Accordion from '@material-ui/core/Accordion';
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import DeleteButton from "../../CommonComponents/DeleteButton";
@@ -9,6 +9,8 @@ import EditButton from "../../CommonComponents/EditButon";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { CalendarReact } from "../../CommonComponents/Calendar";
 import Preloader from "../../CommonComponents/Preloader";
+import { validateEdit } from "../../../validators/validators";
+
 
 const EditTaskForm = React.lazy(() => import("../../FormControls/EditTaskForm"))
 const Clock = React.lazy(() => import("../../CommonComponents/Clock"))
@@ -82,11 +84,7 @@ const TaskItem = React.memo(
                             </div>
                         ) : null}
                         <Suspense fallback={<Preloader />}><EditTaskForm
-                            initialValues={{
-                                text: text,
-                                keyFirebase: keyFirebase,
-                                data: data,
-                            }}
+                            initialValues={{ text: text }}
                             choseState={choseState}
                             choseStatus={choseStatus}
                             changeStatus={changeStatus}
@@ -102,11 +100,28 @@ const TaskItem = React.memo(
                             setConfirmSave={setConfirmSave}
                             newSettedDate={newSettedDate}
                             newSettedTime={newSettedTime}
+                            functionToCall={onSubmit}
+                            validate={validateEdit}
                         /></Suspense>
                     </div>
                 ) : (
                         <div className={taskPanel.some(iD => iD === id) ? "taskPanelDelete" : "taskPanel"}>
-                            <ExpansionPanel
+                            {
+                                missed[id] ? (
+                                    <div
+                                        className=" urgentTask"
+                                    >
+                                        Missed Task!
+                                    </div>
+                                ) : urgent[id] ? (
+                                    <div
+                                        className=" urgentTask"
+                                    >
+                                        Urgent Task!
+                                    </div>
+                                ) : null
+                            }
+                            <Accordion
                                 style={status === "done"
                                     ? { boxShadow: "0 0 10px 3px green" }
                                     : missed[id]
@@ -116,41 +131,15 @@ const TaskItem = React.memo(
                                             : null
                                 }
                             >
-                                <ExpansionPanelSummary
+                                <AccordionSummary
                                     expandIcon={<ExpandMoreIcon />}
                                     aria-label="Expand"
                                     aria-controls="additional-actions1-content"
                                     id="additional-actions1-header"
                                 >
                                     <>
-                                        <div className="dataTasks">{data}</div>
-                                        {missed[id] ? (
-                                            <div
-                                                style={{
-                                                    position: "absolute",
-                                                    display: "inline",
-                                                    margin: "0 auto",
-                                                    left: "0",
-                                                    right: "0",
-                                                }}
-                                                className="dataTasks urgentTask"
-                                            >
-                                                Missed Task!
-                                            </div>
-                                        ) : urgent[id] ? (
-                                            <div
-                                                style={{
-                                                    position: "absolute",
-                                                    display: "inline",
-                                                    margin: "0 auto",
-                                                    left: "0",
-                                                    right: "0",
-                                                }}
-                                                className="dataTasks urgentTask"
-                                            >
-                                                Urgent Task!
-                                            </div>
-                                        ) : null}
+                                        <div className="dataTasks">Date: {data}</div>
+
                                         {settedDate ? (  //deadline date and time which will be changed if a customer will change deadline
                                             <div className="dataTasks deadlineTasks">
                                                 Deadline:
@@ -195,66 +184,67 @@ const TaskItem = React.memo(
                                         style={{ wordBreak: "break-word" }}
                                         label={text}
                                     />
-                                    <>
-                                        <div className="choseDiv">
-                                            {priority ? (
-                                                <div className="priorityTask">
-                                                    priority:
-                                                    <p
-                                                        style={
-                                                            priority === "high"
+
+                                </AccordionSummary >
+                                <AccordionDetails>
+                                    <div className="choseDiv">
+                                        {priority ? (
+                                            <div className="priorityTask">
+                                                priority:
+                                                <p
+                                                    style={
+                                                        priority === "high"
+                                                            ? {
+                                                                color: "red",
+                                                                textIndent:
+                                                                    "5px",
+                                                            }
+                                                            : priority ===
+                                                                "middle"
                                                                 ? {
-                                                                    color: "red",
+                                                                    color:
+                                                                        "green",
                                                                     textIndent:
                                                                         "5px",
                                                                 }
-                                                                : priority ===
-                                                                    "middle"
-                                                                    ? {
-                                                                        color:
-                                                                            "green",
-                                                                        textIndent:
-                                                                            "5px",
-                                                                    }
-                                                                    : {
-                                                                        color:
-                                                                            "yellow",
-                                                                        textIndent:
-                                                                            "5px",
-                                                                    }
-                                                        }
-                                                    >
-                                                        {priority}
-                                                    </p>
-                                                </div>
-                                            ) : null}
-                                            {status ? (
-                                                <div className="statusTask" >
-                                                    status: <div style={status === "done" ? { fontWeight: 'bold', marginLeft: "5px" } : { marginLeft: "5px" }}>{status === "done" ? status.toUpperCase() : status}</div>
-                                                </div>
-                                            ) : null}
-                                        </div>
-                                    </>
-                                    <DeleteButton
-                                        DeleteTask={DeleteTask}
-                                        id={id}
-                                        keyFirebase={keyFirebase}
-                                        BlockedButtonArray={BlockedButtonArray}
-                                        confirm={confirm}
-                                        setConfirm={setConfirm}
-                                        deleteId={deleteId}
-                                        deleteKey={deleteKey}
-                                    />
-                                </ExpansionPanelSummary>
-                                <ExpansionPanelDetails>
-                                    <EditButton
-                                        EditButtonFunc={EditButtonFunc}
-                                        id={id}
-                                        BlockedButtonArray={BlockedButtonArray}
-                                    />
-                                </ExpansionPanelDetails>
-                            </ExpansionPanel>
-                        </div>
+                                                                : {
+                                                                    color:
+                                                                        "yellow",
+                                                                    textIndent:
+                                                                        "5px",
+                                                                }
+                                                    }
+                                                >
+                                                    {priority}
+                                                </p>
+                                            </div>
+                                        ) : null}
+                                        <EditButton
+                                            EditButtonFunc={EditButtonFunc}
+                                            id={id}
+                                            BlockedButtonArray={BlockedButtonArray}
+                                        />
+                                        <DeleteButton
+                                            DeleteTask={DeleteTask}
+                                            id={id}
+                                            keyFirebase={keyFirebase}
+                                            BlockedButtonArray={BlockedButtonArray}
+                                            confirm={confirm}
+                                            setConfirm={setConfirm}
+                                            deleteId={deleteId}
+                                            deleteKey={deleteKey}
+                                        />
+                                        {status ? (
+                                            <div className="statusTask" >
+                                                status: <div style={status === "done" ? { fontWeight: 'bold', marginLeft: "5px" } : { marginLeft: "5px" }}>{status === "done" ? status.toUpperCase() : status}</div>
+                                            </div>
+                                        ) : null}
+
+
+                                    </div>
+                                </AccordionDetails>
+                            </Accordion >
+                        </div >
                     )
                 }
             </div >

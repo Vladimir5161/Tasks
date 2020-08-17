@@ -15,7 +15,7 @@ const Main = ({ value, message, Authorized, loading, confirm }) => {
     }
     if (Authorized === false) {
         return (
-            <div>
+            <main>
                 <TabPanel value={value} index={0}>
                     <LoginPage />
                 </TabPanel>
@@ -23,11 +23,11 @@ const Main = ({ value, message, Authorized, loading, confirm }) => {
                     You are not logged in, please log in to see your tasks or
                     create an account
                 </TabPanel>
-            </div>
+            </main>
         );
     } else
         return (
-            <div>
+            <main>
                 {message === null ? null : <Suspense fallback={<Preloader />}> <Alert /></Suspense>}
                 <TabPanel value={value} index={0}>
                     <LoginPage />
@@ -35,13 +35,12 @@ const Main = ({ value, message, Authorized, loading, confirm }) => {
                 <TabPanel value={value} index={1}>
                     <Tasks />
                 </TabPanel>
-            </div>
+            </main>
         );
 };
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
-
     return (
         <div
             role="tabpanel"
@@ -49,6 +48,7 @@ function TabPanel(props) {
             id={`nav-tabpanel-${index}`}
             aria-labelledby={`nav-tab-${index}`}
             {...other}
+            style={{ padding: "35px;" }}
         >
             {value === index && (
                 <Box p={3}>
