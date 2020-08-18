@@ -146,6 +146,7 @@ export const SetToDoneThunk = (keyFirebase: string) => async (dispatch: Dispatch
     await dispatch(blockButton(keyFirebase));
     // here we are getting an array of tasks an updating one of tasks with new value of STATUS field, making some actions if request failed
     try {
+        debugger
         await app
             .firestore()
             .collection("users")
@@ -188,11 +189,12 @@ export const SetToDoneThunk = (keyFirebase: string) => async (dispatch: Dispatch
 
 // here we are getting an array of tasks an updating one of tasks with new value of STATUS field, making some actions if request failed
 export const SetToPrevStatusThunk = (keyFirebase: string) => async (
+
     dispatch: DispatchType,
     getState: () => AppStoreReducer
 ) => {
     const userId: any = getState().auth.user.userId;
-
+    debugger
     dispatch(blockButton(keyFirebase));
     try {
         await app
@@ -237,6 +239,7 @@ export const SetToPrevStatusThunk = (keyFirebase: string) => async (
 
 // here we are getting the collection of tasks of an authorized user or making some actions in case if request failed
 export const GetTasksThunk = (): any => async (dispatch: DispatchType, getState: () => AppStoreReducer) => {
+    debugger
     const userId: any = getState().auth.user.userId;
     const isAuth = getState().auth.isAuth;
     try {
@@ -307,7 +310,7 @@ export const AddTaskThunk = (
     priority: string | null,
 ) => async (dispatch: DispatchType, getState: () => AppStoreReducer) => {
     const userId: any = getState().auth.user.userId;
-
+    debugger
     const sortedByIdTasksArray = getState().tasks.TasksArray.sort(function (
         a,
         b
@@ -374,7 +377,7 @@ export const UpdateTaskThunk = (
 
 ) => async (dispatch: DispatchType, getState: () => AppStoreReducer) => {
     const userId: any = getState().auth.user.userId;
-
+    debugger
     const task = {
         keyFirebase: keyFirebase,
         id: id,
