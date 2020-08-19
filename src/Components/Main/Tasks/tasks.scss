@@ -1,0 +1,316 @@
+.MuiAccordionSummary-content.Mui-expanded,
+.MuiAccordionSummary-content {
+    margin: 25px auto 15px auto !important;
+    position: relative;
+    display: grid;
+    grid-template-columns: 10fr 4fr 1fr;
+}
+.preloader {
+    position: fixed;
+    margin: 0 auto;
+    display: flex;
+    left: 0;
+    right: 0;
+    z-index: 120;
+    align-content: center;
+    background-color: white;
+    background-size: cover;
+    height: 100vh;
+    width: 100vw;
+    img {
+        height: 50px;
+        width: 50px;
+        margin: 0 auto;
+        display: flex;
+        align-self: center;
+    }
+}
+.choseDiv {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    justify-content: space-between;
+    width: 100%;
+}
+.MuiFab-root {
+    margin: 0 auto !important;
+    width: 8vw !important;
+    height: 8vw !important;
+    max-height: 55px !important;
+    max-width: 55px !important;
+    min-width: 35px !important;
+    min-height: 35px !important;
+    display: grid !important;
+    justify-content: center !important;
+}
+
+.priorityTask,
+.statusTask {
+    display: flex;
+    align-self: center;
+    margin: 0 auto;
+    justify-content: center !important;
+}
+.statusTask,
+.priorityTask {
+    div {
+        display: flex;
+        align-self: center;
+        justify-content: center;
+        max-width: 100px !important;
+    }
+}
+.dataTasks {
+    position: absolute;
+    display: flex;
+    align-self: center;
+    font-size: 14px;
+    left: 0;
+    top: -20px;
+}
+.deadlineTasks {
+    display: block !important;
+    top: -20px;
+    position: absolute;
+    right: -40px;
+    left: auto !important;
+    text-align: right !important;
+}
+.deadlineTasksEdit {
+    right: 0;
+}
+
+.mainBlockStyle {
+    margin-top: 30px !important;
+}
+.clearText {
+    text-decoration: none;
+    display: block;
+}
+.doneText {
+    text-decoration: line-through;
+    display: block;
+}
+
+.deleteButtonTask:hover::after {
+    content: "delete task";
+    display: flex;
+    position: absolute;
+    bottom: 35px;
+    width: 65px;
+    height: 20px;
+    font-size: 8px;
+    background-color: initial;
+    justify-content: center;
+    align-items: center;
+    border: 1pt solid black;
+}
+.MuiAccordionSummary-expandIcon {
+    position: relative !important;
+    margin-top: 10px !important;
+}
+
+.MuiIconButton-root:hover .MuiSvgIcon-root {
+    color: black;
+}
+
+.MuiAccordionDetails-root {
+    justify-content: center;
+}
+.MuiAccordion-root,
+.MuiAccordion-root.Mui-expanded {
+    margin: 10px auto 20px auto !important;
+    max-width: 1170px;
+    min-width: 270px;
+    max-height: 300px;
+}
+.MuiFormControlLabel-root {
+    width: 100% !important;
+}
+.makeStyles-root-298 {
+    margin: 0;
+    top: 2px !important;
+}
+.MuiTextField-root {
+    margin: 0 auto !important;
+}
+.taskPanelDelete {
+    position: relative;
+    left: -2000px;
+    animation: deleteTranslate 1s;
+}
+@keyframes deleteTranslate {
+    0% {
+        transform: translateX(2000px);
+    }
+    30% {
+        transform: translateX(2050px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+.alertContainer {
+    position: fixed;
+    height: 200vh;
+    width: 200vw;
+    left: 0;
+    right: 0;
+    z-index: 90;
+    animation-name: alert;
+    animation-duration: 1s;
+}
+.alertContainerFirst {
+    position: fixed;
+    height: 200vh;
+    left: 0;
+    right: 0;
+    width: 200vw;
+    z-index: 90;
+    background-color: rgba(46, 49, 49, 0.7);
+}
+.alertNone {
+    position: relative;
+    background-color: inherit;
+    display: none;
+}
+@keyframes alert {
+    0% {
+        background-color: rgba(46, 49, 49, 0.7);
+    }
+    100% {
+        background-color: rgba(0, 0, 0, 0);
+    }
+}
+
+.alertClass {
+    width: 70%;
+    margin: 0 auto;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 6%;
+    z-index: 100;
+    max-width: 700px;
+}
+
+.deadlineText {
+    font-size: 24px;
+    font-weight: 600;
+    animation: animationDeadlineText 2s ease infinite;
+    animation-delay: 0ms;
+}
+.deadlineText:hover {
+    color: wheat;
+    cursor: pointer;
+}
+@keyframes animationDeadlineText {
+    0% {
+        transform: translateY(-7px);
+    }
+    50% {
+        transform: translateY(7px);
+    }
+    100% {
+        transform: translateY(-7px);
+    }
+}
+.deadline {
+    width: 50%;
+    height: 55%;
+    background-color: white;
+    border-radius: 20px;
+    margin: 0 auto;
+    padding: 20px;
+    display: grid;
+}
+.deadlineBlock {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(102, 102, 102, 0.95);
+    z-index: 100;
+    display: grid;
+    justify-self: center;
+    align-items: center;
+}
+.editButtonTask {
+    display: grid;
+    align-items: center;
+    position: relative;
+    max-width: 150px;
+    margin: 0 auto;
+}
+.calendarBlock {
+    width: 300px;
+    margin: 0 auto;
+}
+.addDeadline {
+    display: none;
+}
+.urgentTask {
+    position: relative;
+    font-size: 25px !important;
+}
+@media screen and (max-width: 768px) {
+    .dataTasks {
+        font-size: 10px !important;
+    }
+    .choseDiv {
+        :nth-child(4) {
+            grid-column: 2;
+            grid-row: 1;
+        }
+        :nth-child(3) {
+            grid-column: 2;
+            grid-row: 2;
+        }
+        :nth-child(2) {
+            grid-column: 1;
+            grid-row: 2;
+        }
+        :nth-child(1) {
+            grid-column: 1;
+            grid-row: 1;
+        }
+    }
+}
+@media screen and (max-width: 425px) {
+    .deadline {
+        width: 90%;
+        background-color: white;
+        border-radius: 20px;
+        margin: 0 auto;
+        padding: 20px;
+        display: grid;
+    }
+    .PrivateSwitchBase-input-128 {
+        z-index: 45;
+    }
+    .TaskText {
+        margin-left: 0;
+        position: relative;
+        left: -20px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .deleteButtonTask:hover::after {
+        right: 12px;
+    }
+}
+@media screen and (max-width: 375px) {
+    .deadline {
+        height: 55%;
+    }
+    .MuiTypography-body1 {
+        font-size: 12px !important;
+    }
+}
+@media screen and (max-width: 320px) {
+    .calendarBlock {
+        width: 250px;
+    }
+}

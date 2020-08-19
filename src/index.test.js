@@ -7,3 +7,14 @@ test("should render without crashing", () => {
     ReactDOM.render(<MyApp />, div);
     ReactDOM.unmountComponentAtNode(div);
 });
+
+const originalError = console.error;
+
+beforeAll(() => {
+    console.error = jest.fn();
+});
+
+afterAll(() => {
+    console.error = originalError;
+});
+
