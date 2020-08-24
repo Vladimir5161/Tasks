@@ -1,22 +1,22 @@
 export interface setAlertClassTypes {
-    type: "SETALERTCLASS",
-    alertClass: string,
+    type: "SETALERTCLASS";
+    alertClass: string;
 }
 export interface setConfirmTypes {
-    type: "SETCONFIRM",
-    confirm: boolean,
-    id?: number,
-    key?: string
+    type: "SETCONFIRM";
+    confirm: boolean;
+    id?: number;
+    key?: string;
 }
 export interface toDefaultMessageTypes {
-    type: "SETDEFAULTMESSAGE"
+    type: "SETDEFAULTMESSAGE";
 }
 export interface setTaskPanelTypes {
-    type: "SETTASKPANEL",
-    id: number
+    type: "SETTASKPANEL";
+    id: number;
 }
 export interface SetMessageTypes {
-    type: "SETMESSAGE",
-    message: string,
-    types: string,
+    type: "SETMESSAGE";
+    message: string;
+    types: string;
 }

@@ -5,14 +5,13 @@ import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import "./AddTask.scss";
 import "../Main/Tasks/tasks.scss";
 import PrioritySelect from "../CommonComponents/PrioritySelect";
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import Accordion from "@material-ui/core/Accordion";
 import { TextField } from "@material-ui/core";
 import StatusSelect from "../CommonComponents/StatusSelect";
 import ErrorValidate from "../CommonComponents/ErrorValidate";
 import { compose } from "redux";
 import { FormHOC } from "../HOC/formHOC";
-import { ID } from "../../types/types";
 
 const useStyles = makeStyles((theme) => ({
     button: {
@@ -20,17 +19,16 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-
 export interface AddTaskFormTypes {
-    choseState: { priority: string | null },
-    handleChange: (event: any) => void,
-    choseStatus: { status: string },
-    changeStatus: (event: any) => void,
-    BlockedButtonArray: Array<ID>,
-    setDeadline: () => void,
-    settedTime: string | null,
-    settedDate: string | null,
-    formik: any,
+    choseState: { priority: string | null };
+    handleChange: (event: any) => void;
+    choseStatus: { status: string };
+    changeStatus: (event: any) => void;
+    BlockedButtonArray: Array<number | string>;
+    setDeadline: () => void;
+    settedTime: string | null;
+    settedDate: string | null;
+    formik: any;
 }
 
 const AddTaskForm: React.FC<AddTaskFormTypes> = ({
@@ -56,19 +54,24 @@ const AddTaskForm: React.FC<AddTaskFormTypes> = ({
                     <div className="inputTaskDiv">
                         <div className="inputBlock">
                             {formik.errors.addTask ? (
-                                <ErrorValidate name='addTask' onChange={formik.handleChange}
-                                    value={formik.values.addTask} label={formik.errors.addTask} />
+                                <ErrorValidate
+                                    name="addTask"
+                                    onChange={formik.handleChange}
+                                    value={formik.values.addTask}
+                                    label={formik.errors.addTask}
+                                />
                             ) : (
-                                    <div className="formBlock">
-                                        <TextField
-                                            label="add Task"
-                                            type="text"
-                                            name='addTask'
-                                            onChange={formik.handleChange}
-                                            value={formik.values.addTask}
-                                        />
-                                    </div>
-                                )}
+                                <div className="formBlock">
+                                    <TextField
+                                        label="add Task"
+                                        type="text"
+                                        name="addTask"
+                                        onChange={formik.handleChange}
+                                        value={formik.values.addTask}
+                                        autoFocus={true}
+                                    />
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className="choseDiv">
@@ -90,12 +93,8 @@ const AddTaskForm: React.FC<AddTaskFormTypes> = ({
                                     marginLeft: "5px",
                                 }}
                             >
-                                {!settedDate
-                                    ? null
-                                    : settedDate}{" "}
-                                {!settedTime
-                                    ? null
-                                    : settedTime}
+                                {!settedDate ? null : settedDate}{" "}
+                                {!settedTime ? null : settedTime}
                             </div>
                         </div>
                     ) : null}
@@ -122,7 +121,7 @@ const AddTaskForm: React.FC<AddTaskFormTypes> = ({
                     color="default"
                     className={classes.button}
                     startIcon={<CloudUploadIcon />}
-                    disabled={BlockedButtonArray.some((item) => item.id === "addTask")}
+                    disabled={BlockedButtonArray.some((id) => id === "addTask")}
                 >
                     Add
                 </Button>

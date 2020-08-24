@@ -1,18 +1,26 @@
 import { SetMessage } from "./AlertReducer";
-import { LoadingTypes, getTasksTypes, deleteTaskTypes, updateTaskTypes, addTaskTypes, blockButtonTypes, filterArrayTypes } from "../types/taskReducerTypes"
+import {
+    LoadingTypes,
+    getTasksTypes,
+    deleteTaskTypes,
+    updateTaskTypes,
+    addTaskTypes,
+    blockButtonTypes,
+    filterArrayTypes,
+} from "../types/taskReducerTypes";
 import app from "../api/firebase";
 import _ from "lodash";
 import { TaskTypes } from "../types/types";
 import { Dispatch } from "redux";
 import { AppStoreReducer } from "./rootReducer";
 import { SetMessageTypes } from "../types/alertReducerTypes";
+import { AuthUser } from "./AuthReducer";
 const Moment = require("moment");
 
-
 export interface InitialStateType {
-    TasksArray: Array<TaskTypes>,
-    BlockedButtonArray: Array<any>,
-    loading: boolean,
+    TasksArray: Array<TaskTypes>;
+    BlockedButtonArray: Array<any>;
+    loading: boolean;
 }
 
 const initialState: InitialStateType = {
@@ -20,11 +28,14 @@ const initialState: InitialStateType = {
     BlockedButtonArray: [],
     loading: false,
 };
-type InitialState = typeof initialState
+type InitialState = typeof initialState;
 
-const TaskReducer = (state: InitialState = initialState, action: ActionTaskTypes): InitialState => {
+const TaskReducer = (
+    state: InitialState = initialState,
+    action: ActionTaskTypes
+): InitialState => {
     switch (action.type) {
-        // getting a new array oof tasks sorted by the date
+        // getting a new array of tasks sorted by the date
         case "GETTASKS":
             const gotedArr = _.sortBy(action.tasks, [
                 function (o) {
@@ -33,7 +44,7 @@ const TaskReducer = (state: InitialState = initialState, action: ActionTaskTypes
             ]).reverse();
             return {
                 ...state,
-                TasksArray: (state.TasksArray = gotedArr),
+                TasksArray: state.TasksArray = gotedArr,
             };
         // deleting the task for an array
         case "DELETETASK":
@@ -64,15 +75,15 @@ const TaskReducer = (state: InitialState = initialState, action: ActionTaskTypes
                 TasksArray: state.TasksArray.map((item) =>
                     item.id === action.task.id
                         ? {
-                            id: item.id,
-                            priority: action.task.priority,
-                            text: action.task.text,
-                            status: action.task.status,
-                            data: action.task.data,
-                            keyFirebase: action.task.keyFirebase,
-                            settedDate: action.task.settedDate,
-                            settedTime: action.task.settedTime,
-                        }
+                              id: item.id,
+                              priority: action.task.priority,
+                              text: action.task.text,
+                              status: action.task.status,
+                              data: action.task.data,
+                              keyFirebase: action.task.keyFirebase,
+                              settedDate: action.task.settedDate,
+                              settedTime: action.task.settedTime,
+                          }
                         : item
                 ),
             };
@@ -89,7 +100,7 @@ const TaskReducer = (state: InitialState = initialState, action: ActionTaskTypes
                 ]);
                 return {
                     ...state,
-                    TasksArray: (state.TasksArray = newTasksArray),
+                    TasksArray: state.TasksArray = newTasksArray,
                 };
             } else if (action.value === "deadline") {
                 const newTasksArray = _.sortBy(array, [
@@ -102,7 +113,7 @@ const TaskReducer = (state: InitialState = initialState, action: ActionTaskTypes
                 ]);
                 return {
                     ...state,
-                    TasksArray: (state.TasksArray = newTasksArray),
+                    TasksArray: state.TasksArray = newTasksArray,
                 };
             } else {
                 const newTasksArray = _.sortBy(array, [
@@ -112,7 +123,7 @@ const TaskReducer = (state: InitialState = initialState, action: ActionTaskTypes
                 ]).reverse();
                 return {
                     ...state,
-                    TasksArray: (state.TasksArray = newTasksArray),
+                    TasksArray: state.TasksArray = newTasksArray,
                 };
             }
         // booling value for loader
@@ -126,27 +137,51 @@ const TaskReducer = (state: InitialState = initialState, action: ActionTaskTypes
     }
 };
 
-export type ActionTaskTypes = LoadingTypes | getTasksTypes | deleteTaskTypes | updateTaskTypes | addTaskTypes | blockButtonTypes | filterArrayTypes | SetMessageTypes
-type DispatchType = Dispatch<ActionTaskTypes>
+export type ActionTaskTypes =
+    | LoadingTypes
+    | getTasksTypes
+    | deleteTaskTypes
+    | updateTaskTypes
+    | addTaskTypes
+    | blockButtonTypes
+    | filterArrayTypes
+    | SetMessageTypes;
+type DispatchType = Dispatch<ActionTaskTypes>;
 
 export const Loading = (): LoadingTypes => ({ type: "LOADING" });
-export const getTasks = (tasks: Array<TaskTypes>): getTasksTypes => ({ type: "GETTASKS", tasks });
+export const getTasks = (tasks: Array<TaskTypes>): getTasksTypes => ({
+    type: "GETTASKS",
+    tasks,
+});
 export const deleteTask = (id: number): deleteTaskTypes => ({
     type: "DELETETASK",
     id,
 });
-export const updateTask = (task: TaskTypes | any): updateTaskTypes => ({ type: "UPDATETASK", task })
-export const addTask = (task: TaskTypes): addTaskTypes => ({ type: "ADDTASK", task });
-export const blockButton = (id: number | string): blockButtonTypes => ({ type: "BLOCKBUTTON", id });
-export const filterArray = (value: string): filterArrayTypes => ({ type: "FILTERARRAY", value });
+export const updateTask = (task: TaskTypes | any): updateTaskTypes => ({
+    type: "UPDATETASK",
+    task,
+});
+export const addTask = (task: TaskTypes): addTaskTypes => ({
+    type: "ADDTASK",
+    task,
+});
+export const blockButton = (id: number | string): blockButtonTypes => ({
+    type: "BLOCKBUTTON",
+    id,
+});
+export const filterArray = (value: string): filterArrayTypes => ({
+    type: "FILTERARRAY",
+    value,
+});
 
-export const SetToDoneThunk = (keyFirebase: string) => async (dispatch: DispatchType, getState: () => AppStoreReducer) => {
+export const SetToDoneThunk = (keyFirebase: string) => async (
+    dispatch: DispatchType,
+    getState: () => AppStoreReducer
+) => {
     const userId: any = getState().auth.user.userId;
-
     await dispatch(blockButton(keyFirebase));
     // here we are getting an array of tasks an updating one of tasks with new value of STATUS field, making some actions if request failed
     try {
-        debugger
         await app
             .firestore()
             .collection("users")
@@ -189,12 +224,10 @@ export const SetToDoneThunk = (keyFirebase: string) => async (dispatch: Dispatch
 
 // here we are getting an array of tasks an updating one of tasks with new value of STATUS field, making some actions if request failed
 export const SetToPrevStatusThunk = (keyFirebase: string) => async (
-
     dispatch: DispatchType,
     getState: () => AppStoreReducer
 ) => {
     const userId: any = getState().auth.user.userId;
-    debugger
     dispatch(blockButton(keyFirebase));
     try {
         await app
@@ -214,7 +247,8 @@ export const SetToPrevStatusThunk = (keyFirebase: string) => async (
                         ...querySnapshot.data(),
                         keyFirebase: keyFirebase,
                         status:
-                            querySnapshot.data().prevStatus === querySnapshot.data().status
+                            querySnapshot.data().prevStatus ===
+                            querySnapshot.data().status
                                 ? "new"
                                 : querySnapshot.data().prevStatus,
                         prevStatus: querySnapshot.data().status,
@@ -224,7 +258,8 @@ export const SetToPrevStatusThunk = (keyFirebase: string) => async (
                         ...querySnapshot.data(),
                         keyFirebase: keyFirebase,
                         status:
-                            querySnapshot.data().prevStatus === querySnapshot.data().status
+                            querySnapshot.data().prevStatus ===
+                            querySnapshot.data().status
                                 ? "new"
                                 : querySnapshot.data().prevStatus,
                         prevStatus: querySnapshot.data().status,
@@ -238,12 +273,14 @@ export const SetToPrevStatusThunk = (keyFirebase: string) => async (
 };
 
 // here we are getting the collection of tasks of an authorized user or making some actions in case if request failed
-export const GetTasksThunk = (): any => async (dispatch: DispatchType, getState: () => AppStoreReducer) => {
-    debugger
+export const GetTasksThunk = (): any => async (
+    dispatch: DispatchType,
+    getState: () => AppStoreReducer
+) => {
     const userId: any = getState().auth.user.userId;
     const isAuth = getState().auth.isAuth;
-    try {
-        if (isAuth) {
+    if (isAuth) {
+        try {
             const array: any = [];
             await app
                 .firestore()
@@ -266,24 +303,24 @@ export const GetTasksThunk = (): any => async (dispatch: DispatchType, getState:
                     }
                 });
             dispatch(getTasks(array));
-        } else return null;
-    } catch (error) {
-        dispatch(
-            SetMessage(
-                "Hi user, you are not logged in, please log in to see tasks or create your account",
-                "warning"
-            )
-        );
+        } catch (error) {
+            dispatch(
+                SetMessage(
+                    "Hi user, you are not logged in, please log in to see tasks or create your account",
+                    "warning"
+                )
+            );
+        }
+    } else {
+        AuthUser();
     }
 };
-
 
 // deleting the task from an array and on a server
 export const DeleteTaskThunk = (id: number, keyFirebase: string) => async (
     dispatch: DispatchType,
     getState: () => AppStoreReducer
 ) => {
-    debugger
     const userId: any = getState().auth.user.userId;
     dispatch(blockButton(id));
     try {
@@ -307,10 +344,9 @@ export const AddTaskThunk = (
     status: string,
     settedTime: string | null,
     settedDate: string | null,
-    priority: string | null,
+    priority: string | null
 ) => async (dispatch: DispatchType, getState: () => AppStoreReducer) => {
     const userId: any = getState().auth.user.userId;
-    debugger
     const sortedByIdTasksArray = getState().tasks.TasksArray.sort(function (
         a,
         b
@@ -320,7 +356,7 @@ export const AddTaskThunk = (
     const newId =
         getState().tasks.TasksArray.length === 0
             ? 1
-            : +sortedByIdTasksArray[sortedByIdTasksArray.length - 1].id + +1
+            : +sortedByIdTasksArray[sortedByIdTasksArray.length - 1].id + +1;
     const newDate = new Date()
         .toLocaleString()
         .split(",")[0]
@@ -346,7 +382,7 @@ export const AddTaskThunk = (
         settedDate: settedDate || null,
     };
 
-    dispatch(blockButton("addTask"));
+    await dispatch(blockButton("addTask"));
     try {
         dispatch(Loading());
         await app
@@ -355,7 +391,7 @@ export const AddTaskThunk = (
             .doc(userId)
             .collection("tasks")
             .add(task);
-        await dispatch(addTask(task));
+        await dispatch(GetTasksThunk());
         dispatch(Loading());
     } catch (e) {
         dispatch(SetMessage(e.message, "error"));
@@ -363,7 +399,7 @@ export const AddTaskThunk = (
     dispatch(blockButton("addTask"));
 };
 
-// updating the task 
+// updating the task
 export const UpdateTaskThunk = (
     text: string,
     status: string,
@@ -372,12 +408,9 @@ export const UpdateTaskThunk = (
     newSettedDate: string | null,
     newSettedTime: string | null,
     priority: string | null,
-    keyFirebase?: string,
-
-
+    keyFirebase?: string
 ) => async (dispatch: DispatchType, getState: () => AppStoreReducer) => {
     const userId: any = getState().auth.user.userId;
-    debugger
     const task = {
         keyFirebase: keyFirebase,
         id: id,
@@ -390,18 +423,21 @@ export const UpdateTaskThunk = (
         settedTime: newSettedTime,
     };
     await dispatch(blockButton("editTask"));
-    try {
-        await app
-            .firestore()
-            .collection("users")
-            .doc(userId)
-            .collection("tasks")
-            .doc(keyFirebase)
-            .update(task);
-        await dispatch(updateTask(task));
-    } catch (e) {
-        dispatch(SetMessage(e.message, "error"));
+    if (task) {
+        try {
+            await app
+                .firestore()
+                .collection("users")
+                .doc(userId)
+                .collection("tasks")
+                .doc(keyFirebase)
+                .update(task);
+            await dispatch(updateTask(task));
+        } catch (e) {
+            dispatch(SetMessage(e.message, "error"));
+        }
     }
+
     dispatch(blockButton("editTask"));
 };
 

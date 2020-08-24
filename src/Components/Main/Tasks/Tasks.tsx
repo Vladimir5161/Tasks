@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import "./tasks.scss";
 import { DeleteTaskThunk, filterArray } from "../../../store/TaskReducer";
-import { setTaskPanel } from "../../../store/AlertReducer"
+import { setTaskPanel } from "../../../store/AlertReducer";
 import AddTaskButton from "../../CommonComponents/AddTaskButton";
 import Filter from "./Filter";
 import Preloader from "../../CommonComponents/Preloader";
@@ -11,15 +11,13 @@ import TaskItemContainer from "./TaskItemContainer";
 import { AppStoreReducer } from "../../../store/rootReducer";
 import { TasksFCTypes } from "../../../types/types";
 
-const AddTask = React.lazy(() => import("./AddTask"))
+const AddTask = React.lazy(() => import("./AddTask"));
 
 const useStyles = makeStyles({
     root: {
         width: "100%",
     },
 });
-
-
 
 const Tasks: React.FC<TasksFCTypes> = React.memo(
     ({
@@ -33,7 +31,7 @@ const Tasks: React.FC<TasksFCTypes> = React.memo(
         deleteId,
         deleteKey,
         taskPanel,
-        setTaskPanel
+        setTaskPanel,
     }) => {
         const classes = useStyles();
         let [addTask, changeAddTask] = useState(false);
@@ -59,10 +57,13 @@ const Tasks: React.FC<TasksFCTypes> = React.memo(
                         </div>
                         <div className={addTaskPanel}>
                             {addTask ? (
-                                <Suspense fallback={<Preloader />}> <AddTask
-                                    changeAddTask={changeAddTask}
-                                    BlockedButtonArray={BlockedButtonArray}
-                                /></Suspense>
+                                <Suspense fallback={<Preloader />}>
+                                    {" "}
+                                    <AddTask
+                                        changeAddTask={changeAddTask}
+                                        BlockedButtonArray={BlockedButtonArray}
+                                    />
+                                </Suspense>
                             ) : null}
                             {TasksArray.map(
                                 ({
@@ -75,29 +76,29 @@ const Tasks: React.FC<TasksFCTypes> = React.memo(
                                     settedTime,
                                     settedDate,
                                 }) => (
-                                        <div key={id}>
-                                            <TaskItemContainer
-                                                id={id}
-                                                text={text}
-                                                priority={priority}
-                                                status={status}
-                                                keyFirebase={keyFirebase}
-                                                data={data}
-                                                DeleteTaskThunk={DeleteTaskThunk}
-                                                BlockedButtonArray={
-                                                    BlockedButtonArray
-                                                }
-                                                settedTime={settedTime}
-                                                settedDate={settedDate}
-                                                confirm={confirm}
-                                                TasksArray={TasksArray}
-                                                deleteId={deleteId}
-                                                deleteKey={deleteKey}
-                                                taskPanel={taskPanel}
-                                                setTaskPanel={setTaskPanel}
-                                            />
-                                        </div>
-                                    )
+                                    <div key={id}>
+                                        <TaskItemContainer
+                                            id={id}
+                                            text={text}
+                                            priority={priority}
+                                            status={status}
+                                            keyFirebase={keyFirebase}
+                                            data={data}
+                                            DeleteTaskThunk={DeleteTaskThunk}
+                                            BlockedButtonArray={
+                                                BlockedButtonArray
+                                            }
+                                            settedTime={settedTime}
+                                            settedDate={settedDate}
+                                            confirm={confirm}
+                                            TasksArray={TasksArray}
+                                            deleteId={deleteId}
+                                            deleteKey={deleteKey}
+                                            taskPanel={taskPanel}
+                                            setTaskPanel={setTaskPanel}
+                                        />
+                                    </div>
+                                )
                             )}
                         </div>
                     </div>
@@ -114,11 +115,11 @@ const mapStateToProps = (state: AppStoreReducer) => ({
     confirm: state.alert.confirm,
     deleteId: state.alert.deleteId,
     deleteKey: state.alert.deleteKey,
-    taskPanel: state.alert.taskPanel
+    taskPanel: state.alert.taskPanel,
 });
 
 export default connect(mapStateToProps, {
     DeleteTaskThunk,
     filterArray,
-    setTaskPanel
+    setTaskPanel,
 })(Tasks);

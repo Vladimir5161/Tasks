@@ -9,7 +9,6 @@ import ErrorValidatePass from "../CommonComponents/ErrorValidatePass";
 import Checkbox from "../CommonComponents/Checkbox";
 import { FormHOC } from "../HOC/formHOC";
 import { compose } from "redux";
-import { ID } from "../../types/types";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -21,60 +20,67 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface LoginFormTypes {
-    formik: any,
-    changePage: () => void,
-    BlockedButtonArray: Array<ID>
+    formik: any;
+    changePage: () => void;
+    BlockedButtonArray: Array<number | string>;
 }
 
-const LoginForm: React.FC<LoginFormTypes> = ({ formik, changePage, BlockedButtonArray }) => {
+const LoginForm: React.FC<LoginFormTypes> = ({
+    formik,
+    changePage,
+    BlockedButtonArray,
+}) => {
     const [state, setState] = React.useState({
         showPass: false,
     });
     const classes: any = useStyles();
     return (
-        <form
-            className="loginForm"
-            onSubmit={formik.handleSubmit}
-        >
+        <form className="loginForm" onSubmit={formik.handleSubmit}>
             <div style={{ display: "flex", justifyContent: "center" }}>
                 Log in
             </div>
             <div className="inputTaskDiv">
                 {formik.errors.email ? (
-                    <ErrorValidate name='email' onChange={formik.handleChange}
-                        value={formik.values.email} label={formik.errors.email} />
+                    <ErrorValidate
+                        name="email"
+                        onChange={formik.handleChange}
+                        value={formik.values.email}
+                        label={formik.errors.email}
+                    />
                 ) : (
-                        <div className="formBlock">
-                            <TextField
-                                label="email"
-                                type="text"
-                                name='email'
-                                onChange={formik.handleChange}
-                                value={formik.values.email}
-                            />
-                        </div>
-                    )}
+                    <div className="formBlock">
+                        <TextField
+                            label="email"
+                            type="text"
+                            name="email"
+                            onChange={formik.handleChange}
+                            value={formik.values.email}
+                            autoFocus={true}
+                        />
+                    </div>
+                )}
                 <div style={{ position: "relative" }}>
                     <Checkbox setState={setState} state={state} />
                     {formik.errors.password ? (
                         <ErrorValidatePass
                             label={formik.errors.password}
-                            name='password'
+                            name="password"
                             onChange={formik.handleChange}
                             value={formik.values.password}
                             state={state}
                         />
                     ) : (
-                            <div className="formBlock">
-                                <TextField
-                                    label="password"
-                                    type={state.showPass ? "text" : "password"}
-                                    name='password'
-                                    onChange={formik.handleChange}
-                                    value={formik.values.password}
-                                />
-                            </div>
-                        )}
+                        <div className="formBlock">
+                            <TextField
+                                label="password"
+                                type={state.showPass ? "text" : "password"}
+                                name="password"
+                                onChange={formik.handleChange}
+                                value={formik.values.password}
+                                autoFocus={true}
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
             <ChangePageButton
@@ -88,12 +94,12 @@ const LoginForm: React.FC<LoginFormTypes> = ({ formik, changePage, BlockedButton
                 color="primary"
                 className={classes.button}
                 endIcon={<CloudUploadIcon />}
-                disabled={BlockedButtonArray.some((item) => item.id === "login")}
+                disabled={BlockedButtonArray.some((id) => id === "login")}
             >
                 Send
             </Button>
         </form>
     );
-}
+};
 
-export default compose(FormHOC)(LoginForm)
+export default compose(FormHOC)(LoginForm);

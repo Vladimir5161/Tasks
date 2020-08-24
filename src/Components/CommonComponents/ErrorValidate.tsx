@@ -1,14 +1,19 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 
-
 interface ErrorValidateTypes {
-    label?: string,
-    name: string,
-    value: string,
-    onChange: () => void,
+    label?: string;
+    name: string;
+    value: string;
+    onChange: () => void;
+    autoFocus?: string;
 }
-const ErrorValidate: React.FC<ErrorValidateTypes> = ({ label, name, value, onChange }) => {
+const ErrorValidate: React.FC<ErrorValidateTypes> = ({
+    label,
+    name,
+    value,
+    onChange,
+}) => {
     return (
         <div className="formBlock">
             <TextField
@@ -18,9 +23,10 @@ const ErrorValidate: React.FC<ErrorValidateTypes> = ({ label, name, value, onCha
                 name={name}
                 onChange={onChange}
                 value={value}
+                autoFocus={true}
             />
         </div>
     );
-}
+};
 
-export default ErrorValidate
+export default ErrorValidate;

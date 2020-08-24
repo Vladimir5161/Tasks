@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import Accordion from "@material-ui/core/Accordion";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import DeleteButton from "../../CommonComponents/DeleteButton";
@@ -12,9 +12,10 @@ import Preloader from "../../CommonComponents/Preloader";
 import { validateEdit } from "../../../validators/validators";
 import { TaskItemTypes } from "../../../types/types";
 
-
-const EditTaskForm = React.lazy(() => import("../../FormControls/EditTaskForm"))
-const Clock = React.lazy(() => import("../../CommonComponents/Clock"))
+const EditTaskForm = React.lazy(() =>
+    import("../../FormControls/EditTaskForm")
+);
+const Clock = React.lazy(() => import("../../CommonComponents/Clock"));
 
 const TaskItem: React.FC<TaskItemTypes> = React.memo(
     ({
@@ -54,198 +55,210 @@ const TaskItem: React.FC<TaskItemTypes> = React.memo(
         setConfirmSave,
     }) => {
         const currentDate =
-            newSettedDate !== null && newSettedDate !== undefined ?
-                new Date(newSettedDate.split("-").join("/")) :
-                typeof settedDate === "string" ?
-                    new Date(settedDate.split("-").join("/")) :
-                    new Date()
+            newSettedDate !== null && newSettedDate !== undefined
+                ? new Date(newSettedDate.split("-").join("/"))
+                : typeof settedDate === "string"
+                ? new Date(settedDate.split("-").join("/"))
+                : new Date();
         const currentTime =
-            newSettedTime !== null && newSettedTime !== undefined ?
-                new Date(newSettedDate.split("-").join("/") + newSettedTime + ":00") :
-                settedDate ?
-                    typeof settedTime === "string" ?
-                        new Date(settedDate.split("-").join("/") + settedTime + ":00") :
-                        new Date()
+            newSettedTime !== null && newSettedTime !== undefined
+                ? new Date(
+                      newSettedDate.split("-").join("/") + newSettedTime + ":00"
+                  )
+                : settedDate
+                ? typeof settedTime === "string"
+                    ? new Date(
+                          settedDate.split("-").join("/") + settedTime + ":00"
+                      )
                     : new Date()
+                : new Date();
         return (
             <div>
                 {editTask[id] ? (
                     <div>
                         {deadline[id] ? (
-                            <div className="deadlineBlock" >
+                            <div className="deadlineBlock">
                                 <div className="deadline">
                                     <CalendarReact
                                         date={currentDate}
                                         onChange={onChange}
                                     />
-                                    <Suspense fallback={<Preloader />}><Clock
-                                        handleTimeChange={handleTimeChange}
-                                        selectedTime={currentTime}
-                                    /></Suspense>
+                                    <Suspense fallback={<Preloader />}>
+                                        <Clock
+                                            handleTimeChange={handleTimeChange}
+                                            selectedTime={currentTime}
+                                        />
+                                    </Suspense>
                                 </div>
                             </div>
                         ) : null}
-                        <Suspense fallback={<Preloader />}><EditTaskForm
-                            initialValues={{ text: text }}
-                            choseState={choseState}
-                            choseStatus={choseStatus}
-                            changeStatus={changeStatus}
-                            handleChange={handleChange}
-                            BlockedButtonArray={BlockedButtonArray}
-                            setDeadline={setDeadline}
-                            confirm={confirm}
-                            setConfirm={setConfirm}
-                            handleUpdate={handleUpdate}
-                            confirmSave={confirmSave}
-                            setConfirmSave={setConfirmSave}
-                            newSettedDate={newSettedDate}
-                            newSettedTime={newSettedTime}
-                            functionToCall={onSubmit}
-                            validate={validateEdit}
-                        /></Suspense>
+                        <Suspense fallback={<Preloader />}>
+                            <EditTaskForm
+                                initialValues={{ text: text }}
+                                choseState={choseState}
+                                choseStatus={choseStatus}
+                                changeStatus={changeStatus}
+                                handleChange={handleChange}
+                                BlockedButtonArray={BlockedButtonArray}
+                                setDeadline={setDeadline}
+                                confirm={confirm}
+                                setConfirm={setConfirm}
+                                handleUpdate={handleUpdate}
+                                confirmSave={confirmSave}
+                                setConfirmSave={setConfirmSave}
+                                newSettedDate={newSettedDate}
+                                newSettedTime={newSettedTime}
+                                functionToCall={onSubmit}
+                                validate={validateEdit}
+                            />
+                        </Suspense>
                     </div>
                 ) : (
-                        <div className={taskPanel.some(ID => ID.id === id) ? "taskPanelDelete" : "taskPanel"}>
-                            {
-                                missed[id] ? (
-                                    <div
-                                        className=" urgentTask"
-                                    >
-                                        Missed Task!
-                                    </div>
-                                ) : urgent[id] ? (
-                                    <div
-                                        className=" urgentTask"
-                                    >
-                                        Urgent Task!
-                                    </div>
-                                ) : null
-                            }
-                            <Accordion
-                                style={status === "done"
+                    <div
+                        className={
+                            taskPanel.some((iD) => iD === id)
+                                ? "taskPanelDelete" // classname for task with animation
+                                : "taskPanel" // static classname
+                        }
+                    >
+                        {missed[id] ? (
+                            <div className=" urgentTask">Missed Task!</div>
+                        ) : urgent[id] ? (
+                            <div className=" urgentTask">Urgent Task!</div>
+                        ) : null}
+                        <Accordion
+                            style={
+                                status === "done"
                                     ? { boxShadow: "0 0 10px 3px green" }
                                     : missed[id]
-                                        ? { boxShadow: "0 0 10px 3px blue" }
-                                        : urgent[id]
-                                            ? { boxShadow: "0 0 10px 3px red" }
-                                            : undefined
-                                }
+                                    ? { boxShadow: "0 0 10px 3px blue" }
+                                    : urgent[id]
+                                    ? { boxShadow: "0 0 10px 3px red" }
+                                    : undefined
+                            }
+                        >
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-label="Expand"
+                                aria-controls="additional-actions1-content"
+                                id="additional-actions1-header"
                             >
-                                <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon />}
-                                    aria-label="Expand"
-                                    aria-controls="additional-actions1-content"
-                                    id="additional-actions1-header"
-                                >
-                                    <>
-                                        <div className="dataTasks">Date: {data}</div>
-
-                                        {settedDate ? (  //deadline date and time which will be changed if a customer will change deadline
-                                            <div className="dataTasks deadlineTasks">
-                                                Deadline:
-                                                <div
-                                                    style={{
-                                                        display: "inline",
-                                                        marginLeft: "5px",
-                                                    }}
-                                                >
-                                                    {!settedDate
-                                                        ? null
-                                                        : settedDate}{" "}
-                                                    {!settedTime
-                                                        ? null
-                                                        : settedTime}
-                                                </div>
-                                            </div>
-                                        ) : null}
-                                    </>
-                                    <FormControlLabel
-                                        aria-label="Acknowledge"
-                                        control={
-                                            <Checkbox
-                                                checked={
-                                                    status === "done" ? true : false
-                                                }
-                                            />
-                                        }
-                                        className={
-                                            status === "done"
-                                                ? "doneText"
-                                                : "clearText"
-                                        }
-                                        onClick={(event) => {
-                                            event.stopPropagation();
-                                            OnDoneButtonClick();
-                                        }}
-                                        onFocus={(event) => event.stopPropagation()}
-                                        onMouseDown={(event) => {
-                                            event.stopPropagation();
-                                        }}
-                                        style={{ wordBreak: "break-word" }}
-                                        label={text}
-                                    />
-
-                                </AccordionSummary >
-                                <AccordionDetails>
-                                    <div className="choseDiv">
-                                        {priority ? (
-                                            <div className="priorityTask">
-                                                priority:
-                                                <p
-                                                    style={
-                                                        priority === "high"
-                                                            ? {
-                                                                color: "red",
-                                                                textIndent:
-                                                                    "5px",
-                                                            }
-                                                            : priority ===
-                                                                "middle"
-                                                                ? {
-                                                                    color:
-                                                                        "green",
-                                                                    textIndent:
-                                                                        "5px",
-                                                                }
-                                                                : {
-                                                                    color:
-                                                                        "",
-                                                                    textIndent:
-                                                                        "5px",
-                                                                }
-                                                    }
-                                                >
-                                                    {priority}
-                                                </p>
-                                            </div>
-                                        ) : null}
-                                        <EditButton
-                                            EditButtonFunc={EditButtonFunc}
-                                            id={id}
-                                        />
-                                        <DeleteButton
-                                            DeleteTask={DeleteTask}
-                                            id={id}
-                                            keyFirebase={keyFirebase}
-                                            confirm={confirm}
-                                            setConfirm={setConfirm}
-                                            deleteId={deleteId}
-                                            deleteKey={deleteKey}
-                                        />
-                                        {status ? (
-                                            <div className="statusTask" >
-                                                status: <div style={status === "done" ? { fontWeight: 'bold', marginLeft: "5px" } : { marginLeft: "5px" }}>{status === "done" ? status.toUpperCase() : status}</div>
-                                            </div>
-                                        ) : null}
-
-
+                                <>
+                                    <div className="dataTasks">
+                                        Date: {data}
                                     </div>
-                                </AccordionDetails>
-                            </Accordion >
-                        </div >
-                    )
-                }
-            </div >
+
+                                    {settedDate ? ( //deadline date and time which will be changed if a customer will change deadline
+                                        <div className="dataTasks deadlineTasks">
+                                            Deadline:
+                                            <div
+                                                style={{
+                                                    display: "inline",
+                                                    marginLeft: "5px",
+                                                }}
+                                            >
+                                                {!settedDate
+                                                    ? null
+                                                    : settedDate}{" "}
+                                                {!settedTime
+                                                    ? null
+                                                    : settedTime}
+                                            </div>
+                                        </div>
+                                    ) : null}
+                                </>
+                                <FormControlLabel
+                                    aria-label="Acknowledge"
+                                    control={
+                                        <Checkbox
+                                            checked={
+                                                status === "done" ? true : false
+                                            }
+                                        />
+                                    }
+                                    className={
+                                        status === "done"
+                                            ? "doneText"
+                                            : "clearText"
+                                    }
+                                    onClick={(event) => {
+                                        event.stopPropagation();
+                                        OnDoneButtonClick();
+                                    }}
+                                    onFocus={(event) => event.stopPropagation()}
+                                    onMouseDown={(event) => {
+                                        event.stopPropagation();
+                                    }}
+                                    style={{ wordBreak: "break-word" }}
+                                    label={text}
+                                />
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                <div className="choseDiv">
+                                    {priority ? (
+                                        <div className="priorityTask">
+                                            priority:
+                                            <p
+                                                style={
+                                                    priority === "high"
+                                                        ? {
+                                                              color: "red",
+                                                              textIndent: "5px",
+                                                          }
+                                                        : priority === "middle"
+                                                        ? {
+                                                              color: "green",
+                                                              textIndent: "5px",
+                                                          }
+                                                        : {
+                                                              color: "",
+                                                              textIndent: "5px",
+                                                          }
+                                                }
+                                            >
+                                                {priority}
+                                            </p>
+                                        </div>
+                                    ) : null}
+                                    <EditButton
+                                        EditButtonFunc={EditButtonFunc}
+                                        id={id}
+                                    />
+                                    <DeleteButton
+                                        DeleteTask={DeleteTask}
+                                        id={id}
+                                        keyFirebase={keyFirebase}
+                                        confirm={confirm}
+                                        setConfirm={setConfirm}
+                                        deleteId={deleteId}
+                                        deleteKey={deleteKey}
+                                    />
+                                    {status ? (
+                                        <div className="statusTask">
+                                            status:{" "}
+                                            <div
+                                                style={
+                                                    status === "done"
+                                                        ? {
+                                                              fontWeight:
+                                                                  "bold",
+                                                              marginLeft: "5px",
+                                                          }
+                                                        : { marginLeft: "5px" }
+                                                }
+                                            >
+                                                {status === "done"
+                                                    ? status.toUpperCase()
+                                                    : status}
+                                            </div>
+                                        </div>
+                                    ) : null}
+                                </div>
+                            </AccordionDetails>
+                        </Accordion>
+                    </div>
+                )}
+            </div>
         );
     }
 );

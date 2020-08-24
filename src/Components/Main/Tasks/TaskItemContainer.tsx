@@ -6,11 +6,8 @@ import {
     SetToDoneThunk,
 } from "../../../store/TaskReducer";
 import TaskItem from "./TaskItem";
-import { setConfirm } from '../../../store/AlertReducer'
+import { setConfirm } from "../../../store/AlertReducer";
 import { TaskItemContainerTypes } from "../../../types/types";
-
-
-
 
 const TaskItemContainer: React.FC<TaskItemContainerTypes> = React.memo(
     ({
@@ -29,34 +26,11 @@ const TaskItemContainer: React.FC<TaskItemContainerTypes> = React.memo(
         settedTime,
         confirm,
         setConfirm,
-        TasksArray,
         deleteId,
         deleteKey,
         taskPanel,
         setTaskPanel,
     }) => {
-        // simple useEffect which upates task once one of params changes(written to add keyFirebase to each task which was created), keyFirebase is task's id given by Firebase
-        useEffect(() => {
-            UpdateTaskThunk(
-                text,
-                status,
-                id,
-                data,
-                settedDate,
-                settedTime,
-                priority,
-                keyFirebase
-
-            )
-        }, [TasksArray.length, UpdateTaskThunk, priority,
-            text,
-            status,
-            id,
-            keyFirebase,
-            data,
-            settedDate,
-            settedTime])
-
         let [choseState, setChoseState]: any = React.useState({
             priority: priority,
         });
@@ -64,10 +38,10 @@ const TaskItemContainer: React.FC<TaskItemContainerTypes> = React.memo(
             setChoseState({
                 priority: event.target.value,
             });
-        }
+        };
         //-------------
         // value for data from the edit form which we use in a function "handleUpdate" after user confirms updating
-        let [form, setFormData]: any = React.useState(null)
+        let [form, setFormData]: any = React.useState(null);
 
         let [choseStatus, setStatus]: any = React.useState({
             status: status,
@@ -81,9 +55,11 @@ const TaskItemContainer: React.FC<TaskItemContainerTypes> = React.memo(
         let [date, setDate]: any = React.useState({ [id]: null });
         const onChange = (date: null | Date[] | Date) => {
             if (date) {
-                if (date >= new Date()) { setDate({ [id]: date }) } else return null
-            } else return null
-        }
+                if (date >= new Date()) {
+                    setDate({ [id]: date });
+                } else return null;
+            } else return null;
+        };
         //-------------
         // the same for time
         let [selectedTime, setSelectedTime]: any = React.useState({
@@ -91,14 +67,14 @@ const TaskItemContainer: React.FC<TaskItemContainerTypes> = React.memo(
         });
 
         //-------------
-
+        // - "missed", "urgent" - if difference is less then 24, or false
         const [missed, setMissed] = React.useState({
             [id]: false,
         });
         let [urgent, setUrgent] = React.useState({ [id]: false });
+        // this logic checks if the 'DEADLINE' date is later then the curent time and date and sets one of values for the task
 
         let [deadline, changeDeadline]: any = React.useState({ [id]: false });
-
         const setDeadline = () => {
             deadline[id]
                 ? changeDeadline({ [id]: false })
@@ -107,42 +83,42 @@ const TaskItemContainer: React.FC<TaskItemContainerTypes> = React.memo(
 
         const handleTimeChange = (time: null | Date[] | Date) => {
             setSelectedTime({ [id]: time });
-            setDeadline()
+            setDeadline();
         };
         // here we are creating new date,checking if user has chosed a new deadline date and depends on it setting new or old deadline date
 
         const newSettedDate =
             date[id] !== null
                 ? date[id]
-                    .toLocaleString()
-                    .split(",")[0]
-                    .split(".")
-                    .reverse()
-                    .join("-")
+                      .toLocaleString()
+                      .split(",")[0]
+                      .split(".")
+                      .reverse()
+                      .join("-")
                 : settedDate;
 
         const newSettedTime =
             selectedTime[id] !== null
                 ? selectedTime[id]
-                    .toLocaleString()
-                    .split(",")[1]
-                    .split(":")
-                    .reverse()
-                    .splice(1, 2)
-                    .reverse()
-                    .join(":")
+                      .toLocaleString()
+                      .split(",")[1]
+                      .split(":")
+                      .reverse()
+                      .splice(1, 2)
+                      .reverse()
+                      .join(":")
                 : settedTime;
 
         // ----------------------
 
         // this function opens confirm modal window and save user's data which is going to be used in a function below
-
-        let [confirmSave, setConfirmSave] = React.useState(false)
+        let [confirmSave, setConfirmSave] = React.useState(false);
         const onSubmit = (formData: any) => {
-            setFormData(formData)
-            setConfirmSave(true)
-        }
+            setFormData(formData);
+            setConfirmSave(true);
+        };
         const handleUpdate = () => {
+            // this function will update a task and close task's edit field after that
             UpdateTaskThunk(
                 form.text,
                 choseStatus.status,
@@ -162,10 +138,13 @@ const TaskItemContainer: React.FC<TaskItemContainerTypes> = React.memo(
                 : changeEditTask({ [id]: true });
         };
         //----------------------------------
-        // function which sets animated css style to the item and then deleting the task once animation finished
-        const DeleteTask = (iD: number, keyFirebase: string) => {
+        // function which sets animated css style to the item and then delete the task once animation finished
+        const DeleteTask = async (iD: number, keyFirebase: string) => {
             setTaskPanel(iD);
-            setTimeout(() => { DeleteTaskThunk(id, keyFirebase); setTaskPanel(iD) }, 1000);
+            setTimeout(async () => {
+                await DeleteTaskThunk(id, keyFirebase);
+                setTaskPanel(iD);
+            }, 1100);
         };
         //----------------------------------
         // changing the task status by clicking the checkbox
@@ -176,19 +155,11 @@ const TaskItemContainer: React.FC<TaskItemContainerTypes> = React.memo(
                 SetToDoneThunk(keyFirebase || "button");
             }
         };
-        // localStorage.setItem("name", JSON.stringify({ name: "vova" }));
-        // let name = localStorage.getItem("name");
-        // console.log(JSON.parse(name).name);
-
 
         // -------------------------
         // logic below checks if current date is urgent for the task (less 24 hours to deadline time)
-
-        // this logic checks if the 'DEADLINE' date is later then the curent time and date and sets one of values for the task 
-        // - "missed", "urgent" - if difference is less then 24, or false
         const isUrgent = useCallback(
             (settedDate: string | null, settedTime: string | null) => {
-
                 const newDate = new Date()
                     .toLocaleString()
                     .split(",")[0]
@@ -207,10 +178,7 @@ const TaskItemContainer: React.FC<TaskItemContainerTypes> = React.memo(
                 if (status === "done") {
                     setUrgent({ [id]: false });
                     setMissed({ [id]: false });
-                }
-                else if (
-                    settedDate
-                ) {
+                } else if (settedDate) {
                     if (
                         new Date(newDate + newTime).getTime() >=
                         new Date(settedDate + settedTime).getTime()
@@ -219,14 +187,14 @@ const TaskItemContainer: React.FC<TaskItemContainerTypes> = React.memo(
                     } else {
                         const resultDate =
                             new Date(newDate + newTime).getTime() -
-                            new Date(settedDate + settedTime).getTime();
+                            new Date(settedDate + settedTime).getTime(); // here we got a difference between today's date and deadline date in ms
                         const resultDateToNumber = Math.abs(
                             resultDate / (1000 * 3600)
-                        );
+                        ); // transforming it into hours
 
                         const isInteger = (num: number) => {
-                            return (num ^ 0) === num;
-                        }
+                            return (num ^ 0) === num; // checking if value is positive
+                        };
                         setMissed({ [id]: false });
                         if (resultDateToNumber > 0) {
                             if (isInteger(resultDateToNumber)) {
@@ -261,17 +229,15 @@ const TaskItemContainer: React.FC<TaskItemContainerTypes> = React.memo(
                     setUrgent({ [id]: false });
                 }
             },
-            [id, status],
+            [id, status]
         );
         useEffect(() => {
-            // this is a function which runs the logic above when component is mounted or shen one of the dependencies is changed
+            // this is a function which runs the logic above when component is mounted or when one of the dependencies is changed
             const callUrgentFunc = () => {
                 isUrgent(settedDate, settedTime);
             };
             callUrgentFunc();
         }, [settedDate, settedTime, isUrgent, status]);
-
-
 
         return (
             <>
@@ -322,5 +288,5 @@ export default connect(null, {
     UpdateTaskThunk,
     SetToPrevStatusThunk,
     SetToDoneThunk,
-    setConfirm
+    setConfirm,
 })(TaskItemContainer);

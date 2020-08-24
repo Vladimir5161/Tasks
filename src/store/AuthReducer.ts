@@ -4,62 +4,77 @@ import { SetMessage } from "./AlertReducer";
 import { blockButton } from "./TaskReducer";
 import { Dispatch } from "redux";
 import { SetMessageTypes } from "../types/alertReducerTypes";
-import { setUserNameAndIdTypes, setAuthTypes, userTypes } from "../types/authReducerTypes";
+import { setUserNameAndIdTypes, setAuthTypes } from "../types/authReducerTypes";
 import { blockButtonTypes } from "../types/taskReducerTypes";
 
-
 export interface InitialStateType {
-    isAuth: boolean,
-    user: userTypes,
+    isAuth: boolean;
+    user: {
+        name: string;
+        userId: string;
+    };
 }
 
 const initialState: InitialStateType = {
     isAuth: false,
     user: {
-        name: null,
-        userId: null,
+        name: "",
+        userId: "",
     },
 };
-type InitialState = typeof initialState
+type InitialState = typeof initialState;
 
-const AuthReducer = (state: InitialState = initialState, action: ActionsAuthTypes): InitialState => {
+const AuthReducer = (
+    state: InitialState = initialState,
+    action: ActionsAuthTypes
+): InitialState => {
     switch (action.type) {
         case "ISAUTH":
-            return { ...state, isAuth: (state.isAuth = action.authStatus) };
+            return { ...state, isAuth: state.isAuth = action.authStatus };
         case "SETUSERNAME":
             return {
                 ...state,
                 user:
-                    action.name !== null
+                    action.name !== ""
                         ? {
-                            ...state.user,
-                            name: action.name,
-                            userId: action.userId,
-                        }
-                        : { ...state.user, name: null, userId: null },
+                              ...state.user,
+                              name: action.name,
+                              userId: action.userId,
+                          }
+                        : { ...state.user, name: "", userId: "" },
             };
         default:
             return state;
     }
 };
 
-type ActionsAuthTypes = setAuthTypes | setUserNameAndIdTypes | SetMessageTypes | blockButtonTypes
-type DispatchType = Dispatch<ActionsAuthTypes>
+type ActionsAuthTypes =
+    | setAuthTypes
+    | setUserNameAndIdTypes
+    | SetMessageTypes
+    | blockButtonTypes;
+type DispatchType = Dispatch<ActionsAuthTypes>;
 
-export const setAuth = (authStatus: boolean): setAuthTypes => ({ type: "ISAUTH", authStatus });
+export const setAuth = (authStatus: boolean): setAuthTypes => ({
+    type: "ISAUTH",
+    authStatus,
+});
 
-export const setUserNameAndId = (name: string | null, userId: string | null): setUserNameAndIdTypes => ({
+export const setUserNameAndId = (
+    name: string,
+    userId: string
+): setUserNameAndIdTypes => ({
     type: "SETUSERNAME",
     name,
     userId,
 });
 
-
-
 // here we are creating user account, and setting his user name
-export const CreateAccount = (email: string, password: string, userName: string) => async (
-    dispatch: DispatchType
-) => {
+export const CreateAccount = (
+    email: string,
+    password: string,
+    userName: string
+) => async (dispatch: DispatchType) => {
     await dispatch(blockButton("createUser"));
     try {
         await WebApi.createAcc(email, password).then((data: any) => {
@@ -81,7 +96,9 @@ export const CreateAccount = (email: string, password: string, userName: string)
 };
 
 //login in on a server and setting user name and id
-export const Login = (email: string, password: string) => async (dispatch: DispatchType) => {
+export const Login = (email: string, password: string) => async (
+    dispatch: DispatchType
+) => {
     await dispatch(blockButton("login"));
     try {
         let responce = await WebApi.login(email, password);
@@ -101,11 +118,12 @@ export const Login = (email: string, password: string) => async (dispatch: Dispa
                                     querySnapshot.data().userId
                                 )
                             );
+
                             dispatch(setAuth(true));
                             dispatch(
                                 SetMessage(
                                     `Hello ${
-                                    querySnapshot.data().userName
+                                        querySnapshot.data().userName
                                     } you are logged in`,
                                     "success"
                                 )
@@ -113,16 +131,15 @@ export const Login = (email: string, password: string) => async (dispatch: Dispa
                         });
                 } else {
                     dispatch(setAuth(false));
-                    dispatch(setUserNameAndId(null, null));
+                    dispatch(setUserNameAndId("", ""));
                 }
             });
         }
     } catch (error) {
-        dispatch(SetMessage(error.message, "error"));;
+        dispatch(SetMessage(error.message, "error"));
     }
     dispatch(blockButton("login"));
 };
-
 
 // here we are checking if user is logged in or not
 export const AuthUser = () => async (dispatch: DispatchType) => {
@@ -143,7 +160,7 @@ export const AuthUser = () => async (dispatch: DispatchType) => {
                 });
         } else {
             dispatch(setAuth(false));
-            dispatch(setUserNameAndId(null, null));
+            dispatch(setUserNameAndId("", ""));
         }
     });
 };

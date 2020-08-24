@@ -1,12 +1,10 @@
 import React from "react";
-import { AddTaskThunk } from "../../../store/TaskReducer";
+import { AddTaskThunk, UpdateTaskThunk } from "../../../store/TaskReducer";
 import AddTaskForm from "../../FormControls/AddTaskReduxForm";
 import { connect } from "react-redux";
 import { CalendarReact } from "../../CommonComponents/Calendar";
 import Clock from "../../CommonComponents/Clock";
 import { validateAdd } from "../../../validators/validators";
-import { ID } from "../../../types/types";
-
 
 interface AddTaskType {
     AddTaskThunk: (
@@ -14,12 +12,16 @@ interface AddTaskType {
         status: string,
         settedTime: string | null,
         settedDate: string | null,
-        priority: string | null,
-    ) => Promise<void>,
-    changeAddTask: (value: boolean) => void,
-    BlockedButtonArray: Array<ID>
+        priority: string | null
+    ) => Promise<void>;
+    changeAddTask: (value: boolean) => void;
+    BlockedButtonArray: Array<number | string>;
 }
-const AddTask: React.FC<AddTaskType> = ({ AddTaskThunk, changeAddTask, BlockedButtonArray }) => {
+const AddTask: React.FC<AddTaskType> = ({
+    AddTaskThunk,
+    changeAddTask,
+    BlockedButtonArray,
+}) => {
     const [choseState, setChoseState]: any = React.useState({
         priority: "",
     });
@@ -40,40 +42,38 @@ const AddTask: React.FC<AddTaskType> = ({ AddTaskThunk, changeAddTask, BlockedBu
     let [date, setDate]: any = React.useState(null);
     const onChange = (dateProp: null | Date | Date[]) => {
         if (dateProp) {
-            if (dateProp >= new Date()) { setDate(dateProp) } else return null
-        } else return null
-    }
+            if (dateProp >= new Date()) {
+                setDate(dateProp);
+            } else return null;
+        } else return null;
+    };
 
     let [deadline, changeDeadline]: any = React.useState(false);
 
     const setDeadline = () => {
-        deadline
-            ? changeDeadline(false)
-            : changeDeadline(true);
+        deadline ? changeDeadline(false) : changeDeadline(true);
     };
     // the same for time
     const [selectedTime, setSelectedTime]: any = React.useState(null);
     const handleTimeChange = (dateProps: null | Date | Date[]) => {
         setSelectedTime(dateProps);
-        changeDeadline(false)
+        changeDeadline(false);
     };
-    const settedDate =
-        date ?
-            date.toLocaleString().split(",")[0].split(".").reverse().join("-")
-            : null;
-    const settedTime =
-        selectedTime
-            ? selectedTime
-                .toLocaleString()
-                .split(",")[1]
-                .split(":")
-                .reverse()
-                .splice(1, 2)
-                .reverse()
-                .join(":")
-            : null;
+    const settedDate = date
+        ? date.toLocaleString().split(",")[0].split(".").reverse().join("-")
+        : null;
+    const settedTime = selectedTime
+        ? selectedTime
+              .toLocaleString()
+              .split(",")[1]
+              .split(":")
+              .reverse()
+              .splice(1, 2)
+              .reverse()
+              .join(":")
+        : null;
 
-    const onSubmit = (data: { addTask: string }) => {
+    const onSubmit = async (data: { addTask: string }) => {
         const newDate = new Date()
             .toLocaleString()
             .split(",")[0]
@@ -94,28 +94,28 @@ const AddTask: React.FC<AddTaskType> = ({ AddTaskThunk, changeAddTask, BlockedBu
                 : false;
 
         if (resultDate) {
-            AddTaskThunk(
+            await AddTaskThunk(
                 data.addTask,
                 choseStatus.status,
                 null,
                 null,
-                choseState.priority,
+                choseState.priority
             );
         } else {
-            AddTaskThunk(
+            await AddTaskThunk(
                 data.addTask,
                 choseStatus.status,
                 settedTime,
                 settedDate,
-                choseState.priority,
+                choseState.priority
             );
         }
         changeAddTask(false);
     };
     return (
         <>
-            {deadline ?
-                <div className="deadlineBlock" >
+            {deadline ? (
+                <div className="deadlineBlock">
                     <div className="deadline">
                         <CalendarReact date={date} onChange={onChange} />
                         <Clock
@@ -124,7 +124,7 @@ const AddTask: React.FC<AddTaskType> = ({ AddTaskThunk, changeAddTask, BlockedBu
                         />
                     </div>
                 </div>
-                : null}
+            ) : null}
             <AddTaskForm
                 handleChange={handleChange}
                 choseState={choseState}
@@ -142,4 +142,4 @@ const AddTask: React.FC<AddTaskType> = ({ AddTaskThunk, changeAddTask, BlockedBu
     );
 };
 
-export default connect(null, { AddTaskThunk })(AddTask);
+export default connect(null, { AddTaskThunk, UpdateTaskThunk })(AddTask);

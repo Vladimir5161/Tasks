@@ -1,14 +1,13 @@
 export interface setUserNameAndIdTypes {
-    type: "SETUSERNAME",
-    name: string | null,
-    userId: string | null,
+    type: "SETUSERNAME";
+    name: string;
+    userId: string;
 }
 export interface userTypes {
-    name: string | null,
-    userId: string | null
-
+    name: string;
+    userId: string;
 }
 export interface setAuthTypes {
-    type: "ISAUTH",
-    authStatus: boolean
+    type: "ISAUTH";
+    authStatus: boolean;
 }

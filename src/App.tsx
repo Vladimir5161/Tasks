@@ -6,23 +6,32 @@ import { connect } from "react-redux";
 import { AuthUser } from "./store/AuthReducer";
 import { Loading } from "./store/TaskReducer";
 import { AuthorizationThunk } from "./store/AuthorizationReducer";
-import { TaskTypes } from "./types/types"
+import { TaskTypes } from "./types/types";
 import { AppStoreReducer } from "./store/rootReducer";
+import Preloader from "./Components/CommonComponents/Preloader";
 
 interface AppTypes {
-    isAuth: boolean,
-    AuthUser: () => void,
-    TasksArray: Array<TaskTypes>,
-    AuthorizationThunk: () => void,
-    Loading: () => void,
+    isAuth: boolean;
+    AuthUser: () => void;
+    TasksArray: Array<TaskTypes>;
+    AuthorizationThunk: () => void;
+    Loading: () => void;
+    loading: boolean;
 }
 
-const App: React.FC<AppTypes> = ({ isAuth, AuthUser, TasksArray, AuthorizationThunk, Loading }) => {
+const App: React.FC<AppTypes> = ({
+    isAuth,
+    AuthUser,
+    TasksArray,
+    AuthorizationThunk,
+    Loading,
+    loading,
+}) => {
     useEffect(() => {
-        const uploadTasks = async () => {
+        const uploadTasks = () => {
             Loading();
-            await AuthUser();
-            await AuthorizationThunk();
+            AuthUser();
+            AuthorizationThunk();
             Loading();
         };
         uploadTasks();
@@ -40,6 +49,7 @@ const App: React.FC<AppTypes> = ({ isAuth, AuthUser, TasksArray, AuthorizationTh
 
     return (
         <div className="App">
+            {loading ? <Preloader /> : null}
             <Header value={value} handleChange={handleChange} />
             <Main value={value} />
         </div>
@@ -49,6 +59,7 @@ const App: React.FC<AppTypes> = ({ isAuth, AuthUser, TasksArray, AuthorizationTh
 const mapStateToProps = (state: AppStoreReducer) => ({
     isAuth: state.auth.isAuth,
     TasksArray: state.tasks.TasksArray,
+    loading: state.tasks.loading,
 });
 export default connect(mapStateToProps, {
     AuthUser,

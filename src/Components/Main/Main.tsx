@@ -7,19 +7,15 @@ import { connect } from "react-redux";
 import Preloader from "../CommonComponents/Preloader";
 import { AppStoreReducer } from "../../store/rootReducer";
 
-const Alert = React.lazy(() => import("../CommonComponents/Alert"))
+const Alert = React.lazy(() => import("../CommonComponents/Alert"));
 
 interface MainTypes {
-    value: number,
-    message: string,
-    Authorized: boolean,
-    loading: boolean,
+    value: number;
+    message: string;
+    Authorized: boolean;
 }
 
-const Main: React.FC<MainTypes> = ({ value, message, Authorized, loading }) => {
-    if (loading) {
-        return <Preloader />;
-    }
+const Main: React.FC<MainTypes> = ({ value, message, Authorized }) => {
     if (Authorized === false) {
         return (
             <main>
@@ -35,7 +31,12 @@ const Main: React.FC<MainTypes> = ({ value, message, Authorized, loading }) => {
     } else
         return (
             <main>
-                {message === null ? null : <Suspense fallback={<Preloader />}> <Alert /></Suspense>}
+                {message === null ? null : (
+                    <Suspense fallback={<Preloader />}>
+                        {" "}
+                        <Alert />
+                    </Suspense>
+                )}
                 <TabPanel value={value} index={0}>
                     <LoginPage />
                 </TabPanel>
@@ -46,13 +47,12 @@ const Main: React.FC<MainTypes> = ({ value, message, Authorized, loading }) => {
         );
 };
 
-
 interface TabPanelTypes {
-    children: any,
-    value: number,
-    index: number,
-    other?: any
-    style?: any
+    children: any;
+    value: number;
+    index: number;
+    other?: any;
+    style?: any;
 }
 const TabPanel = (props: TabPanelTypes) => {
     const { children, value, index, ...other } = props;
@@ -63,7 +63,6 @@ const TabPanel = (props: TabPanelTypes) => {
             id={`nav-tabpanel-${index}`}
             aria-labelledby={`nav-tab-${index}`}
             {...other}
-            style={{ padding: "35px;" }}
         >
             {value === index && (
                 <Box p={3}>
@@ -74,13 +73,12 @@ const TabPanel = (props: TabPanelTypes) => {
             )}
         </div>
     );
-}
+};
 
 const mapStateToProps = (state: AppStoreReducer) => ({
     TasksArray: state.tasks.TasksArray,
     isAuth: state.auth.isAuth,
     message: state.alert.message,
     Authorized: state.authorized.Authorized,
-    loading: state.tasks.loading,
 });
 export default connect(mapStateToProps)(Main);
