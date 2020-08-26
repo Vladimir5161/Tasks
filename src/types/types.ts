@@ -57,8 +57,11 @@ export interface TaskItemContainerTypes {
 }
 
 export interface TaskItemTypes {
+    animateCalendar: boolean,
+    animateClock: boolean,
     setTaskPanel: (id: number) => void;
     data: string;
+    errorDeadline: string;
     id: number;
     text: string;
     priority: string | null;

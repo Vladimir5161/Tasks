@@ -5,35 +5,38 @@ import DateFnsUtils from "@date-io/date-fns";
 import { MuiPickersUtilsProvider, TimePicker } from "@material-ui/pickers";
 
 interface ClockTypes {
-    selectedTime: null | Date[] | Date,
     handleTimeChange: (date: Date | Date[] | null) => void,
+    currentTime?: null | Date[] | Date,
+    animateClock: boolean
 }
 
 
-const Clock: React.FC<ClockTypes> = ({ selectedTime, handleTimeChange }) => {
+const Clock: React.FC<ClockTypes> = ({ handleTimeChange, currentTime, animateClock }) => {
     return (
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <Grid
-                container
-                justify="space-around"
-                style={{ maxWidth: "300px", margin: "5px auto 0 auto" }}
-            >
-                <TimePicker
-                    margin="normal"
-                    id="time-picker"
-                    label="Deadline time"
-                    value={selectedTime === null ? new Date() : selectedTime}
-                    onChange={handleTimeChange}
-                    // KeyboardButtonProps={{
-                    //     "aria-label": "change time",
-                    //     "userSelect": "none"
-                    // }}
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                />
-            </Grid>
-        </MuiPickersUtilsProvider>
+        <div className={animateClock ? 'clockAnimated' : 'clock'}>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <Grid
+                    container
+                    justify="space-around"
+                    style={{ maxWidth: "300px", margin: "5px auto 0 auto" }}
+                >
+                    <TimePicker
+                        margin="normal"
+                        id="time-picker"
+                        label="Deadline time"
+                        value={currentTime === null ? new Date() : currentTime}
+                        onChange={handleTimeChange}
+                        // KeyboardButtonProps={{
+                        //     "aria-label": "change time",
+                        //     "userSelect": "none"
+                        // }}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
+                </Grid>
+            </MuiPickersUtilsProvider>
+        </div>
     );
 }
 

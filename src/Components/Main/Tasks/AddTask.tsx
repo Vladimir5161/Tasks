@@ -39,14 +39,29 @@ const AddTask: React.FC<AddTaskType> = ({
 
     //-----------------
     // here we can set new date for "deadline" and check if it is not older than the current date
-    let [date, setDate]: any = React.useState(null);
+    let [calendarDate, setCalendarDate]: any = React.useState(null);
     const onChange = (dateProp: null | Date | Date[]) => {
+        const dateStr = dateProp ? dateProp.toString() : new Date()
+        const resultDate = new Date(dateStr).getDate() === new Date().getDate()
         if (dateProp) {
-            if (dateProp >= new Date()) {
-                setDate(dateProp);
-            } else return null;
+            if (dateProp >= new Date() && resultDate === false) {
+                setCalendarDate(dateProp);
+                setAnimateCalendar(false)
+                setAnimateClock(true)
+                setErrorDeadline('')
+            } else if (resultDate) {
+                setCalendarDate(dateProp);
+                setAnimateCalendar(false)
+                setAnimateClock(true)
+                setErrorDeadline('')
+            } else {
+                setErrorDeadline('you cannot chose this date')
+            }
         } else return null;
     };
+    let [errorDeadline, setErrorDeadline] = React.useState('')
+    let [animateCalendar, setAnimateCalendar] = React.useState(true)
+    let [animateClock, setAnimateClock] = React.useState(false)
 
     let [deadline, changeDeadline]: any = React.useState(false);
 
@@ -55,22 +70,33 @@ const AddTask: React.FC<AddTaskType> = ({
     };
     // the same for time
     const [selectedTime, setSelectedTime]: any = React.useState(null);
-    const handleTimeChange = (dateProps: null | Date | Date[]) => {
-        setSelectedTime(dateProps);
-        changeDeadline(false);
+    const handleTimeChange = (time: null | Date | Date[]) => {
+        if (time) {
+            const timeStr = time.toString()
+            const resultDate = new Date(timeStr).getTime() > new Date().getTime()
+            if (resultDate) {
+                setSelectedTime(time);
+                setDeadline();
+                setAnimateCalendar(true)
+                setAnimateClock(false)
+                setErrorDeadline('')
+            } else {
+                setErrorDeadline('you cannot chose this time')
+            }
+        }
     };
-    const settedDate = date
-        ? date.toLocaleString().split(",")[0].split(".").reverse().join("-")
+    const settedDate = calendarDate
+        ? calendarDate.toLocaleString().split(",")[0].split(".").reverse().join("-")
         : null;
     const settedTime = selectedTime
         ? selectedTime
-              .toLocaleString()
-              .split(",")[1]
-              .split(":")
-              .reverse()
-              .splice(1, 2)
-              .reverse()
-              .join(":")
+            .toLocaleString()
+            .split(",")[1]
+            .split(":")
+            .reverse()
+            .splice(1, 2)
+            .reverse()
+            .join(":")
         : null;
 
     const onSubmit = async (data: { addTask: string }) => {
@@ -117,10 +143,10 @@ const AddTask: React.FC<AddTaskType> = ({
             {deadline ? (
                 <div className="deadlineBlock">
                     <div className="deadline">
-                        <CalendarReact date={date} onChange={onChange} />
+                        <CalendarReact date={calendarDate} onChange={onChange} animateCalendar={animateCalendar} errorDeadline={errorDeadline} />
                         <Clock
                             handleTimeChange={handleTimeChange}
-                            selectedTime={selectedTime}
+                            animateClock={animateClock}
                         />
                     </div>
                 </div>

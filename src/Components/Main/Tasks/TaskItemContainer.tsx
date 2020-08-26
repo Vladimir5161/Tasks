@@ -49,23 +49,49 @@ const TaskItemContainer: React.FC<TaskItemContainerTypes> = React.memo(
         const changeStatus = (event: any) => {
             setStatus({ status: event.target.value });
         };
-
+        let [errorDeadline, setErrorDeadline] = React.useState('')
         //-------------
         // here we can set new date for "deadline" and check if it is not older than the current date
-        let [date, setDate]: any = React.useState({ [id]: null });
+        let [calendarDate, setCalendarDate]: any = React.useState(null);
         const onChange = (date: null | Date[] | Date) => {
+            const dateStr = date ? date.toString() : new Date()
+            const resultDate = new Date(dateStr).getDate() === new Date().getDate()
             if (date) {
-                if (date >= new Date()) {
-                    setDate({ [id]: date });
-                } else return null;
+                if (date > new Date() && resultDate === false) {
+                    setCalendarDate(date);
+                    setAnimateCalendar(false)
+                    setAnimateClock(true)
+                    setErrorDeadline('')
+                } else if (resultDate) {
+                    setCalendarDate(date);
+                    setAnimateCalendar(false)
+                    setAnimateClock(true)
+                    setErrorDeadline('')
+                } else {
+                    setErrorDeadline('you cannot chose this date')
+                }
             } else return null;
         };
-        //-------------
         // the same for time
-        let [selectedTime, setSelectedTime]: any = React.useState({
-            [id]: null,
-        });
-
+        let [selectedTime, setSelectedTime]: any = React.useState(null);
+        const handleTimeChange = (time: null | Date[] | Date) => {
+            if (time) {
+                const timeStr = time.toString()
+                const resultDate = new Date(timeStr).getTime() > new Date().getTime()
+                console.log(resultDate)
+                if (resultDate) {
+                    setSelectedTime(time);
+                    setDeadline();
+                    setAnimateCalendar(true)
+                    setAnimateClock(false)
+                    setErrorDeadline('')
+                } else {
+                    setErrorDeadline('you cannot chose this time')
+                }
+            }
+        };
+        let [animateCalendar, setAnimateCalendar] = React.useState(true)
+        let [animateClock, setAnimateClock] = React.useState(false)
         //-------------
         // - "missed", "urgent" - if difference is less then 24, or false
         const [missed, setMissed] = React.useState({
@@ -81,32 +107,29 @@ const TaskItemContainer: React.FC<TaskItemContainerTypes> = React.memo(
                 : changeDeadline({ [id]: true });
         };
 
-        const handleTimeChange = (time: null | Date[] | Date) => {
-            setSelectedTime({ [id]: time });
-            setDeadline();
-        };
+
         // here we are creating new date,checking if user has chosed a new deadline date and depends on it setting new or old deadline date
 
         const newSettedDate =
-            date[id] !== null
-                ? date[id]
-                      .toLocaleString()
-                      .split(",")[0]
-                      .split(".")
-                      .reverse()
-                      .join("-")
+            calendarDate !== null
+                ? calendarDate
+                    .toLocaleString()
+                    .split(",")[0]
+                    .split(".")
+                    .reverse()
+                    .join("-")
                 : settedDate;
 
         const newSettedTime =
-            selectedTime[id] !== null
-                ? selectedTime[id]
-                      .toLocaleString()
-                      .split(",")[1]
-                      .split(":")
-                      .reverse()
-                      .splice(1, 2)
-                      .reverse()
-                      .join(":")
+            selectedTime !== null
+                ? selectedTime
+                    .toLocaleString()
+                    .split(",")[1]
+                    .split(":")
+                    .reverse()
+                    .splice(1, 2)
+                    .reverse()
+                    .join(":")
                 : settedTime;
 
         // ----------------------
@@ -242,6 +265,8 @@ const TaskItemContainer: React.FC<TaskItemContainerTypes> = React.memo(
         return (
             <>
                 <TaskItem
+                    animateCalendar={animateCalendar}
+                    animateClock={animateClock}
                     deadline={deadline}
                     onChange={onChange}
                     handleTimeChange={handleTimeChange} // changes deadline time
@@ -278,6 +303,7 @@ const TaskItemContainer: React.FC<TaskItemContainerTypes> = React.memo(
                     confirmSave={confirmSave}
                     setConfirmSave={setConfirmSave}
                     selectedTime={selectedTime}
+                    errorDeadline={errorDeadline}
                 />
             </>
         );

@@ -26,7 +26,7 @@ const ChangePageButton: React.FC<ChangePageButtonTypes> = ({ buttonName, changeP
                     style={{
                         border: "1px solid blue",
                         display: "block",
-                        margin: "10px 0 0 auto",
+                        margin: "10px 0 10px auto",
                         textTransform: "none",
                     }}
                     size="medium"
