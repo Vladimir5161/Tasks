@@ -78,7 +78,6 @@ const TaskItemContainer: React.FC<TaskItemContainerTypes> = React.memo(
             if (time) {
                 const timeStr = time.toString()
                 const resultDate = new Date(timeStr).getTime() > new Date().getTime()
-                console.log(resultDate)
                 if (resultDate) {
                     setSelectedTime(time);
                     setDeadline();

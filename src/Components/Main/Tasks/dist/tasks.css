@@ -148,6 +148,7 @@
 
 .MuiTextField-root {
   margin: 0 auto !important;
+  padding: 10px !important;
 }
 
 .taskPanelDelete {
