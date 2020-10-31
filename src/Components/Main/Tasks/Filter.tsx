@@ -10,7 +10,6 @@ const Filter: React.FC<FilterType> = ({ filterArray }) => {
 
     const handleChange = (event: any) => {
         setValue(event.target.value);
-        debugger;
         if (event.target.value !== null) {
             filterArray(event.target.value);
         } else return null;

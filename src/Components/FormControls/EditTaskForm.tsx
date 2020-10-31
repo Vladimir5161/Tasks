@@ -1,6 +1,5 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
 import SaveIcon from "@material-ui/icons/Save";
 import "./AddTask.scss";
 import "../Main/Tasks/tasks.scss";
@@ -14,11 +13,7 @@ import ErrorValidate from "../CommonComponents/ErrorValidate";
 import { compose } from "redux";
 import { FormHOC } from "../HOC/formHOC";
 
-const useStyles = makeStyles((theme) => ({
-    button: {
-        margin: theme.spacing(1),
-    },
-}));
+
 
 interface EditTaskFormTypes {
     choseState: { priority: string | null };
@@ -28,7 +23,6 @@ interface EditTaskFormTypes {
     changeStatus: (event: any) => void;
     BlockedButtonArray: Array<number | string>;
     setDeadline: () => void;
-    confirm: boolean;
     handleUpdate: () => void;
     confirmSave: boolean;
     setConfirmSave: (value?: boolean) => void;
@@ -46,8 +40,6 @@ const EditTaskForm: React.FC<EditTaskFormTypes> = React.memo(
         changeStatus,
         BlockedButtonArray,
         setDeadline,
-        confirm,
-        setConfirm,
         handleUpdate,
         confirmSave,
         setConfirmSave,
@@ -55,7 +47,6 @@ const EditTaskForm: React.FC<EditTaskFormTypes> = React.memo(
         newSettedTime,
         formik,
     }) => {
-        const classes = useStyles();
         const handleEditConfirm = (value?: boolean) => {
             if (value) {
                 setConfirmSave(false);
@@ -89,17 +80,17 @@ const EditTaskForm: React.FC<EditTaskFormTypes> = React.memo(
                                             label={formik.errors.text}
                                         />
                                     ) : (
-                                        <div className="formBlock">
-                                            <TextField
-                                                label="edit Task"
-                                                type="text"
-                                                name="text"
-                                                onChange={formik.handleChange}
-                                                value={formik.values.text}
-                                                autoFocus={true}
-                                            />
-                                        </div>
-                                    )}
+                                            <div className="formBlock">
+                                                <TextField
+                                                    label="edit Task"
+                                                    type="text"
+                                                    name="text"
+                                                    onChange={formik.handleChange}
+                                                    value={formik.values.text}
+                                                    autoFocus={true}
+                                                />
+                                            </div>
+                                        )}
                                 </div>
                             </div>
                             <div className="choseDiv">
@@ -149,7 +140,7 @@ const EditTaskForm: React.FC<EditTaskFormTypes> = React.memo(
                             type="submit"
                             color="primary"
                             size="small"
-                            className={classes.button}
+                            className='saveButtonAnimated'
                             startIcon={<SaveIcon />}
                             disabled={BlockedButtonArray.some(
                                 (id) => id === "editTask"

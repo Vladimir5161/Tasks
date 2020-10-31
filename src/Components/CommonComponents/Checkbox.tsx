@@ -14,7 +14,7 @@ const Checkbox: React.FC<CheckboxTypes> = ({ setState, state }) => {
     };
 
     return (
-        <div style={{ position: "absolute", left: "-57%", bottom: "-0" }}>
+        <div style={{ position: "absolute", left: "-57%", bottom: "0" }}>
             <Switch
                 checked={state.showPass}
                 onChange={handleChange}

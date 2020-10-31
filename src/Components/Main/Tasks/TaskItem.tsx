@@ -30,6 +30,8 @@ const TaskItem: React.FC<TaskItemTypes> = React.memo(
         BlockedButtonArray,
         settedDate,
         settedTime,
+        animateCalendar,
+        animateClock,
         newSettedDate,
         newSettedTime,
         deadline,
@@ -53,25 +55,26 @@ const TaskItem: React.FC<TaskItemTypes> = React.memo(
         deleteKey,
         confirmSave,
         setConfirmSave,
+        errorDeadline,
     }) => {
         const currentDate =
             newSettedDate !== null && newSettedDate !== undefined
                 ? new Date(newSettedDate.split("-").join("/"))
                 : typeof settedDate === "string"
-                ? new Date(settedDate.split("-").join("/"))
-                : new Date();
+                    ? new Date(settedDate.split("-").join("/"))
+                    : new Date();
         const currentTime =
             newSettedTime !== null && newSettedTime !== undefined
                 ? new Date(
-                      newSettedDate.split("-").join("/") + newSettedTime + ":00"
-                  )
+                    newSettedDate.split("-").join("/") + newSettedTime + ":00"
+                )
                 : settedDate
-                ? typeof settedTime === "string"
-                    ? new Date(
-                          settedDate.split("-").join("/") + settedTime + ":00"
-                      )
-                    : new Date()
-                : new Date();
+                    ? typeof settedTime === "string"
+                        ? new Date(
+                            settedDate.split("-").join("/") + settedTime + ":00"
+                        )
+                        : new Date()
+                    : new Date();
         return (
             <div>
                 {editTask[id] ? (
@@ -82,11 +85,14 @@ const TaskItem: React.FC<TaskItemTypes> = React.memo(
                                     <CalendarReact
                                         date={currentDate}
                                         onChange={onChange}
+                                        animateCalendar={animateCalendar}
+                                        errorDeadline={errorDeadline}
                                     />
                                     <Suspense fallback={<Preloader />}>
                                         <Clock
                                             handleTimeChange={handleTimeChange}
-                                            selectedTime={currentTime}
+                                            currentTime={currentTime}
+                                            animateClock={animateClock}
                                         />
                                     </Suspense>
                                 </div>
@@ -114,150 +120,150 @@ const TaskItem: React.FC<TaskItemTypes> = React.memo(
                         </Suspense>
                     </div>
                 ) : (
-                    <div
-                        className={
-                            taskPanel.some((iD) => iD === id)
-                                ? "taskPanelDelete" // classname for task with animation
-                                : "taskPanel" // static classname
-                        }
-                    >
-                        {missed[id] ? (
-                            <div className=" urgentTask">Missed Task!</div>
-                        ) : urgent[id] ? (
-                            <div className=" urgentTask">Urgent Task!</div>
-                        ) : null}
-                        <Accordion
-                            style={
-                                status === "done"
-                                    ? { boxShadow: "0 0 10px 3px green" }
-                                    : missed[id]
-                                    ? { boxShadow: "0 0 10px 3px blue" }
-                                    : urgent[id]
-                                    ? { boxShadow: "0 0 10px 3px red" }
-                                    : undefined
+                        <div
+                            className={
+                                taskPanel.some((iD) => iD === id)
+                                    ? "taskPanelDelete" // classname for task with animation
+                                    : "taskPanel" // static classname
                             }
                         >
-                            <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-label="Expand"
-                                aria-controls="additional-actions1-content"
-                                id="additional-actions1-header"
+                            {missed[id] ? (
+                                <div className=" urgentTask">Missed Task!</div>
+                            ) : urgent[id] ? (
+                                <div className=" urgentTask">Urgent Task!</div>
+                            ) : null}
+                            <Accordion
+                                style={
+                                    status === "done"
+                                        ? { boxShadow: "0 0 10px 3px green" }
+                                        : missed[id]
+                                            ? { boxShadow: "0 0 10px 3px blue" }
+                                            : urgent[id]
+                                                ? { boxShadow: "0 0 10px 3px red" }
+                                                : undefined
+                                }
                             >
-                                <>
-                                    <div className="dataTasks">
-                                        Date: {data}
-                                    </div>
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon />}
+                                    aria-label="Expand"
+                                    aria-controls="additional-actions1-content"
+                                    id="additional-actions1-header"
+                                >
+                                    <>
+                                        <div className="dataTasks">
+                                            Date: {data}
+                                        </div>
 
-                                    {settedDate ? ( //deadline date and time which will be changed if a customer will change deadline
-                                        <div className="dataTasks deadlineTasks">
-                                            Deadline:
-                                            <div
-                                                style={{
-                                                    display: "inline",
-                                                    marginLeft: "5px",
-                                                }}
-                                            >
-                                                {!settedDate
-                                                    ? null
-                                                    : settedDate}{" "}
-                                                {!settedTime
-                                                    ? null
-                                                    : settedTime}
+                                        {settedDate ? ( //deadline date and time which will be changed if a customer will change deadline
+                                            <div className="dataTasks deadlineTasks">
+                                                Deadline:
+                                                <div
+                                                    style={{
+                                                        display: "inline",
+                                                        marginLeft: "5px",
+                                                    }}
+                                                >
+                                                    {!settedDate
+                                                        ? null
+                                                        : settedDate}{" "}
+                                                    {!settedTime
+                                                        ? null
+                                                        : settedTime}
+                                                </div>
                                             </div>
-                                        </div>
-                                    ) : null}
-                                </>
-                                <FormControlLabel
-                                    aria-label="Acknowledge"
-                                    control={
-                                        <Checkbox
-                                            checked={
-                                                status === "done" ? true : false
-                                            }
+                                        ) : null}
+                                    </>
+                                    <FormControlLabel
+                                        aria-label="Acknowledge"
+                                        control={
+                                            <Checkbox
+                                                checked={
+                                                    status === "done" ? true : false
+                                                }
+                                            />
+                                        }
+                                        className={
+                                            status === "done"
+                                                ? "doneText"
+                                                : "clearText"
+                                        }
+                                        onClick={(event) => {
+                                            event.stopPropagation();
+                                            OnDoneButtonClick();
+                                        }}
+                                        onFocus={(event) => event.stopPropagation()}
+                                        onMouseDown={(event) => {
+                                            event.stopPropagation();
+                                        }}
+                                        style={{ wordBreak: "break-word" }}
+                                        label={text}
+                                    />
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    <div className="choseDiv">
+                                        <EditButton
+                                            EditButtonFunc={EditButtonFunc}
+                                            id={id}
                                         />
-                                    }
-                                    className={
-                                        status === "done"
-                                            ? "doneText"
-                                            : "clearText"
-                                    }
-                                    onClick={(event) => {
-                                        event.stopPropagation();
-                                        OnDoneButtonClick();
-                                    }}
-                                    onFocus={(event) => event.stopPropagation()}
-                                    onMouseDown={(event) => {
-                                        event.stopPropagation();
-                                    }}
-                                    style={{ wordBreak: "break-word" }}
-                                    label={text}
-                                />
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                <div className="choseDiv">
-                                    {priority ? (
-                                        <div className="priorityTask">
-                                            priority:
-                                            <p
-                                                style={
-                                                    priority === "high"
-                                                        ? {
-                                                              color: "red",
-                                                              textIndent: "5px",
-                                                          }
-                                                        : priority === "middle"
-                                                        ? {
-                                                              color: "green",
-                                                              textIndent: "5px",
-                                                          }
-                                                        : {
-                                                              color: "",
-                                                              textIndent: "5px",
-                                                          }
-                                                }
-                                            >
-                                                {priority}
-                                            </p>
-                                        </div>
-                                    ) : null}
-                                    <EditButton
-                                        EditButtonFunc={EditButtonFunc}
-                                        id={id}
-                                    />
-                                    <DeleteButton
-                                        DeleteTask={DeleteTask}
-                                        id={id}
-                                        keyFirebase={keyFirebase}
-                                        confirm={confirm}
-                                        setConfirm={setConfirm}
-                                        deleteId={deleteId}
-                                        deleteKey={deleteKey}
-                                    />
-                                    {status ? (
-                                        <div className="statusTask">
-                                            status:{" "}
-                                            <div
-                                                style={
-                                                    status === "done"
-                                                        ? {
-                                                              fontWeight:
-                                                                  "bold",
-                                                              marginLeft: "5px",
-                                                          }
-                                                        : { marginLeft: "5px" }
-                                                }
-                                            >
-                                                {status === "done"
-                                                    ? status.toUpperCase()
-                                                    : status}
+                                        <DeleteButton
+                                            DeleteTask={DeleteTask}
+                                            id={id}
+                                            keyFirebase={keyFirebase}
+                                            confirm={confirm}
+                                            setConfirm={setConfirm}
+                                            deleteId={deleteId}
+                                            deleteKey={deleteKey}
+                                        />
+                                        {status ? (
+                                            <div className="statusTask">
+                                                status:{" "}
+                                                <div
+                                                    style={
+                                                        status === "done"
+                                                            ? {
+                                                                fontWeight:
+                                                                    "bold",
+                                                                marginLeft: "5px",
+                                                            }
+                                                            : { marginLeft: "5px" }
+                                                    }
+                                                >
+                                                    {status === "done"
+                                                        ? status.toUpperCase()
+                                                        : status}
+                                                </div>
                                             </div>
-                                        </div>
-                                    ) : null}
-                                </div>
-                            </AccordionDetails>
-                        </Accordion>
-                    </div>
-                )}
+                                        ) : null}
+                                        {priority ? (
+                                            <div className="priorityTask">
+                                                priority:
+                                                <p
+                                                    style={
+                                                        priority === "high"
+                                                            ? {
+                                                                color: "red",
+                                                                textIndent: "5px",
+                                                            }
+                                                            : priority === "middle"
+                                                                ? {
+                                                                    color: "green",
+                                                                    textIndent: "5px",
+                                                                }
+                                                                : {
+                                                                    color: "",
+                                                                    textIndent: "5px",
+                                                                }
+                                                    }
+                                                >
+                                                    {priority}
+                                                </p>
+                                            </div>
+                                        ) : null}
+                                    </div>
+                                </AccordionDetails>
+                            </Accordion>
+                        </div>
+                    )}
             </div>
         );
     }
