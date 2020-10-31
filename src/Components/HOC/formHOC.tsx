@@ -32,6 +32,7 @@ export const FormHOC = (Component: React.FC<any>) => {
     }) => {
         const formik = useFormik({
             initialValues: initialValues,
+            validateOnChange: false,
             validate: validate,
             onSubmit: (values, { resetForm }) => {
                 functionToCall(values);

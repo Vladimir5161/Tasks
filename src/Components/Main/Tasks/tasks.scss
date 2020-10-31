@@ -235,9 +235,8 @@
 .errorDeadline {
     font-size: 19px;
     font-weight: 600;
-    color: red
+    color: red;
 }
-
 
 .deadline {
     width: 340px;
@@ -282,20 +281,20 @@
         padding-left: 5px;
         padding-right: 5px;
         border-radius: 5px;
-        animation: CalendarAnimation 2s linear 0s infinite
+        animation: CalendarAnimation 2s linear 0s infinite;
     }
 }
 
 .saveButtonAnimated {
     margin: 10px auto 10px auto !important;
-    animation: CalendarAnimation 2s linear 0s infinite
+    animation: CalendarAnimation 2s linear 0s infinite;
 }
 
 .calendarBlockAnimated {
     width: 300px;
     margin: 0 auto;
     border-radius: 5px;
-    animation: CalendarAnimation 2s linear 0s infinite
+    animation: CalendarAnimation 2s linear 0s infinite;
 }
 
 @keyframes CalendarAnimation {
@@ -334,7 +333,7 @@
 
         :nth-child(3) {
             grid-column: 1;
-            grid-row: 1
+            grid-row: 1;
         }
 
         :nth-child(2) {

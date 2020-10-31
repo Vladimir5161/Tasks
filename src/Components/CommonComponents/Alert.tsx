@@ -18,13 +18,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface AlertModalTypes {
-    message: string | null,
-    type: any,
-    DefaultMessage: () => void,
-    alertClass: string,
+    message: string | null;
+    type: any;
+    DefaultMessage: () => void;
+    alertClass: string;
 }
 
-const AlertModal: React.FC<AlertModalTypes> = ({ message, type, DefaultMessage, alertClass }) => {
+const AlertModal: React.FC<AlertModalTypes> = ({
+    message,
+    type,
+    DefaultMessage,
+    alertClass,
+}) => {
     const classes = useStyles();
     let [open, setOpen] = useState(true);
 
@@ -45,7 +50,11 @@ const AlertModal: React.FC<AlertModalTypes> = ({ message, type, DefaultMessage, 
                 }}
             >
                 <div className={alertClass}>
-                    <Collapse in={open} className="alertClass">
+                    <Collapse
+                        in={open}
+                        className="alertClass"
+                        style={{ height: "100%" }}
+                    >
                         <Alert
                             severity={type}
                             action={
@@ -70,7 +79,7 @@ const AlertModal: React.FC<AlertModalTypes> = ({ message, type, DefaultMessage, 
                 </div>
             </div>
         );
-}
+};
 const mapStateToProps = (state: AppStoreReducer) => ({
     message: state.alert.message,
     type: state.alert.type,
