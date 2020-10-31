@@ -8,33 +8,38 @@ const useStyles = makeStyles((theme) => ({
     formControl: {
         margin: theme.spacing(1),
         minWidth: 100,
-        position: 'absolute',
+        position: "absolute",
         right: 0,
-        top: '20px',
+        top: "20px",
     },
+    filterLabel: {
+        fontWeight: "bold",
+    },
+    filterLabel2: { fontWeight: "bold", transform: "none !important" },
     selectEmpty: {
         marginTop: theme.spacing(2),
     },
 }));
 
-
 interface FilterSelectTypes {
     value: {
-        status: string
-    },
-    handleChange: (event: any) => void
+        status: string;
+    };
+    handleChange: (event: any) => void;
 }
 const FilterSelect: React.FC<FilterSelectTypes> = ({ value, handleChange }) => {
     const classes = useStyles();
 
     return (
         <>
-            <FormControl
-                className={classes.formControl}
-            >
+            <FormControl className={classes.formControl}>
                 <InputLabel
                     htmlFor="filter-native-simple"
-                    style={{ fontWeight: "bold" }}
+                    className={
+                        value.status === ""
+                            ? classes.filterLabel
+                            : classes.filterLabel2
+                    }
                 >
                     Sort by
                 </InputLabel>
@@ -56,7 +61,6 @@ const FilterSelect: React.FC<FilterSelectTypes> = ({ value, handleChange }) => {
             </FormControl>
         </>
     );
-}
+};
 
-
-export default FilterSelect
+export default FilterSelect;
