@@ -44,6 +44,8 @@ export const AuthorizationThunk = () => async (
     if (isAuth) {
         await dispatch(GetTasksThunk());
         dispatch(Autorization(true));
+    } else {
+        dispatch(Autorization(true));
     }
 };
 

@@ -17,6 +17,7 @@ interface AppTypes {
     AuthorizationThunk: () => void;
     Loading: () => void;
     loading: boolean;
+    Authorized: boolean;
 }
 
 const App: React.FC<AppTypes> = ({
@@ -26,6 +27,7 @@ const App: React.FC<AppTypes> = ({
     AuthorizationThunk,
     Loading,
     loading,
+    Authorized,
 }) => {
     useEffect(() => {
         const uploadTasks = () => {
@@ -47,19 +49,23 @@ const App: React.FC<AppTypes> = ({
         setValue(newValue);
     };
 
-    return (
-        <div className="App">
-            {loading ? <Preloader /> : null}
-            <Header value={value} handleChange={handleChange} />
-            <Main value={value} />
-        </div>
-    );
+    if (Authorized && !loading) {
+        return (
+            <div className="App">
+                <Header value={value} handleChange={handleChange} />
+                <Main value={value} />
+            </div>
+        );
+    } else {
+        return <Preloader />;
+    }
 };
 
 const mapStateToProps = (state: AppStoreReducer) => ({
     isAuth: state.auth.isAuth,
     TasksArray: state.tasks.TasksArray,
     loading: state.tasks.loading,
+    Authorized: state.authorized.Authorized,
 });
 export default connect(mapStateToProps, {
     AuthUser,
