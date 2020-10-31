@@ -1,11 +1,10 @@
 import React from "react";
-import Switch from "@material-ui/core/Switch";
 
 interface CheckboxTypes {
-    setState: any
+    setState: any;
     state: {
-        showPass: boolean
-    }
+        showPass: boolean;
+    };
 }
 
 const Checkbox: React.FC<CheckboxTypes> = ({ setState, state }) => {
@@ -14,16 +13,36 @@ const Checkbox: React.FC<CheckboxTypes> = ({ setState, state }) => {
     };
 
     return (
-        <div style={{ position: "absolute", left: "-57%", bottom: "0" }}>
-            <Switch
+        <div
+            className="password"
+            style={{
+                width: "30px",
+                position: "absolute",
+                left: "-35px",
+                top: "30px",
+            }}
+        >
+            <input
+                type="checkbox"
+                id="checkbox"
                 checked={state.showPass}
                 onChange={handleChange}
-                color="primary"
-                name="showPass"
-                inputProps={{ "aria-label": "secondary checkbox" }}
+                style={{ display: "none" }}
             />
+            <label htmlFor="checkbox">
+                <img
+                    className={state.showPass ? "showPass" : "doNotShowPass"}
+                    src={
+                        state.showPass
+                            ? "https://snipp.ru/demo/495/view.svg"
+                            : "https://snipp.ru/demo/495/no-view.svg"
+                    }
+                    alt=""
+                    style={{ height: "30px" }}
+                />
+            </label>
         </div>
     );
-}
+};
 
-export default Checkbox
+export default Checkbox;

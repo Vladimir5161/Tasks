@@ -19,17 +19,16 @@ const ErrorValidatePass: React.FC<ErrorValidateTypes> = ({
     state,
 }) => {
     return (
-        <div className="formBlock">
-            <TextField
-                error
-                label={label}
-                type={state.showPass ? "text" : "password"}
-                name={name}
-                onChange={onChange}
-                value={value}
-                autoFocus={true}
-            />
-        </div>
+        <TextField
+            error
+            label={label}
+            type={state.showPass ? "text" : "password"}
+            name={name}
+            onChange={onChange}
+            value={value}
+            autoFocus={true}
+            className="passField"
+        />
     );
 };
 

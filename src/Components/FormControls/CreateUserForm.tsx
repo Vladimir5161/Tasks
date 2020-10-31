@@ -69,17 +69,20 @@ const CreateUserForm: React.FC<CreateUserFormTypes> = ({
                     </div>
                 )}
                 <div style={{ position: "relative" }}>
-                    <Checkbox setState={setState} state={state} />
                     {formik.errors.password ? (
-                        <ErrorValidatePass
-                            label={formik.errors.password}
-                            name="password"
-                            onChange={formik.handleChange}
-                            value={formik.values.password}
-                            state={state}
-                        />
+                        <div className="formBlock">
+                            <Checkbox setState={setState} state={state} />
+                            <ErrorValidatePass
+                                label={formik.errors.password}
+                                name="password"
+                                onChange={formik.handleChange}
+                                value={formik.values.password}
+                                state={state}
+                            />
+                        </div>
                     ) : (
                         <div className="formBlock">
+                            <Checkbox setState={setState} state={state} />
                             <TextField
                                 label="password"
                                 type={state.showPass ? "text" : "password"}
@@ -87,6 +90,7 @@ const CreateUserForm: React.FC<CreateUserFormTypes> = ({
                                 onChange={formik.handleChange}
                                 value={formik.values.password}
                                 autoFocus={true}
+                                className="passField"
                             />
                         </div>
                     )}

@@ -15,17 +15,16 @@ const ErrorValidate: React.FC<ErrorValidateTypes> = ({
     onChange,
 }) => {
     return (
-        <div className="formBlock">
-            <TextField
-                error
-                label={label}
-                type="text"
-                name={name}
-                onChange={onChange}
-                value={value}
-                autoFocus={true}
-            />
-        </div>
+        <TextField
+            error
+            label={label}
+            type="text"
+            name={name}
+            onChange={onChange}
+            value={value}
+            autoFocus={true}
+            className="loginField"
+        />
     );
 };
 
