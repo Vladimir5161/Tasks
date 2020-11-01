@@ -7,26 +7,20 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 
 interface ConfirmTypes {
     open: boolean;
-    DeleteTask: (deleteId: number, deleteKey: string) => void;
-    deleteId: number | null;
-    deleteKey?: string | null;
-    setConfirm: (confirm: boolean, id?: number, key?: string) => void;
+    Logout: () => Promise<void>;
+    setConfirmLogOut: (confirm: boolean) => void;
 }
-const Confirm: React.FC<ConfirmTypes> = ({
+const ConfirmLogOut: React.FC<ConfirmTypes> = ({
     open,
-    DeleteTask,
-    deleteId,
-    deleteKey,
-    setConfirm,
+    Logout,
+    setConfirmLogOut,
 }) => {
     const handleClose = (value?: any) => {
         if (value) {
-            setConfirm(false);
-            if (deleteKey && deleteId) {
-                DeleteTask(deleteId, deleteKey);
-            } else return null;
+            setConfirmLogOut(false);
+            Logout();
         } else {
-            setConfirm(false);
+            setConfirmLogOut(false);
         }
     };
 
@@ -43,7 +37,7 @@ const Confirm: React.FC<ConfirmTypes> = ({
             >
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Are you sure you want to delete?
+                        Are you sure you want to logout?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -72,4 +66,4 @@ const Confirm: React.FC<ConfirmTypes> = ({
     );
 };
 
-export default Confirm;
+export default ConfirmLogOut;

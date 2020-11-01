@@ -38,7 +38,7 @@
     position: absolute !important;
     right: 10px !important;
     left: auto !important;
-    bottom: 5px !important;
+    bottom: 0 !important;
     transform: translateY(-50%) !important;
     display: flex !important;
     justify-content: center !important;
@@ -46,7 +46,9 @@
     min-width: 20px !important;
     padding: 0 !important;
 }
-
+.addTaskDeadline {
+    right: 0 !important;
+}
 .setDeadlineIcon:hover {
     box-shadow: 0 0 10px 5px rgba(46, 49, 49, 0.5);
 }
@@ -134,17 +136,6 @@
         display: flex;
         flex-direction: row;
     }
-    .setDeadlineIcon {
-        position: absolute !important;
-        right: -5px !important;
-        left: auto !important;
-        display: flex !important;
-        bottom: -5px !important;
-        justify-content: center !important;
-        max-width: 100% !important;
-        min-width: 20px !important;
-        padding: 0;
-    }
     .setDeadlineIcon:hover::after {
         top: 10px;
     }
@@ -152,10 +143,10 @@
 @media screen and (max-width: 545px) {
     .setDeadlineIcon {
         position: absolute !important;
-        right: 10px !important;
+        right: 5px !important;
         left: auto !important;
         display: flex !important;
-        top: 25px !important;
+        top: 13px !important;
         justify-content: center !important;
         max-width: 100% !important;
         min-width: 20px !important;

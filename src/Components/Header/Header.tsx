@@ -4,18 +4,26 @@ import { connect } from "react-redux";
 import { Logout } from "../../store/AuthReducer";
 import "./header.scss";
 import { AppStoreReducer } from "../../store/rootReducer";
-import { userTypes } from '../../types/authReducerTypes'
+import { userTypes } from "../../types/authReducerTypes";
 
 export interface HeaderTypes {
-    handleChange: (event: any, newValue: number) => void,
-    Logout: () => Promise<void>,
-    isAuth: boolean,
-    value: number,
-    user: userTypes,
-    style?: any
+    handleChange: (event: any, newValue: number) => void;
+    Logout: () => Promise<void>;
+    isAuth: boolean;
+    value: number;
+    user: userTypes;
+    style?: any;
+    createOrLog: boolean;
 }
 
-const Header: React.FC<HeaderTypes> = ({ handleChange, value, Logout, isAuth, user }) => {
+const Header: React.FC<HeaderTypes> = ({
+    handleChange,
+    value,
+    Logout,
+    isAuth,
+    user,
+    createOrLog,
+}) => {
     return (
         <NavTab
             handleChange={handleChange}
@@ -23,6 +31,7 @@ const Header: React.FC<HeaderTypes> = ({ handleChange, value, Logout, isAuth, us
             Logout={Logout}
             isAuth={isAuth}
             user={user}
+            createOrLog={createOrLog}
         />
     );
 };

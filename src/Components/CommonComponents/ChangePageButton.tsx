@@ -12,11 +12,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface ChangePageButtonTypes {
-    buttonName: string,
-    changePage: () => void
+    buttonName: string;
+    changePage: () => void;
+    setCreateOrLog: (value: boolean) => void;
 }
 
-const ChangePageButton: React.FC<ChangePageButtonTypes> = ({ buttonName, changePage }) => {
+const ChangePageButton: React.FC<ChangePageButtonTypes> = ({
+    buttonName,
+    changePage,
+    setCreateOrLog,
+}) => {
     const classes = useStyles();
 
     return (
@@ -33,6 +38,9 @@ const ChangePageButton: React.FC<ChangePageButtonTypes> = ({ buttonName, changeP
                     className={classes.margin}
                     onMouseDown={() => {
                         changePage();
+                        buttonName === "Log in"
+                            ? setCreateOrLog(true)
+                            : setCreateOrLog(false);
                     }}
                 >
                     {buttonName}
@@ -40,7 +48,6 @@ const ChangePageButton: React.FC<ChangePageButtonTypes> = ({ buttonName, changeP
             </div>
         </div>
     );
-}
+};
 
-
-export default ChangePageButton
+export default ChangePageButton;

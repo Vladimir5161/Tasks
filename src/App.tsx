@@ -44,7 +44,7 @@ const App: React.FC<AppTypes> = ({
     }, [isAuth]);
 
     const [value, setValue] = React.useState(isAuth ? 1 : 0);
-
+    const [createOrLog, setCreateOrLog] = React.useState(true); // if true it will show LOG IN in header first tab
     const handleChange = (event: any, newValue: number) => {
         setValue(newValue);
     };
@@ -52,8 +52,12 @@ const App: React.FC<AppTypes> = ({
     if (Authorized && !loading) {
         return (
             <div className="App">
-                <Header value={value} handleChange={handleChange} />
-                <Main value={value} />
+                <Header
+                    value={value}
+                    handleChange={handleChange}
+                    createOrLog={createOrLog}
+                />
+                <Main value={value} setCreateOrLog={setCreateOrLog} />
             </div>
         );
     } else {

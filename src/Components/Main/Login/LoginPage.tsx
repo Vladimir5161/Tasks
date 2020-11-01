@@ -13,6 +13,7 @@ interface LoginPageType {
     AuthUser: () => void;
     isAuth: boolean;
     BlockedButtonArray: Array<number | string>;
+    setCreateOrLog: (value: boolean) => void;
 }
 const LoginPage: React.FC<LoginPageType> = ({
     CreateAccount,
@@ -20,6 +21,7 @@ const LoginPage: React.FC<LoginPageType> = ({
     AuthUser,
     isAuth,
     BlockedButtonArray,
+    setCreateOrLog,
 }) => {
     let [createUser, setCreateUser] = useState(false);
     const changePage = () => {
@@ -44,6 +46,7 @@ const LoginPage: React.FC<LoginPageType> = ({
                     initialValues={{ password: "", email: "", userName: "" }}
                     functionToCall={onSubmit}
                     validate={validateLogin}
+                    setCreateOrLog={setCreateOrLog}
                 />
             ) : !createUser ? (
                 <LoginForm
@@ -52,6 +55,7 @@ const LoginPage: React.FC<LoginPageType> = ({
                     BlockedButtonArray={BlockedButtonArray}
                     initialValues={{ password: "", email: "", userName: "" }}
                     validate={validateLogin}
+                    setCreateOrLog={setCreateOrLog}
                 />
             ) : (
                 <CreateUserForm
@@ -60,6 +64,7 @@ const LoginPage: React.FC<LoginPageType> = ({
                     BlockedButtonArray={BlockedButtonArray}
                     initialValues={{ password: "", email: "", userName: "" }}
                     validate={validateLogin}
+                    setCreateOrLog={setCreateOrLog}
                 />
             )}
         </div>

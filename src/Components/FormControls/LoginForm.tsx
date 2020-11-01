@@ -23,12 +23,14 @@ interface LoginFormTypes {
     formik: any;
     changePage: () => void;
     BlockedButtonArray: Array<number | string>;
+    setCreateOrLog: (value: boolean) => void;
 }
 
 const LoginForm: React.FC<LoginFormTypes> = ({
     formik,
     changePage,
     BlockedButtonArray,
+    setCreateOrLog,
 }) => {
     const [state, setState] = React.useState({
         showPass: false,
@@ -91,6 +93,7 @@ const LoginForm: React.FC<LoginFormTypes> = ({
             <ChangePageButton
                 buttonName="Create Account"
                 changePage={changePage}
+                setCreateOrLog={setCreateOrLog}
             />
             <Button
                 type="submit"

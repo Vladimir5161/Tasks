@@ -53,7 +53,7 @@ const AlertModal: React.FC<AlertModalTypes> = ({
                     <Collapse
                         in={open}
                         className="alertClass"
-                        style={{ height: "100%" }}
+                        style={{ height: "auto" }}
                     >
                         <Alert
                             severity={type}

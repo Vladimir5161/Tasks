@@ -13,14 +13,20 @@ interface MainTypes {
     value: number;
     message: string;
     Authorized: boolean;
+    setCreateOrLog: (value: boolean) => void;
 }
 
-const Main: React.FC<MainTypes> = ({ value, message, Authorized }) => {
+const Main: React.FC<MainTypes> = ({
+    value,
+    message,
+    Authorized,
+    setCreateOrLog,
+}) => {
     if (Authorized === false) {
         return (
             <main>
                 <TabPanel value={value} index={0}>
-                    <LoginPage />
+                    <LoginPage setCreateOrLog={setCreateOrLog} />
                 </TabPanel>
                 <TabPanel value={value} index={1} style={{ marginTop: "50px" }}>
                     You are not logged in, please log in to see your tasks or
@@ -38,7 +44,7 @@ const Main: React.FC<MainTypes> = ({ value, message, Authorized }) => {
                     </Suspense>
                 )}
                 <TabPanel value={value} index={0}>
-                    <LoginPage />
+                    <LoginPage setCreateOrLog={setCreateOrLog} />
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                     <Tasks />

@@ -78,12 +78,14 @@ const TaskItemContainer: React.FC<TaskItemContainerTypes> = React.memo(
         const handleTimeChange = (time: null | Date[] | Date) => {
             if (time) {
                 const timeStr = time.toString();
+
                 const resultDate =
-                    new Date(calendarDate) > new Date()
+                    new Date(calendarDate) >= new Date()
                         ? true
                         : new Date(timeStr).getTime() > new Date().getTime()
                         ? true
                         : false;
+
                 if (resultDate) {
                     setSelectedTime(time);
                     setDeadline();

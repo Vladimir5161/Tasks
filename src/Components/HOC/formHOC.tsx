@@ -23,11 +23,13 @@ export const FormHOC = (Component: React.FC<any>) => {
         setConfirmSave?: (value: boolean) => void;
         newSettedDate?: string | null;
         newSettedTime?: string | null;
+        setCreateOrLog?: (value: boolean) => void;
     }
     const FormComponent: React.FC<FormComponentType> = ({
         initialValues,
         functionToCall,
         validate,
+        setCreateOrLog,
         ...props
     }) => {
         const formik = useFormik({
@@ -39,7 +41,13 @@ export const FormHOC = (Component: React.FC<any>) => {
                 resetForm();
             },
         });
-        return <Component {...props} formik={formik} />;
+        return (
+            <Component
+                {...props}
+                formik={formik}
+                setCreateOrLog={setCreateOrLog}
+            />
+        );
     };
     return FormComponent;
 };

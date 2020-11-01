@@ -27,12 +27,14 @@ interface CreateUserFormTypes {
     BlockedButtonArray: Array<number | string>;
     label: any;
     type: any;
+    setCreateOrLog: (value: boolean) => void;
 }
 
 const CreateUserForm: React.FC<CreateUserFormTypes> = ({
     formik,
     changePage,
     BlockedButtonArray,
+    setCreateOrLog,
 }) => {
     const classes: any = useStyles();
     const [state, setState] = React.useState({
@@ -65,6 +67,7 @@ const CreateUserForm: React.FC<CreateUserFormTypes> = ({
                             onChange={formik.handleChange}
                             value={formik.values.email}
                             autoFocus={true}
+                            className="loginField"
                         />
                     </div>
                 )}
@@ -111,11 +114,16 @@ const CreateUserForm: React.FC<CreateUserFormTypes> = ({
                             onChange={formik.handleChange}
                             value={formik.values.name}
                             autoFocus={true}
+                            className="loginField"
                         />
                     </div>
                 )}
             </div>
-            <ChangePageButton buttonName="Log in" changePage={changePage} />
+            <ChangePageButton
+                buttonName="Log in"
+                changePage={changePage}
+                setCreateOrLog={setCreateOrLog}
+            />
             <Button
                 type="submit"
                 style={{ margin: "20px auto" }}

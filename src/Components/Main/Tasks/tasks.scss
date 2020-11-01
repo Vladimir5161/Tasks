@@ -261,7 +261,9 @@
     justify-self: center;
     align-items: center;
 }
-
+.MuiCollapse-hidden {
+    visibility: visible !important;
+}
 .editButtonTask {
     display: flex;
     align-items: center;

@@ -85,7 +85,7 @@ const AddTaskForm: React.FC<AddTaskFormTypes> = ({
                         />
                     </div>
                     {settedDate ? (
-                        <div className="dataTasks deadlineTasks">
+                        <div className="dataTasks deadlineTasks addTaskDeadline">
                             Deadline:
                             <div
                                 style={{
