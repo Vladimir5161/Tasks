@@ -6,7 +6,6 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import ConfirmLogOut from "../../CommonComponents/ConfirmLogOut";
 import PersonPinIcon from "@material-ui/icons/PersonPin";
-import { template } from "lodash";
 
 function a11yProps(index: number) {
     return {
@@ -20,7 +19,6 @@ function LinkTab(props: any) {
         <Tab
             onClick={(event: any) => {
                 event.preventDefault();
-                event.stopPropagation();
             }}
             {...props}
         />

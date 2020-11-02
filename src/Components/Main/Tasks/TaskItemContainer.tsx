@@ -80,10 +80,13 @@ const TaskItemContainer: React.FC<TaskItemContainerTypes> = React.memo(
                 const timeStr = time.toString();
 
                 const resultDate =
-                    new Date(calendarDate) >= new Date()
+                    new Date(calendarDate) > new Date()
                         ? true
-                        : new Date(timeStr).getTime() > new Date().getTime()
-                        ? true
+                        : new Date(timeStr).getHours() > new Date().getHours()
+                        ? new Date(timeStr).getMinutes() >
+                          new Date().getMinutes()
+                            ? true
+                            : false
                         : false;
 
                 if (resultDate) {
