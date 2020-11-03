@@ -15,9 +15,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface AddTaskButtonTypes {
-    AddTaskFunc: () => void,
-    setAddTaskPanel: (value: string) => void,
-    addTaskPanel: string
+    AddTaskFunc: () => void;
+    setAddTaskPanel: (value: string) => void;
+    addTaskPanel: string;
 }
 const AddTaskButton: React.FC<AddTaskButtonTypes> = ({
     AddTaskFunc,
@@ -35,9 +35,8 @@ const AddTaskButton: React.FC<AddTaskButtonTypes> = ({
                     : setAddTaskPanel("addTaskPanel");
             }}
         >
-            
             <Fab
-                color="primary"
+                color="secondary"
                 aria-label="add"
                 onMouseDown={() => AddTaskFunc()}
             >
@@ -45,6 +44,6 @@ const AddTaskButton: React.FC<AddTaskButtonTypes> = ({
             </Fab>
         </div>
     );
-}
+};
 
-export default AddTaskButton
+export default AddTaskButton;

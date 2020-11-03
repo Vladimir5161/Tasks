@@ -47,12 +47,8 @@ const TaskItem: React.FC<TaskItemTypes> = React.memo(
         taskPanel,
         urgent,
         OnDoneButtonClick,
-        DeleteTask,
-        confirm,
         setConfirm,
         handleUpdate,
-        deleteId,
-        deleteKey,
         confirmSave,
         setConfirmSave,
         errorDeadline,
@@ -107,8 +103,6 @@ const TaskItem: React.FC<TaskItemTypes> = React.memo(
                                 handleChange={handleChange}
                                 BlockedButtonArray={BlockedButtonArray}
                                 setDeadline={setDeadline}
-                                confirm={confirm}
-                                setConfirm={setConfirm}
                                 handleUpdate={handleUpdate}
                                 confirmSave={confirmSave}
                                 setConfirmSave={setConfirmSave}
@@ -201,13 +195,9 @@ const TaskItem: React.FC<TaskItemTypes> = React.memo(
                                         id={id}
                                     />
                                     <DeleteButton
-                                        DeleteTask={DeleteTask}
                                         id={id}
                                         keyFirebase={keyFirebase}
-                                        confirm={confirm}
                                         setConfirm={setConfirm}
-                                        deleteId={deleteId}
-                                        deleteKey={deleteKey}
                                     />
                                     {status ? (
                                         <div className="statusTask">

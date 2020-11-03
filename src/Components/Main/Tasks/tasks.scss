@@ -2,8 +2,6 @@
 .MuiAccordionSummary-content {
     margin: 25px auto 15px auto !important;
     position: relative;
-    display: grid;
-    grid-template-columns: 10fr 4fr 1fr;
 }
 
 .preloader {
@@ -33,6 +31,9 @@
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     justify-content: space-between;
     width: 100%;
+}
+.choseDiv div {
+    width: 100% !important;
 }
 
 .react-calendar {
@@ -153,7 +154,9 @@
     margin: 0 auto !important;
     padding: 10px !important;
 }
-
+.taskPanel {
+    margin-top: 20px;
+}
 .taskPanelDelete {
     position: relative;
     left: -2000px;
@@ -300,15 +303,15 @@
 
 @keyframes CalendarAnimation {
     0% {
-        box-shadow: 0 0 0 0;
+        box-shadow: 0 0 4px 2px grey;
     }
 
     50% {
-        box-shadow: 0 0 10px 2px blue;
+        box-shadow: 0 0 12px 2px grey;
     }
 
     100% {
-        box-shadow: 0 0 0 0;
+        box-shadow: 0 0 4px 2px grey;
     }
 }
 

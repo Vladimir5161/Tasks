@@ -6,7 +6,6 @@ import {
     SetToDoneThunk,
 } from "../../../store/TaskReducer";
 import TaskItem from "./TaskItem";
-import { setConfirm } from "../../../store/AlertReducer";
 import { TaskItemContainerTypes } from "../../../types/types";
 
 const TaskItemContainer: React.FC<TaskItemContainerTypes> = React.memo(
@@ -17,17 +16,13 @@ const TaskItemContainer: React.FC<TaskItemContainerTypes> = React.memo(
         BlockedButtonArray,
         priority,
         status,
-        DeleteTaskThunk,
         keyFirebase,
         UpdateTaskThunk,
         SetToPrevStatusThunk,
         SetToDoneThunk,
+        setConfirm,
         settedDate,
         settedTime,
-        confirm,
-        setConfirm,
-        deleteId,
-        deleteKey,
         taskPanel,
         setTaskPanel,
     }) => {
@@ -100,6 +95,7 @@ const TaskItemContainer: React.FC<TaskItemContainerTypes> = React.memo(
                 }
             }
         };
+        /// this state manages calendar and clock animations (animated shadow)
         let [animateCalendar, setAnimateCalendar] = React.useState(true);
         let [animateClock, setAnimateClock] = React.useState(false);
         //-------------
@@ -108,8 +104,8 @@ const TaskItemContainer: React.FC<TaskItemContainerTypes> = React.memo(
             [id]: false,
         });
         let [urgent, setUrgent] = React.useState({ [id]: false });
-        // this logic checks if the 'DEADLINE' date is later then the curent time and date and sets one of values for the task
 
+        // this logic checks if the 'DEADLINE' date is later then the curent time and date and sets one of values for the task
         let [deadline, changeDeadline]: any = React.useState({ [id]: false });
         const setDeadline = () => {
             deadline[id]
@@ -118,7 +114,6 @@ const TaskItemContainer: React.FC<TaskItemContainerTypes> = React.memo(
         };
 
         // here we are creating new date,checking if user has chosed a new deadline date and depends on it setting new or old deadline date
-
         const newSettedDate =
             calendarDate !== null
                 ? calendarDate
@@ -162,21 +157,12 @@ const TaskItemContainer: React.FC<TaskItemContainerTypes> = React.memo(
                 keyFirebase
             ).then(EditButtonFunc());
         };
-
+        //// this will show or hide edit mode in each task
         let [editTask, changeEditTask] = React.useState({ [id]: false });
         const EditButtonFunc = (): any => {
             editTask[id]
                 ? changeEditTask({ [id]: false })
                 : changeEditTask({ [id]: true });
-        };
-        //----------------------------------
-        // function which sets animated css style to the item and then delete the task once animation finished
-        const DeleteTask = async (iD: number, keyFirebase: string) => {
-            setTaskPanel(iD);
-            setTimeout(async () => {
-                await DeleteTaskThunk(id, keyFirebase);
-                setTaskPanel(iD);
-            }, 1100);
         };
         //----------------------------------
         // changing the task status by clicking the checkbox
@@ -304,11 +290,7 @@ const TaskItemContainer: React.FC<TaskItemContainerTypes> = React.memo(
                     settedTime={settedTime}
                     newSettedDate={newSettedDate}
                     newSettedTime={newSettedTime}
-                    confirm={confirm}
                     setConfirm={setConfirm}
-                    DeleteTask={DeleteTask}
-                    deleteId={deleteId}
-                    deleteKey={deleteKey}
                     confirmSave={confirmSave}
                     setConfirmSave={setConfirmSave}
                     selectedTime={selectedTime}
@@ -323,5 +305,4 @@ export default connect(null, {
     UpdateTaskThunk,
     SetToPrevStatusThunk,
     SetToDoneThunk,
-    setConfirm,
 })(TaskItemContainer);

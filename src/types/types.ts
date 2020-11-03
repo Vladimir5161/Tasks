@@ -16,10 +16,7 @@ export interface TasksFCTypes {
     isAuth: boolean;
     filterArray: (value: string) => void;
     loading: boolean;
-    confirm: boolean;
     BlockedButtonArray: Array<number | string>;
-    deleteId: number | null;
-    deleteKey?: string | null;
     taskPanel: Array<number | string>;
     setTaskPanel: (id: number) => void;
 }
@@ -31,7 +28,6 @@ export interface TaskItemContainerTypes {
     BlockedButtonArray: Array<number | string>;
     priority: string | null;
     status: string;
-    DeleteTaskThunk: (id: number, keyFirebase: string) => void;
     keyFirebase?: string;
     UpdateTaskThunk: (
         text: string,
@@ -47,18 +43,15 @@ export interface TaskItemContainerTypes {
     SetToDoneThunk: (keyFirebase: string) => void;
     settedDate: string | null;
     settedTime: string | null;
-    confirm: boolean;
     setConfirm: (confirm: boolean, id?: number, key?: string) => void;
     TasksArray: Array<TaskTypes>;
-    deleteId: number | null;
-    deleteKey?: string | null;
     taskPanel: Array<number | string>;
     setTaskPanel: (id: number) => void;
 }
 
 export interface TaskItemTypes {
-    animateCalendar: boolean,
-    animateClock: boolean,
+    animateCalendar: boolean;
+    animateClock: boolean;
     setTaskPanel: (id: number) => void;
     data: string;
     errorDeadline: string;
@@ -87,12 +80,8 @@ export interface TaskItemTypes {
     taskPanel: Array<number | string>;
     urgent: { [id: number]: boolean };
     OnDoneButtonClick: () => void;
-    DeleteTask: (iD: number, keyFirebase: string) => void;
-    confirm: boolean;
     setConfirm: (confirm: boolean, id?: number, key?: string) => void;
     handleUpdate: () => void;
-    deleteId: number | null;
-    deleteKey?: string | null;
     confirmSave: boolean;
     selectedTime: null | Date[] | Date;
     setConfirmSave: (value: boolean) => void;

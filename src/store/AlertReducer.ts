@@ -2,7 +2,6 @@ import { Dispatch } from "redux";
 import { AppStoreReducer } from "./rootReducer";
 import {
     setAlertClassTypes,
-    setConfirmTypes,
     toDefaultMessageTypes,
     SetMessageTypes,
     setTaskPanelTypes,
@@ -12,9 +11,6 @@ export interface InitialStateType {
     message: string;
     type: string;
     alertClass: string;
-    confirm: boolean;
-    deleteId: number | null;
-    deleteKey?: string | null;
     taskPanel: Array<any>;
 }
 
@@ -22,9 +18,6 @@ const initialState: InitialStateType = {
     message: "",
     type: "success",
     alertClass: "alertNone",
-    confirm: false,
-    deleteId: null,
-    deleteKey: null,
     taskPanel: [],
 };
 type InitialState = typeof initialState;
@@ -54,13 +47,6 @@ const AlertReducer = (
                 alertClass: state.alertClass = action.alertClass,
             };
         }
-        case "SETCONFIRM":
-            return {
-                ...state,
-                confirm: state.confirm = action.confirm,
-                deleteId: state.deleteId = action.id ? action.id : null,
-                deleteKey: state.deleteKey = action.key ? action.key : null,
-            };
         case "SETTASKPANEL":
             return {
                 ...state,
@@ -75,7 +61,6 @@ const AlertReducer = (
 
 export type ActionAlertTypes =
     | setAlertClassTypes
-    | setConfirmTypes
     | toDefaultMessageTypes
     | setTaskPanelTypes
     | SetMessageTypes;
@@ -98,12 +83,6 @@ export const setTaskPanel = (id: number): setTaskPanelTypes => ({
 export const toDefaultMessage = (): toDefaultMessageTypes => ({
     type: "SETDEFAULTMESSAGE",
 });
-
-export const setConfirm = (
-    confirm: boolean,
-    id?: number,
-    key?: string
-): setConfirmTypes => ({ type: "SETCONFIRM", confirm, id, key });
 
 // this runs when the alert modalis closing and it set "alertContainer" class to show and run animation
 export const setAlertClass = (alertClass: string): setAlertClassTypes => ({

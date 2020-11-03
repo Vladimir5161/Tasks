@@ -10,7 +10,11 @@ interface ConfirmTypes {
     DeleteTask: (deleteId: number, deleteKey: string) => void;
     deleteId: number | null;
     deleteKey?: string | null;
-    setConfirm: (confirm: boolean, id?: number, key?: string) => void;
+    setConfirm: (
+        confirm: boolean,
+        id?: number | null,
+        key?: string | null
+    ) => void;
 }
 const Confirm: React.FC<ConfirmTypes> = ({
     open,
@@ -21,12 +25,12 @@ const Confirm: React.FC<ConfirmTypes> = ({
 }) => {
     const handleClose = (value?: any) => {
         if (value) {
-            setConfirm(false);
+            setConfirm(false, null, null);
             if (deleteKey && deleteId) {
                 DeleteTask(deleteId, deleteKey);
             } else return null;
         } else {
-            setConfirm(false);
+            setConfirm(false, null, null);
         }
     };
 

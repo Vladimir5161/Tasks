@@ -10,8 +10,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface EditButtonTypes {
-    EditButtonFunc: (id: number) => void,
-    id: number,
+    EditButtonFunc: (id: number) => void;
+    id: number;
 }
 const EditButton: React.FC<EditButtonTypes> = ({ EditButtonFunc, id }) => {
     const classes: any = useStyles();
@@ -20,7 +20,7 @@ const EditButton: React.FC<EditButtonTypes> = ({ EditButtonFunc, id }) => {
         <div className="editButtonTask">
             <Button
                 variant="contained"
-                color="primary"
+                color="secondary"
                 size="small"
                 className={classes.button}
                 startIcon={<SaveIcon />}
@@ -32,7 +32,6 @@ const EditButton: React.FC<EditButtonTypes> = ({ EditButtonFunc, id }) => {
             </Button>
         </div>
     );
-}
+};
 
-
-export default EditButton
+export default EditButton;

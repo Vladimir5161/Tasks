@@ -10,6 +10,7 @@ import Preloader from "../../CommonComponents/Preloader";
 import TaskItemContainer from "./TaskItemContainer";
 import { AppStoreReducer } from "../../../store/rootReducer";
 import { TasksFCTypes } from "../../../types/types";
+import Confirm from "../../CommonComponents/Confirm";
 
 const AddTask = React.lazy(() => import("./AddTask"));
 
@@ -26,10 +27,7 @@ const Tasks: React.FC<TasksFCTypes> = React.memo(
         isAuth,
         filterArray,
         loading,
-        confirm,
         BlockedButtonArray,
-        deleteId,
-        deleteKey,
         taskPanel,
         setTaskPanel,
     }) => {
@@ -38,7 +36,33 @@ const Tasks: React.FC<TasksFCTypes> = React.memo(
         const AddTaskFunc = () => {
             addTask ? changeAddTask(false) : changeAddTask(true);
         };
-
+        /// this code is responsible for showing modal window with questions - if you want to delete Task, and to delete it if yes
+        let [confirm, setValuesForDeleting]: any = useState({
+            value: false,
+            deleteId: null,
+            deleteKey: null,
+        });
+        const setConfirm = (
+            value: boolean,
+            id?: number | null,
+            key?: string | null
+        ) => {
+            setValuesForDeleting({
+                value: value,
+                deleteId: id,
+                deleteKey: key,
+            });
+        };
+        //----------------------------------
+        // function which sets animated css style to the item and then delete the task once animation finished
+        const DeleteTask = async (iD: number, keyFirebase: string) => {
+            setTaskPanel(iD);
+            setTimeout(async () => {
+                await DeleteTaskThunk(iD, keyFirebase);
+                setTaskPanel(iD);
+            }, 1100);
+        };
+        ///this will show or hide ADD TASK form
         let [addTaskPanel, setAddTaskPanel] = useState("addTaskPanel");
         if (loading) {
             return <Preloader />;
@@ -65,6 +89,15 @@ const Tasks: React.FC<TasksFCTypes> = React.memo(
                                     />
                                 </Suspense>
                             ) : null}
+                            {confirm.value ? (
+                                <Confirm
+                                    open={confirm.value}
+                                    setConfirm={setConfirm}
+                                    DeleteTask={DeleteTask}
+                                    deleteId={confirm.deleteId}
+                                    deleteKey={confirm.deleteKey}
+                                />
+                            ) : null}
                             {TasksArray.map(
                                 ({
                                     id,
@@ -84,16 +117,13 @@ const Tasks: React.FC<TasksFCTypes> = React.memo(
                                             status={status}
                                             keyFirebase={keyFirebase}
                                             data={data}
-                                            DeleteTaskThunk={DeleteTaskThunk}
                                             BlockedButtonArray={
                                                 BlockedButtonArray
                                             }
                                             settedTime={settedTime}
                                             settedDate={settedDate}
-                                            confirm={confirm}
                                             TasksArray={TasksArray}
-                                            deleteId={deleteId}
-                                            deleteKey={deleteKey}
+                                            setConfirm={setConfirm}
                                             taskPanel={taskPanel}
                                             setTaskPanel={setTaskPanel}
                                         />
@@ -112,9 +142,6 @@ const mapStateToProps = (state: AppStoreReducer) => ({
     isAuth: state.auth.isAuth,
     loading: state.tasks.loading,
     BlockedButtonArray: state.tasks.BlockedButtonArray,
-    confirm: state.alert.confirm,
-    deleteId: state.alert.deleteId,
-    deleteKey: state.alert.deleteKey,
     taskPanel: state.alert.taskPanel,
 });
 

@@ -9,18 +9,15 @@
 .inputTaskDiv {
     width: 100%;
 }
+.addTaskPanel {
+    margin-top: 20px;
+}
 .MuiAccordionSummary-content.Mui-expanded,
 .MuiAccordionSummary-content {
     margin: 25px auto 15px auto !important;
     position: relative;
     display: grid;
     grid-template-columns: 10fr 4fr 1fr;
-}
-.choseDiv {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    justify-content: space-between;
-    width: 100%;
 }
 .MuiAccordionSummary-root.Mui-expanded,
 .MuiAccordionSummary-root {
