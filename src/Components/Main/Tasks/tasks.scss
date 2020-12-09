@@ -1,0 +1,409 @@
+.MuiAccordionSummary-content.Mui-expanded,
+.MuiAccordionSummary-content {
+    margin: 20px auto 20px auto !important;
+    position: relative;
+}
+.MuiBox-root {
+    padding: 24px 5px !important;
+}
+.preloader {
+    position: fixed;
+    margin: 0 auto;
+    display: flex;
+    left: 0;
+    top: 0;
+    right: 0;
+    z-index: 120;
+    align-content: center;
+    background-color: white;
+    background-size: cover;
+    height: 100vh;
+    width: 100vw;
+
+    img {
+        height: 50px;
+        width: 50px;
+        margin: 0 auto;
+        display: flex;
+        align-self: center;
+    }
+}
+
+.choseDiv {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    justify-content: space-between;
+    width: 100%;
+}
+.choseDiv div {
+    width: 100% !important;
+}
+
+.react-calendar {
+    border: none !important;
+}
+
+.MuiFab-root {
+    margin: 0 auto !important;
+    width: 8vw !important;
+    height: 8vw !important;
+    max-height: 55px !important;
+    max-width: 55px !important;
+    min-width: 35px !important;
+    min-height: 35px !important;
+    display: grid !important;
+    justify-content: center !important;
+}
+
+.priorityTask,
+.statusTask {
+    display: flex;
+    align-self: center;
+    margin: 0 auto;
+    justify-content: center !important;
+}
+
+.statusTask,
+.priorityTask {
+    div {
+        display: flex;
+        align-self: center;
+        justify-content: center;
+        max-width: 100px !important;
+    }
+}
+
+.dataTasks {
+    position: absolute;
+    display: flex;
+    align-self: center;
+    font-size: 14px;
+    left: 0;
+    top: -20px;
+}
+
+.deadlineTasks {
+    display: block !important;
+    top: -20px;
+    position: absolute;
+    right: -40px;
+    left: auto !important;
+    text-align: right !important;
+}
+
+.deadlineTasksEdit {
+    right: 0;
+}
+
+.mainBlockStyle {
+    margin: 30px 5px 5px 5px !important;
+}
+
+.clearText {
+    text-decoration: none;
+    display: block;
+}
+
+.doneText {
+    text-decoration: line-through;
+    display: block;
+}
+
+.deleteButtonTask:hover::after {
+    content: "delete task";
+    display: flex;
+    position: absolute;
+    width: 65px;
+    height: 20px;
+    font-size: 8px;
+    background-color: initial;
+    justify-content: center;
+    align-items: center;
+    bottom: 37px;
+    border-radius: 15px;
+    background-color: white;
+    padding: 0 3px 0 3px;
+}
+
+.MuiAccordionSummary-expandIcon {
+    position: relative !important;
+    margin-top: 10px !important;
+}
+
+.MuiIconButton-root:hover .MuiSvgIcon-root {
+    color: black;
+}
+
+.MuiAccordionDetails-root {
+    justify-content: center;
+}
+
+.MuiAccordion-root,
+.MuiAccordion-root.Mui-expanded {
+    margin: 10px auto 20px auto !important;
+    max-width: 1170px;
+    min-width: 270px;
+    max-height: 300px;
+}
+
+.MuiFormControlLabel-root {
+    width: 100% !important;
+    margin-right: 0 !important;
+}
+
+.makeStyles-root-298 {
+    margin: 0;
+    top: 2px !important;
+}
+
+.MuiTextField-root {
+    margin: 0 auto !important;
+    padding: 10px !important;
+}
+.taskPanel {
+    margin-top: 20px;
+}
+.taskPanelDelete {
+    position: relative;
+    left: -2000px;
+    animation: deleteTranslate 1s;
+}
+
+@keyframes deleteTranslate {
+    0% {
+        transform: translateX(2000px);
+    }
+
+    30% {
+        transform: translateX(2050px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.alertContainer {
+    position: fixed;
+    height: 200vh;
+    width: 200vw;
+    left: 0;
+    right: 0;
+    z-index: 90;
+    animation-name: alert;
+    animation-duration: 1s;
+}
+
+.alertContainerFirst {
+    position: fixed;
+    height: 200vh;
+    left: 0;
+    right: 0;
+    width: 200vw;
+    z-index: 90;
+    background-color: rgba(46, 49, 49, 0.7);
+}
+
+.alertNone {
+    position: relative;
+    background-color: inherit;
+    display: none;
+}
+
+@keyframes alert {
+    0% {
+        background-color: rgba(46, 49, 49, 0.7);
+    }
+
+    100% {
+        background-color: rgba(0, 0, 0, 0);
+    }
+}
+
+.alertClass {
+    width: 70%;
+    margin: 0 auto;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 6%;
+    z-index: 100;
+    max-width: 700px;
+    height: auto !important;
+}
+
+.deadlineText {
+    font-size: 19px;
+    font-weight: 600;
+}
+
+.deadlineText:hover {
+    color: wheat;
+    cursor: pointer;
+}
+
+.errorDeadline {
+    font-size: 19px;
+    font-weight: 600;
+    color: red;
+}
+
+.deadline {
+    width: 340px;
+    height: 55%;
+    background-color: white;
+    border-radius: 20px;
+    margin: 0 auto;
+    padding: 20px;
+    display: grid;
+    min-height: 460px;
+}
+.deadlineBlock {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(102, 102, 102, 0.95);
+    z-index: 100;
+    display: grid;
+    justify-self: center;
+    align-items: center;
+}
+.MuiCollapse-hidden {
+    visibility: visible !important;
+}
+.editButtonTask {
+    display: flex;
+    align-items: center;
+    position: relative;
+    max-width: 150px;
+    margin: 0 auto;
+}
+
+.calendarBlock {
+    width: 300px;
+    margin: 0 auto;
+}
+
+.clockAnimated {
+    input {
+        padding-left: 5px;
+        padding-right: 5px;
+        border-radius: 5px;
+        animation: CalendarAnimation 2s linear 0s infinite;
+    }
+}
+
+.saveButtonAnimated {
+    margin: 10px auto 10px auto !important;
+    animation: CalendarAnimation 2s linear 0s infinite;
+}
+
+.calendarBlockAnimated {
+    width: 300px;
+    margin: 0 auto;
+    border-radius: 5px;
+    animation: CalendarAnimation 2s linear 0s infinite;
+}
+
+@keyframes CalendarAnimation {
+    0% {
+        box-shadow: 0 0 4px 2px grey;
+    }
+
+    50% {
+        box-shadow: 0 0 12px 2px grey;
+    }
+
+    100% {
+        box-shadow: 0 0 4px 2px grey;
+    }
+}
+.userInfo {
+    text-align: left;
+    padding: 20px;
+    position: absolute;
+    top: 50px;
+    font-size: 20px;
+    font-weight: bold;
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 1fr 1fr;
+}
+.userInfoName {
+    color: red;
+}
+.addDeadline {
+    display: none;
+}
+
+.urgentTask {
+    position: relative;
+    font-size: 25px !important;
+}
+
+@media screen and (max-width: 768px) {
+    .dataTasks {
+        font-size: 10px !important;
+    }
+
+    .choseDiv {
+        :nth-child(4) {
+            grid-column: 2;
+            grid-row: 1;
+        }
+
+        :nth-child(3) {
+            grid-column: 1;
+            grid-row: 1;
+        }
+
+        :nth-child(2) {
+            grid-column: 2;
+            grid-row: 2;
+        }
+
+        :nth-child(1) {
+            grid-column: 1;
+            grid-row: 2;
+        }
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .deadline {
+        width: 300px;
+        background-color: white;
+        border-radius: 20px;
+        margin: 0 auto;
+        padding: 20px;
+        display: grid;
+    }
+
+    .calendarBlock,
+    .calendarBlockAnimated {
+        width: 260px;
+    }
+
+    .PrivateSwitchBase-input-128 {
+        z-index: 45;
+    }
+
+    .TaskText {
+        margin-left: 0;
+        position: relative;
+        left: -20px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .deleteButtonTask:hover::after {
+        right: 0;
+    }
+
+    .MuiTypography-body1 {
+        font-size: 12px !important;
+    }
+}
