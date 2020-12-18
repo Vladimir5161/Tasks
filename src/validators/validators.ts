@@ -1,6 +1,7 @@
 interface validateLoginType {
     email?: string;
     password?: string;
+    userName?: string;
 }
 export const validateLogin = (values: validateLoginType, formik: any) => {
     const errors: validateLoginType = {};
@@ -14,6 +15,11 @@ export const validateLogin = (values: validateLoginType, formik: any) => {
         errors.password = "Required";
     } else if (values.password.length > 0 && values.password.length < 5) {
         errors.password = "Must be 5 characters or more";
+    }
+    if (!values.userName) {
+        errors.userName = "Required";
+    } else if (values.userName.length > 0 && values.userName.length < 3) {
+        errors.userName = "Must be 5 characters or more";
     }
 
     if (values.password) {

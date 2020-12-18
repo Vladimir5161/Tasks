@@ -72,27 +72,29 @@ export const setUserNameAndId = (
 
 // here we are creating user account, and setting his user name
 export const CreateAccount = (
-    email: string,
-    password: string,
-    userName: string
+    email: string | null,
+    password: string | null,
+    userName: string | null
 ) => async (dispatch: DispatchType) => {
     await dispatch(blockButton("createUser"));
-    try {
-        await WebApi.createAcc(email, password).then((data: any) => {
-            return app
-                .firestore()
-                .collection("users")
-                .doc(data.user.uid)
-                .set({ userId: data.user.uid, userName: userName })
-                .then(
-                    dispatch(
-                        SetMessage("your acccount has been created", "success")
-                    )
-                );
-        });
-    } catch (error) {
-        dispatch(SetMessage(error.message, "error"));
-    }
+    if(email && password && userName) {
+        try {
+            await WebApi.createAcc(email, password).then((data: any) => {
+                return app
+                    .firestore()
+                    .collection("users")
+                    .doc(data.user.uid)
+                    .set({ userId: data.user.uid, userName: userName })
+                    .then(
+                        dispatch(
+                            SetMessage("your acccount has been created", "success")
+                        )
+                    );
+            });
+        } catch (error) {
+            dispatch(SetMessage(error.message, "error"));
+        }
+    } else dispatch(SetMessage("not enough data", "error"));
     dispatch(blockButton("createUser"));
 };
 
@@ -100,45 +102,48 @@ export const CreateAccount = (
 export const Login = (email: string, password: string) => async (
     dispatch: DispatchType
 ) => {
-    await dispatch(blockButton("login"));
-    try {
-        let responce = await WebApi.login(email, password);
+    if(email && password) {
+        await dispatch(blockButton("login"));
+        try {
+            let responce = await WebApi.login(email, password);
 
-        if (responce.user !== undefined) {
-            app.auth().onAuthStateChanged(async (user) => {
-                if (user) {
-                    await app
-                        .firestore()
-                        .collection("users")
-                        .doc(user.uid)
-                        .get()
-                        .then((querySnapshot: any) => {
-                            dispatch(
-                                setUserNameAndId(
-                                    querySnapshot.data().userName,
-                                    querySnapshot.data().userId
-                                )
-                            );
+            if (responce.user !== undefined) {
+                app.auth().onAuthStateChanged(async (user) => {
+                    if (user) {
+                        await app
+                            .firestore()
+                            .collection("users")
+                            .doc(user.uid)
+                            .get()
+                            .then((querySnapshot: any) => {
+                                dispatch(
+                                    setUserNameAndId(
+                                        querySnapshot.data().userName,
+                                        querySnapshot.data().userId
+                                    )
+                                );
 
-                            dispatch(setAuth(true));
-                            dispatch(
-                                SetMessage(
-                                    `Hello ${
-                                        querySnapshot.data().userName
-                                    } you are logged in`,
-                                    "success"
-                                )
-                            );
-                        });
-                } else {
-                    dispatch(setAuth(false));
-                    dispatch(setUserNameAndId("", ""));
-                }
-            });
+                                dispatch(setAuth(true));
+                                dispatch(
+                                    SetMessage(
+                                        `Hello ${
+                                            querySnapshot.data().userName
+                                        } you are logged in`,
+                                        "success"
+                                    )
+                                );
+                            });
+                    } else {
+                        dispatch(setAuth(false));
+                        dispatch(setUserNameAndId("", ""));
+                    }
+                });
+            }
+        } catch (error) {
+            dispatch(SetMessage(error.message, "error"));
         }
-    } catch (error) {
-        dispatch(SetMessage(error.message, "error"));
-    }
+    } else dispatch(SetMessage("not enough data", "error"));
+    
     dispatch(blockButton("login"));
 };
 
