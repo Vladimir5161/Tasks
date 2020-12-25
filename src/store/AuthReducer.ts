@@ -13,6 +13,7 @@ export interface InitialStateType {
     user: {
         name: string;
         userId: string;
+        email: string
     };
 }
 
@@ -21,6 +22,7 @@ const initialState: InitialStateType = {
     user: {
         name: "",
         userId: "",
+        email: ""
     },
 };
 type InitialState = typeof initialState;
@@ -41,8 +43,9 @@ const AuthReducer = (
                               ...state.user,
                               name: action.name,
                               userId: action.userId,
+                              email: action.email
                           }
-                        : { ...state.user, name: "", userId: "" },
+                        : { ...state.user, name: "", userId: "", email: "" },
             };
         default:
             return state;
@@ -63,11 +66,13 @@ export const setAuth = (authStatus: boolean): setAuthTypes => ({
 
 export const setUserNameAndId = (
     name: string,
-    userId: string
+    userId: string,
+    email: string
 ): setUserNameAndIdTypes => ({
     type: "SETUSERNAME",
     name,
     userId,
+    email
 });
 
 // here we are creating user account, and setting his user name
@@ -84,7 +89,7 @@ export const CreateAccount = (
                     .firestore()
                     .collection("users")
                     .doc(data.user.uid)
-                    .set({ userId: data.user.uid, userName: userName })
+                    .set({ userId: data.user.uid, userName: userName, email: email })
                     .then(
                         dispatch(
                             SetMessage("your acccount has been created", "success")
@@ -119,7 +124,8 @@ export const Login = (email: string, password: string) => async (
                                 dispatch(
                                     setUserNameAndId(
                                         querySnapshot.data().userName,
-                                        querySnapshot.data().userId
+                                        querySnapshot.data().userId,
+                                        querySnapshot.data().email
                                     )
                                 );
 
@@ -135,7 +141,7 @@ export const Login = (email: string, password: string) => async (
                             });
                     } else {
                         dispatch(setAuth(false));
-                        dispatch(setUserNameAndId("", ""));
+                        dispatch(setUserNameAndId("", "", ""));
                     }
                 });
             }
@@ -159,7 +165,8 @@ export const AuthUser = () => async (dispatch: DispatchType) => {
                     await dispatch(
                         setUserNameAndId(
                             querySnapshot.data().userName,
-                            querySnapshot.data().userId
+                            querySnapshot.data().userId,
+                            querySnapshot.data().email
                         )
                     );
 
@@ -168,7 +175,7 @@ export const AuthUser = () => async (dispatch: DispatchType) => {
                 });
         } else {
             dispatch(setAuth(false));
-            dispatch(setUserNameAndId("", ""));
+            dispatch(setUserNameAndId("", "", ""));
             dispatch(AuthorizationThunk());
         }
     });

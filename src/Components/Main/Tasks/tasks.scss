@@ -37,6 +37,7 @@
 }
 .choseDiv div {
     width: 100% !important;
+    justify-content: center;
 }
 
 .react-calendar {
@@ -333,7 +334,12 @@
     grid-template-columns: 1fr 1fr;
 }
 .userInfoName {
-    color: red;
+    font-style: italic;
+
+}
+.email {
+    font-size: 14px;
+    display: inline;
 }
 .addDeadline {
     display: none;
