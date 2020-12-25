@@ -162,20 +162,21 @@ export const AuthUser = () => async (dispatch: DispatchType) => {
                 .doc(user.uid)
                 .get()
                 .then(async (querySnapshot: any) => {
-                    querySnapshot.data()? 
-                        await dispatch(
+                    if(querySnapshot.data()) {
+                            dispatch(
                             setUserNameAndId(
                                 querySnapshot.data().userName,
                                 querySnapshot.data().userId,
                                 querySnapshot.data().email
-                            )
-                        ) : dispatch(setAuth(false));
+                            ));
+                            dispatch(setAuth(true));
+                            dispatch(AuthorizationThunk());
+                    } else { 
+                            dispatch(setAuth(false));
                             dispatch(setUserNameAndId("", "", ""));
                             dispatch(AuthorizationThunk());
                             dispatch(SetMessage("user may not exist any more", "error"));
-
-                    dispatch(setAuth(true));
-                    dispatch(AuthorizationThunk());
+                    }
                 });
         } else {
             dispatch(setAuth(false));
