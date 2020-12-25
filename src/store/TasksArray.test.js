@@ -2,15 +2,15 @@ import TaskReducer, { addTask, getTasks, deleteTask } from "./TaskReducer";
 
 const state = {
     TasksArray: [
-        { id: 1, text: "bla" },
-        { id: 2, text: "bla bla" },
+        { id: 1, text: "text" },
+        { id: 2, text: "second text" },
     ],
 };
 
 
 
 test("task object should be added to state", () => {
-    let action = addTask({ id: 1000, text: "bla bla" });
+    let action = addTask({ id: 1000, text: "text" });
 
     let newState = TaskReducer(state, action);
 

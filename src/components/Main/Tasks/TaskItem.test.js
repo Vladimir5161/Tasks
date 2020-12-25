@@ -19,7 +19,6 @@ test("props which we throw to component should be in it", () => {
             urgent={{ id: false }}
         />
     );
-    console.log(component.prop("text"));
     expect(component.prop("text")).toBe("some text");
 });
 

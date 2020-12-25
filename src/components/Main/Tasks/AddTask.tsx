@@ -4,7 +4,7 @@ import AddTaskForm from "../../FormControls/AddTaskReduxForm";
 import { connect } from "react-redux";
 import { CalendarReact } from "../../CommonComponents/Calendar";
 import Clock from "../../CommonComponents/Clock";
-import { validateAdd } from "../../../validators/validators";
+import { validateForm } from "../../../validators/validators";
 
 interface AddTaskType {
     AddTaskThunk: (
@@ -182,7 +182,7 @@ const AddTask: React.FC<AddTaskType> = ({
                 settedTime={settedTime}
                 initialValues={{ addTask: "" }}
                 functionToCall={onSubmit}
-                validate={validateAdd}
+                validate={validateForm}
             />
         </>
     );

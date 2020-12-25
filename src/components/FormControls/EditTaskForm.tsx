@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
-import "./AddTask.scss";
+import "./addTask.scss";
 import "../Main/Tasks/tasks.scss";
 import PrioritySelect from "../CommonComponents/PrioritySelect";
 import AccordionSummary from "@material-ui/core/AccordionSummary";

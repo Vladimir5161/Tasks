@@ -11,19 +11,19 @@ import ReadMe from "../CommonComponents/ReadMe";
 
 interface MainTypes {
     value: number;
-    Authorized: boolean;
+    authorized: boolean;
     setCreateOrLog: (value: boolean) => void;
     isAuth: boolean;
 }
 
 const Main: React.FC<MainTypes> = ({
     value,
-    Authorized,
+    authorized,
     setCreateOrLog,
     isAuth,
 }) => {
     let [readMe, openReadMe] = React.useState(false);
-    if (Authorized === false || isAuth === false) {
+    if (!authorized || !isAuth) {
         return (
             <main>
                 <TabPanel value={value} index={0}>
@@ -91,8 +91,8 @@ const TabPanel = (props: TabPanelTypes) => {
 };
 
 const mapStateToProps = (state: AppStoreReducer) => ({
-    TasksArray: state.tasks.TasksArray,
+    tasksArray: state.tasks.TasksArray,
     isAuth: state.auth.isAuth,
-    Authorized: state.authorized.Authorized,
+    authorized: state.authorized.Authorized,
 });
 export default connect(mapStateToProps)(Main);

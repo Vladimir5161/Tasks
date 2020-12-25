@@ -1,14 +1,14 @@
 import React, { useEffect, Suspense } from "react";
 import "./App.scss";
-import Header from "./Components/Header/Header";
-import Main from "./Components/Main/Main";
+import Header from "./components/Header/Header";
+import Main from "./components/Main/Main";
 import { connect } from "react-redux";
 import { AuthUser } from "./store/AuthReducer";
 import { Loading } from "./store/TaskReducer";
 import { AuthorizationThunk } from "./store/AuthorizationReducer";
 import { TaskTypes } from "./types/types";
 import { AppStoreReducer } from "./store/rootReducer";
-import Preloader from "./Components/CommonComponents/Preloader";
+import Preloader from "./components/CommonComponents/Preloader";
 
 interface AppTypes {
     isAuth: boolean;
@@ -21,7 +21,7 @@ interface AppTypes {
     message: string;
 }
 
-const Alert = React.lazy(() => import("./Components/CommonComponents/Alert"));
+const Alert = React.lazy(() => import("./components/CommonComponents/Alert"));
 
 const App: React.FC<AppTypes> = ({
     isAuth,
@@ -42,10 +42,10 @@ const App: React.FC<AppTypes> = ({
         uploadTasks();
     }, [TasksArray.length, isAuth, AuthUser, Loading, AuthorizationThunk]);
 
-    const [createOrLog, setCreateOrLog] = React.useState(isAuth ? false : true); // if true it will show LOG IN in header first tab
+    const [createOrLog, setCreateOrLog] = React.useState(isAuth); // if true it will show LOG IN in header first tab
     useEffect(() => {
         setTimeout(() => handleChange(`event`, 1), 0);
-        setCreateOrLog(isAuth ? false : true);
+        setCreateOrLog(isAuth);
     }, [isAuth]);
 
     const [value, setValue] = React.useState(isAuth ? 1 : 0);

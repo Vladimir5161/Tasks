@@ -162,16 +162,21 @@ export const AuthUser = () => async (dispatch: DispatchType) => {
                 .doc(user.uid)
                 .get()
                 .then(async (querySnapshot: any) => {
-                    await dispatch(
-                        setUserNameAndId(
-                            querySnapshot.data().userName,
-                            querySnapshot.data().userId,
-                            querySnapshot.data().email
-                        )
-                    );
-
-                    dispatch(setAuth(true));
-                    dispatch(AuthorizationThunk());
+                    if(querySnapshot.data()) {
+                            dispatch(
+                            setUserNameAndId(
+                                querySnapshot.data().userName,
+                                querySnapshot.data().userId,
+                                querySnapshot.data().email
+                            ));
+                            dispatch(setAuth(true));
+                            dispatch(AuthorizationThunk());
+                    } else { 
+                            dispatch(setAuth(false));
+                            dispatch(setUserNameAndId("", "", ""));
+                            dispatch(AuthorizationThunk());
+                            dispatch(SetMessage("seems that you account doesn't exit any more, please create a new one or contact our support",  "error"))
+                    }
                 });
         } else {
             dispatch(setAuth(false));
