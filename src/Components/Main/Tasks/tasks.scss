@@ -227,7 +227,7 @@
     position: fixed;
     left: 0;
     right: 0;
-    top: 6%;
+    top: 10%;
     z-index: 100;
     max-width: 700px;
     height: auto !important;
@@ -335,7 +335,7 @@
 }
 .userInfoName {
     font-style: italic;
-
+    white-space: nowrap;
 }
 .email {
     font-size: 14px;
