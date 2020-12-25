@@ -3,7 +3,7 @@ import React from "react";
 const Preloader: React.FC<any> = (): any => {
     return (
         <div className="preloader">
-            <img src="/6.gif" alt="" />
+            <img src="/loader.gif" alt="" />
         </div>
     );
 };

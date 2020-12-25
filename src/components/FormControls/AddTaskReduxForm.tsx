@@ -53,17 +53,17 @@ const AddTaskForm: React.FC<AddTaskFormTypes> = ({
                 >
                     <div className="inputTaskDiv">
                         <div className="inputBlock">
-                            {formik.errors.addTask ? (
+                            {formik.errors.text ? (
                                 <ErrorValidate
-                                    name="addTask"
+                                    name="text"
                                     onChange={formik.handleChange}
-                                    value={formik.values.addTask}
-                                    label={formik.errors.addTask}
+                                    value={formik.values.text}
+                                    label={formik.errors.text}
                                 />
                             ) : (
                                 <div className="formBlock">
                                     <TextareaAutosize
-                                        name="addTask"
+                                        name="text"
                                         onChange={formik.handleChange}
                                         defaultValue={formik.values.text}
                                         rowsMax={4}

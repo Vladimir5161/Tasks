@@ -11,23 +11,21 @@ import ReadMe from "../CommonComponents/ReadMe";
 
 interface MainTypes {
     value: number;
-    Authorized: boolean;
-    setCreateOrLog: (value: boolean) => void;
+    authorized: boolean;
     isAuth: boolean;
 }
 
 const Main: React.FC<MainTypes> = ({
     value,
-    Authorized,
-    setCreateOrLog,
+    authorized,
     isAuth,
 }) => {
     let [readMe, openReadMe] = React.useState(false);
-    if (Authorized === false || isAuth === false) {
+    if (!authorized || !isAuth) {
         return (
             <main>
                 <TabPanel value={value} index={0}>
-                    <LoginPage setCreateOrLog={setCreateOrLog} />
+                    <LoginPage />
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                     <p>
@@ -53,7 +51,7 @@ const Main: React.FC<MainTypes> = ({
         return (
             <main>
                 <TabPanel value={value} index={0}>
-                    <LoginPage setCreateOrLog={setCreateOrLog} />
+                    <LoginPage />
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                     <Tasks />
@@ -91,8 +89,8 @@ const TabPanel = (props: TabPanelTypes) => {
 };
 
 const mapStateToProps = (state: AppStoreReducer) => ({
-    TasksArray: state.tasks.TasksArray,
+    tasksArray: state.tasks.TasksArray,
     isAuth: state.auth.isAuth,
-    Authorized: state.authorized.Authorized,
+    authorized: state.authorized.Authorized,
 });
 export default connect(mapStateToProps)(Main);

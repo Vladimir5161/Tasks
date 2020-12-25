@@ -4,7 +4,7 @@ import AddTaskForm from "../../FormControls/AddTaskReduxForm";
 import { connect } from "react-redux";
 import { CalendarReact } from "../../CommonComponents/Calendar";
 import Clock from "../../CommonComponents/Clock";
-import { validateAdd } from "../../../validators/validators";
+import { validateForm } from "../../../validators/validators";
 
 interface AddTaskType {
     AddTaskThunk: (
@@ -114,7 +114,7 @@ const AddTask: React.FC<AddTaskType> = ({
               .join(":")
         : null;
 
-    const onSubmit = async (data: { addTask: string }) => {
+    const onSubmit = async (data: { text: string }) => {
         const newDate = new Date()
             .toLocaleString()
             .split(",")[0]
@@ -136,7 +136,7 @@ const AddTask: React.FC<AddTaskType> = ({
 
         if (resultDate) {
             await AddTaskThunk(
-                data.addTask,
+                data.text,
                 choseStatus.status,
                 null,
                 null,
@@ -144,7 +144,7 @@ const AddTask: React.FC<AddTaskType> = ({
             );
         } else {
             await AddTaskThunk(
-                data.addTask,
+                data.text,
                 choseStatus.status,
                 settedTime,
                 settedDate,
@@ -180,9 +180,9 @@ const AddTask: React.FC<AddTaskType> = ({
                 setDeadline={setDeadline}
                 settedDate={settedDate}
                 settedTime={settedTime}
-                initialValues={{ addTask: "" }}
+                initialValues={{ text: "" }}
                 functionToCall={onSubmit}
-                validate={validateAdd}
+                validate={validateForm}
             />
         </>
     );

@@ -1,3 +1,5 @@
+import * as _ from "lodash";
+
 interface validateLoginType {
     email?: string;
     password?: string;
@@ -28,17 +30,7 @@ export const validateLogin = (values: validateLoginType, formik: any) => {
             values.password
                 .split("")
                 .some(
-                    (item) =>
-                        item === "1" ||
-                        item === "3" ||
-                        item === "4" ||
-                        item === "5" ||
-                        item === "6" ||
-                        item === "7" ||
-                        item === "8" ||
-                        item === "9" ||
-                        item === "0" ||
-                        item === "2"
+                    (item) => _.range(10).includes(+item)
                 )
         ) {
             return undefined;
@@ -48,27 +40,11 @@ export const validateLogin = (values: validateLoginType, formik: any) => {
     }
     return errors;
 };
-
-interface validateAddType {
-    addTask?: string;
-}
-export const validateAdd = (values: validateAddType) => {
-    const errors: validateAddType = {};
-    if (!values.addTask) {
-        errors.addTask = "Required";
-    } else if (values.addTask.length < 5) {
-        errors.addTask = "Must be 5 characters or more";
-    } else if (values.addTask.length > 300) {
-        errors.addTask = "Too long";
-    }
-    return errors;
-};
-
-interface validateAddType {
+interface validateFormType {
     text?: string;
 }
-export const validateEdit = (values: validateAddType) => {
-    const errors: validateAddType = {};
+export const validateForm = (values: validateFormType) => {
+    const errors: validateFormType = {};
     if (!values.text) {
         errors.text = "Required";
     } else if (values.text.length < 5) {
@@ -76,5 +52,6 @@ export const validateEdit = (values: validateAddType) => {
     } else if (values.text.length > 300) {
         errors.text = "Too long";
     }
+    console.log("values.text", errors);
     return errors;
 };

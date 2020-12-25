@@ -61,7 +61,6 @@
     display: flex;
     align-self: center;
     margin: 0 auto;
-    justify-content: right !important;
 }
 
 .statusTask,
@@ -71,6 +70,7 @@
         align-self: center;
         justify-content: center;
         max-width: 100px !important;
+        min-width: 80px;
     }
 }
 
@@ -227,7 +227,7 @@
     position: fixed;
     left: 0;
     right: 0;
-    top: 6%;
+    top: 10%;
     z-index: 100;
     max-width: 700px;
     height: auto !important;
@@ -324,7 +324,7 @@
 }
 .userInfo {
     text-align: left;
-    padding: 20px;
+    padding: 10px 20px 20px 20px;
     position: absolute;
     top: 50px;
     font-size: 20px;
@@ -335,7 +335,7 @@
 }
 .userInfoName {
     font-style: italic;
-
+    white-space: nowrap;
 }
 .email {
     font-size: 14px;

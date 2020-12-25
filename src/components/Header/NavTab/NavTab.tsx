@@ -33,9 +33,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NavTabs: React.FC<HeaderTypes> = React.memo(
-    ({ handleChange, value, Logout, isAuth, user, createOrLog }) => {
+    ({ handleChange, value, Logout, isAuth, user }) => {
         const classes = useStyles();
-        const label = !createOrLog ? `Create Account` : "Log In";
+        const label = `Sign Up/Sign In`
         let [confirmLogOut, setConfirmLogOut] = React.useState(false);
         return (
             <div
@@ -52,15 +52,13 @@ const NavTabs: React.FC<HeaderTypes> = React.memo(
                         onChange={handleChange}
                         aria-label="nav tabs example"
                     >
-                        {isAuth && user.name !== null ? (
-                            <LinkTab label={label} {...a11yProps(0)} />
-                        ) : (
+                        {!isAuth &&
                             <LinkTab
                                 label={label}
                                 href="/login"
                                 {...a11yProps(0)}
                             />
-                        )}
+                        }
 
                         <LinkTab
                             label={isAuth ? "All Tasks" : "Read Me"}

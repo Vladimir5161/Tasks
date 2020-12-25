@@ -2,13 +2,13 @@ import React, { useEffect, Suspense } from "react";
 import "./App.scss";
 import Header from "./Components/Header/Header";
 import Main from "./Components/Main/Main";
+import Preloader from "./Components/CommonComponents/Preloader";
 import { connect } from "react-redux";
 import { AuthUser } from "./store/AuthReducer";
 import { Loading } from "./store/TaskReducer";
 import { AuthorizationThunk } from "./store/AuthorizationReducer";
 import { TaskTypes } from "./types/types";
 import { AppStoreReducer } from "./store/rootReducer";
-import Preloader from "./Components/CommonComponents/Preloader";
 
 interface AppTypes {
     isAuth: boolean;
@@ -42,10 +42,8 @@ const App: React.FC<AppTypes> = ({
         uploadTasks();
     }, [TasksArray.length, isAuth, AuthUser, Loading, AuthorizationThunk]);
 
-    const [createOrLog, setCreateOrLog] = React.useState(isAuth ? false : true); // if true it will show LOG IN in header first tab
     useEffect(() => {
         setTimeout(() => handleChange(`event`, 1), 0);
-        setCreateOrLog(isAuth ? false : true);
     }, [isAuth]);
 
     const [value, setValue] = React.useState(isAuth ? 1 : 0);
@@ -59,9 +57,8 @@ const App: React.FC<AppTypes> = ({
                 <Header
                     value={value}
                     handleChange={handleChange}
-                    createOrLog={createOrLog}
                 />
-                <Main value={value} setCreateOrLog={setCreateOrLog} />
+                <Main value={value} />
                 {message ? (
                     <Suspense fallback={<Preloader />}>
                         <Alert />

@@ -13,7 +13,6 @@ export interface HeaderTypes {
     value: number;
     user: userTypes;
     style?: any;
-    createOrLog: boolean;
 }
 
 const Header: React.FC<HeaderTypes> = ({
@@ -22,7 +21,6 @@ const Header: React.FC<HeaderTypes> = ({
     Logout,
     isAuth,
     user,
-    createOrLog,
 }) => {
     return (
         <NavTab
@@ -31,7 +29,6 @@ const Header: React.FC<HeaderTypes> = ({
             Logout={Logout}
             isAuth={isAuth}
             user={user}
-            createOrLog={createOrLog}
         />
     );
 };

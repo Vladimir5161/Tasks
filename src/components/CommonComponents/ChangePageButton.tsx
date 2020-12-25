@@ -14,13 +14,11 @@ const useStyles = makeStyles((theme) => ({
 interface ChangePageButtonTypes {
     buttonName: string;
     changePage: () => void;
-    setCreateOrLog: (value: boolean) => void;
 }
 
 const ChangePageButton: React.FC<ChangePageButtonTypes> = ({
     buttonName,
     changePage,
-    setCreateOrLog,
 }) => {
     const classes = useStyles();
 
@@ -38,9 +36,6 @@ const ChangePageButton: React.FC<ChangePageButtonTypes> = ({
                     className={classes.margin}
                     onMouseDown={() => {
                         changePage();
-                        buttonName === "Log in"
-                            ? setCreateOrLog(true)
-                            : setCreateOrLog(false);
                     }}
                 >
                     {buttonName}
