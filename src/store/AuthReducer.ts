@@ -175,7 +175,6 @@ export const AuthUser = () => async (dispatch: DispatchType) => {
                             dispatch(setAuth(false));
                             dispatch(setUserNameAndId("", "", ""));
                             dispatch(AuthorizationThunk());
-                            dispatch(SetMessage("user may not exist any more", "error"));
                     }
                 });
         } else {
