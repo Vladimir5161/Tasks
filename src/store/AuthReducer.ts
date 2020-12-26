@@ -175,6 +175,7 @@ export const AuthUser = () => async (dispatch: DispatchType) => {
                             dispatch(setAuth(false));
                             dispatch(setUserNameAndId("", "", ""));
                             dispatch(AuthorizationThunk());
+                            dispatch(SetMessage("seems that you account doesn't exit any more, please create a new one or contact our support",  "error"))
                     }
                 });
         } else {
