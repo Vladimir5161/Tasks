@@ -61,7 +61,6 @@
     display: flex;
     align-self: center;
     margin: 0 auto;
-    justify-content: right !important;
 }
 
 .statusTask,
@@ -71,6 +70,7 @@
         align-self: center;
         justify-content: center;
         max-width: 100px !important;
+        min-width: 80px;
     }
 }
 
